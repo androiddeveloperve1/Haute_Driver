@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:id="@+id/cl_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/_20_px">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+
+            <ProgressBar
+                android:id="@+id/pb"
+                android:layout_width="@dimen/_35_px"
+                android:layout_height="@dimen/_35_px"
+                android:background="@null" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_10_px"
+                android:layout_toRightOf="@+id/pb"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Please wait..."
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15_px" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.foodies.vedriver.activities.SignupActivity.Listener" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/_15_px"
+        android:paddingRight="@dimen/_15_px"
+        tools:context=".activities.SignupActivity">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/_60_px"
+            android:layout_height="@dimen/_60_px"
+            android:layout_marginTop="@dimen/_10_px"
+            android:background="@drawable/logo_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Bold.ttf`}"
+            android:text='HauteDelivery'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+
+        <TextView
+            android:id="@+id/tv_signup_text_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='SIGN UP'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text" />
+
+
+        <EditText
+            android:id="@+id/et_fname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="@dimen/_8_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="First name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/et_lname"
+            app:layout_constraintTop_toBottomOf="@+id/tv_signup_text_heading" />
+
+        <View
+            android:id="@+id/view0"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1_px"
+            android:layout_marginRight="@dimen/_5_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="@id/et_fname"
+            app:layout_constraintRight_toLeftOf="@+id/et_lname"
+            app:layout_constraintTop_toBottomOf="@+id/et_fname" />
+
+
+        <EditText
+            android:id="@+id/et_lname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="@dimen/_10_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="Last name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toRightOf="@+id/et_fname"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_signup_text_heading" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1_px"
+            android:layout_marginLeft="@dimen/_5_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/et_fname"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_lname" />
+
+
+        <EditText
+            android:id="@+id/et_mob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="Mobile number"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="10"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view0" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_mob" />
+
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="Email Address"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
+
+        <EditText
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="Passsword"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/img_pass"
+            app:layout_constraintTop_toBottomOf="@+id/view7" />
+
+
+        <ImageView
+            android:id="@+id/img_pass"
+            android:layout_width="@dimen/_20_px"
+            android:layout_height="@dimen/_20_px"
+            android:background="@drawable/ic_eye_on"
+            android:onClick="@{(v)->handler.onPassView(v)}"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pass"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_pass" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pass" />
+
+
+        <EditText
+            android:id="@+id/et_service_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@null"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:hint="Service area"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="@dimen/_8_px"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/img_my_loc"
+            app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+        <ImageView
+            android:id="@+id/img_my_loc"
+            android:layout_width="@dimen/_20_px"
+            android:layout_height="@dimen/_20_px"
+            android:onClick="@{(v)->handler.onCurrentLocation(v)}"
+            android:src="@drawable/ic_my_location_black"
+            app:layout_constraintBottom_toBottomOf="@+id/et_service_area"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_service_area" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_service_area" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10_px"
+            android:onClick="@{(v)->handler.onCheckBox(v)}"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/tv_signup_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+
+            <ImageView
+                android:id="@+id/img_cb"
+                android:layout_width="@dimen/_20_px"
+                android:layout_height="@dimen/_20_px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_check_off"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_terms_click"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_terms_text" />
+
+            <TextView
+                android:id="@+id/tv_terms_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text='Click here to agree that you have read the'
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_12_px"
+                app:layout_constraintLeft_toRightOf="@+id/img_cb"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_terms_click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:onClick="@{(v)->handler.onTermClick(v)}"
+                android:text='terms and services'
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12_px"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_terms_text"
+                app:layout_constraintTop_toBottomOf="@+id/tv_terms_text" />
+
+            <TextView
+                android:id="@+id/tv_terms_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text='of Hautedelivery'
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_12_px"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_terms_click"
+                app:layout_constraintLeft_toRightOf="@+id/tv_terms_click"
+                app:layout_constraintTop_toTopOf="@+id/tv_terms_click" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_signup_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_25_px"
+            android:layout_marginBottom="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='@string/signup_guide_text'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_10_px"
+            app:layout_constraintBottom_toTopOf="@+id/tv_signup"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10_px"
+            android:background="@drawable/rounded_bg_with_black"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:gravity="center"
+            android:onClick="@{(v)->handler.onSignUp(v)}"
+            android:padding="@dimen/_10_px"
+            android:text='SIGN UP'
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16_px"
+            app:layout_constraintBottom_toTopOf="@+id/tv_already_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_already_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='Already hautedelivery employee?'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintBottom_toTopOf="@+id/tv_signin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:gravity="center"
+            android:onClick="@{(v)->handler.onSignIn(v)}"
+            android:padding="@dimen/_8_px"
+            android:text='SIGN IN'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

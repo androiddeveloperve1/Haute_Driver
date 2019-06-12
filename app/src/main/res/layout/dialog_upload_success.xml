@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10_px"
+        android:background="@drawable/rounded_bg_with_white"
+        android:padding="@dimen/_10_px">
+
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='Documents Uploaded'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text" />
+
+
+        <TextView
+            android:id="@+id/tv_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='You have agreed to'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_text" />
+
+        <TextView
+            android:id="@+id/tv_terms_click"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5_px"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='terms and services'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toRightOf="@+id/tv_terms"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_text" />
+
+        <TextView
+            android:id="@+id/tv_terms_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='of Hautedelivery'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_terms"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_terms_click" />
+
+
+        <TextView
+            android:id="@+id/tv_terms2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='Documents have been successfully uploaded we will verify the documents and let you know by Email and phone number'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_terms_2" />
+
+
+        <TextView
+            android:id="@+id/tv_ref_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='Ref:'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_ref_number"
+            app:layout_constraintTop_toBottomOf="@+id/tv_terms2" />
+
+
+        <TextView
+            android:id="@+id/tv_ref_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5_px"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='12345678987654321'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toRightOf="@+id/tv_ref_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_terms2" />
+
+
+        <TextView
+            android:id="@+id/tv_mind"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='Please keep this reference number for future need'
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ref_text" />
+
+        <TextView
+            android:id="@+id/tv_okay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20_px"
+            android:background="@drawable/rounded_bg_with_black"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:gravity="center"
+            android:padding="@dimen/_10_px"
+            android:text='OKAY'
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mind" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

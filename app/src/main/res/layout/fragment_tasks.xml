@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="currentTaskAdapter"
+            type="com.foodies.vedriver.adapter.CurrentTaskAdapter" />
+
+        <variable
+            name="newTaskAdapter"
+            type="com.foodies.vedriver.adapter.NewTaskAdapter" />
+
+    </data>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="New deliveries will apear here"
+                android:textSize="@dimen/_12_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_new_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/_10_px"
+                android:adapter="@{newTaskAdapter}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header" />
+
+            <TextView
+                android:id="@+id/header2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5_px"
+                android:layout_marginTop="@dimen/_10_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Current task"
+                android:textSize="@dimen/_12_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_new_task" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_current_task"
+                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10_px"
+                android:adapter="@{currentTaskAdapter}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header2" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickHandler"
+            type="com.foodies.vedriver.activities.MainActivity.Presenter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/black_bg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_150_px"
+            android:background="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_60_px"
+            android:layout_height="@dimen/_60_px"
+            android:layout_margin="@dimen/_10_px"
+            android:background="@drawable/ic_profile_placeholder"
+            app:layout_constraintBottom_toBottomOf="@+id/black_bg"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Bold.ttf`}"
+            android:text="My Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintBottom_toTopOf="@+id/tv_mob"
+            app:layout_constraintLeft_toRightOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/tv_mob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="+19898989898"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+        <TextView
+            android:id="@+id/tv_tasks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10_px"
+            android:layout_marginTop="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:onClick="@{(v)->clickHandler.onNavigationClick(v)}"
+            android:padding="@dimen/_5_px"
+            android:text="Tasks"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/black_bg" />
+
+        <TextView
+            android:id="@+id/tv_earnings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:onClick="@{(v)->clickHandler.onNavigationClick(v)}"
+            android:padding="@dimen/_5_px"
+            android:text="Earnings"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_tasks"
+            app:layout_constraintRight_toRightOf="@id/tv_tasks"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tasks" />
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:onClick="@{(v)->clickHandler.onNavigationClick(v)}"
+            android:padding="@dimen/_5_px"
+            android:text="Profile"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_tasks"
+            app:layout_constraintRight_toRightOf="@id/tv_tasks"
+            app:layout_constraintTop_toBottomOf="@+id/tv_earnings" />
+
+        <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:onClick="@{(v)->clickHandler.onNavigationClick(v)}"
+            android:padding="@dimen/_5_px"
+            android:text="Help and support"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_14_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_tasks"
+            app:layout_constraintRight_toRightOf="@id/tv_tasks"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

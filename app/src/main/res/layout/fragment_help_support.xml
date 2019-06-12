@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.foodies.vedriver.model.UserModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.foodies.vedriver.fragments.FragmentSupport.Presenter" />
+
+    </data>
+
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_5_px"
+        android:layout_margin="@dimen/_10_px"
+        android:background="@color/white"
+        app:contentPadding="@dimen/_5_px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/_20_px">
+
+
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20_px"
+                android:layout_marginTop="@dimen/_30_px"
+                android:layout_marginRight="@dimen/_20_px"
+                android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                android:text="99887766554412"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_call_us" />
+
+            <TextView
+                android:id="@+id/tv_mob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="support@mail.com"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_number" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile"
+                android:layout_width="@dimen/_70_px"
+                android:layout_height="@dimen/_70_px"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_support"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="@dimen/_1_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_call_us"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Call us 24 X 7"
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_13_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_profile" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

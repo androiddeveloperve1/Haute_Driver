@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="itemClickListener"
+            type="com.foodies.vedriver.interfaces.RecycleItemClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:paddingTop="@dimen/_5_px"
+        android:paddingBottom="@dimen/_5_px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tv_earn_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Earning "
+            android:layout_marginLeft="@dimen/_10_px"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_earn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5_px"
+            android:text="$ 10.00 "
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_earn_text"
+            app:layout_constraintLeft_toRightOf="@+id/tv_earn_text"
+            app:layout_constraintTop_toTopOf="@id/tv_earn_text" />
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 May,2019. 10:20"
+            android:textColor="@color/gray_text"
+            android:layout_marginRight="@dimen/_10_px"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_earn_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_earn_text" />
+
+
+        <TextView
+            android:id="@+id/tv_order_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:text="Order ID"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_earn_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_earn_text" />
+
+        <TextView
+            android:id="@+id/tv_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#Im78987689"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_order_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_earn"
+            app:layout_constraintTop_toTopOf="@id/tv_order_text" />
+
+        <TextView
+            android:id="@+id/tv_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:text="Status"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_earn_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_id" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#Im78987689"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_status_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_earn"
+            app:layout_constraintTop_toTopOf="@id/tv_status_text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
