@@ -2,10 +2,6 @@ package com.foodies.vedriver.network;
 
 
 import com.foodies.vedriver.activities.ForgotPasswordActivity;
-import com.foodies.vedriver.activities.LoginActivity;
-import com.foodies.vedriver.activities.MainActivity;
-import com.foodies.vedriver.activities.MapsActivity;
-import com.foodies.vedriver.activities.SignupActivity;
 import com.foodies.vedriver.activities.SplashActivity;
 import com.foodies.vedriver.fragments.FragmentProfile;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
@@ -22,7 +18,6 @@ import dagger.Component;
 @Component(modules = {NetworkModule.class})
 public interface ApplicationComponent {
     void inject(SignupViewModel model);
-    void inject(MapsActivity model);
     void inject(OtpVerifyViewModel model);
     void inject(ForgotPasswordActivity model);
     void inject(LoginViewModel model);

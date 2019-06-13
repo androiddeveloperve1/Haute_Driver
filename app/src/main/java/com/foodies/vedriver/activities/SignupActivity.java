@@ -101,7 +101,7 @@ public class SignupActivity extends AppCompatActivity {
             PermissionUtils.getInstance().checkAllPermission(SignupActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
                 @Override
                 public void onGrant() {
-                    startActivityForResult(new Intent(SignupActivity.this, MapsActivity.class), LocationTag);
+                    startActivityForResult(new Intent(SignupActivity.this, Maps2Activity.class), LocationTag);
                 }
 
                 @Override

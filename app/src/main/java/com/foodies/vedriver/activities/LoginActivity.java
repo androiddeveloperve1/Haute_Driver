@@ -18,6 +18,7 @@ import com.foodies.vedriver.R;
 import com.foodies.vedriver.databinding.ActivityLoginBinding;
 import com.foodies.vedriver.model.UserModel;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
 
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binder;
     private boolean isPasswordShow = false;
     private LoginViewModel loginViewModel;
+
+
 
 
     @Override

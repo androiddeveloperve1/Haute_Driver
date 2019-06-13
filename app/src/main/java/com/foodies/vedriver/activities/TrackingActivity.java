@@ -1,23 +1,19 @@
 package com.foodies.vedriver.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +26,6 @@ import com.foodies.vedriver.constants.PermissionConstants;
 import com.foodies.vedriver.dialogs.ResponseDialog;
 import com.foodies.vedriver.permission.PermissionHandlerListener;
 import com.foodies.vedriver.permission.PermissionUtils;
-import com.foodies.vedriver.utils.LocationUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,7 +33,6 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -46,32 +40,47 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
+/**
+ * Create By Rahul Mangal
+ * Project SignupLibrary Screen
+ */
+
 public class TrackingActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final int LocationTag = 10001;
+    private MarkerOptions mMarkerOptions;
+    private GoogleMap mMap;
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            Log.e("@@@@@@", "location updated");
+            showLocationOnMap(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()));
+
         }
     };
-    private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_tracking);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         PermissionUtils.getInstance().checkAllPermission(TrackingActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
             @Override
             public void onGrant() {
@@ -91,14 +100,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
                 super.onRationalPermission(rationalPermissonList);
             }
         });
-
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        buildGoogleApiClient();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -115,14 +116,13 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(0);
-        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(5000);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
-
         checkResolutionAndProceed();
     }
 
@@ -134,6 +134,13 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         ResponseDialog.showErrorDialog(this, connectionResult.getErrorMessage());
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMarkerOptions = new MarkerOptions();
+        mMap = googleMap;
+        buildGoogleApiClient();
     }
 
     public boolean checkGooglePlayServiceAvailability(Context context) {
@@ -182,7 +189,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LocationUtils.LocationTag) {
+        if (requestCode == LocationTag) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     startProgressNow();
@@ -194,15 +201,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void startProgressNow() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -210,7 +208,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         }
         getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
         getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper());
-
     }
 
     void gpsDisableAlert() {
@@ -232,5 +229,23 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
         builder.show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    void showLocationOnMap(final LatLng loc) {
+        Log.e("@@@@@@", "location updated" +loc.latitude + ":" + loc.longitude);
+        mMap.clear();
+        mMap.addMarker(mMarkerOptions.position(loc).draggable(true).title("My Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
     }
 }
