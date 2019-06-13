@@ -45,7 +45,12 @@ public interface APIInterface {
 
     @Multipart
     @POST(UrlConstants.UPLOAD_DOC)
-    Observable<ApiResponseModel<UserModel>> uploadDoc(@Part MultipartBody.Part body);
+    Observable<ApiResponseModel<UserModel>> uploadDoc(@Part MultipartBody.Part[] body);
+
+
+    @Multipart
+    @POST(UrlConstants.UPLOAD_PROFILE)
+    Observable<ApiResponseModel<UserModel>> uploadProfile(@Part MultipartBody.Part body);
 
 
 }

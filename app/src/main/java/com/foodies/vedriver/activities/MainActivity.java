@@ -4,6 +4,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.foodies.vedriver.BuildConfig;
 import com.foodies.vedriver.R;
@@ -18,32 +29,8 @@ import com.foodies.vedriver.model.UserModel;
 import com.foodies.vedriver.prefes.MySharedPreference;
 import com.foodies.vedriver.utils.FragmentTransactionUtils;
 import com.foodies.vedriver.utils.Statusbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.util.Log;
-import android.view.View;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
-import android.view.MenuItem;
-
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_mob;
     private TextView tv_app_version;
     private ImageView toolbar_refresh;
+    private ImageView img_user;
     private DrawerLayout drawer;
     ToolbarItemsClick toolClicks = new ToolbarItemsClick() {
         @Override
@@ -68,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onRefreshClick(View v) {
-
+            startActivity(new Intent(MainActivity.this, TrackingActivity.class));
         }
     };
-    private UserModel userModel;
+
     private FragmentTasks fragmentTasks = new FragmentTasks();
     private FragmentEarning fragmentEarning = new FragmentEarning();
     private FragmentProfile fragmentProfile = new FragmentProfile();
@@ -86,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         Statusbar.changeStatusColor(this);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_main);
         drawer = binder.drawerLayout;
-        userModel = MySharedPreference.getInstance(this).getUser();
-        Log.e("@@@@", "" + new Gson().toJson(userModel));
+
         binder.cvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,16 +86,34 @@ public class MainActivity extends AppCompatActivity {
         tv_tasks = navView.findViewById(R.id.tv_tasks);
         tv_app_version = findViewById(R.id.tv_app_version);
         toolbar_refresh = findViewById(R.id.toolbar_refresh);
+
         tv_app_version.setText("App ver " + BuildConfig.VERSION_NAME);
         tv_name = navView.findViewById(R.id.tv_name);
         tv_mob = navView.findViewById(R.id.tv_mob);
-        tv_name.setText(userModel.getFname() + " " + userModel.getLname());
-        tv_mob.setText(userModel.getMobile_no());
+        img_user = navView.findViewById(R.id.img_user);
+
         tv_earnings = navView.findViewById(R.id.tv_earnings);
         tv_profile = navView.findViewById(R.id.tv_profile);
         tv_help = navView.findViewById(R.id.tv_help);
         NavHeaderMainBinding.bind(navView).setClickHandler(p);
+        FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
         changeTheToolbarTitle("Tasks");
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserModel userModel = MySharedPreference.getInstance(this).getUser();
+        Log.e("@@@@", "" + new Gson().toJson(userModel));
+        tv_name.setText(userModel.getFname() + " " + userModel.getLname());
+        tv_mob.setText(userModel.getMobile_no());
+        updateProfile(userModel.getAvtar());
+    }
+
+
+    public void updateProfile(String img) {
+        Picasso.with(this).load(img).placeholder(R.drawable.ic_profile_placeholder).into(img_user);
     }
 
     @Override

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10_px"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/_30_px"
+            android:layout_height="@dimen/_30_px"
+            android:src="@drawable/ic_close_white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_details_layuot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_bg_with_white"
+            android:paddingTop="@dimen/_20_px"
+            android:paddingBottom="@dimen/_20_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_close">
+
+            <TextView
+                android:id="@+id/tv_order_amt_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10_px"
+
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Order amount"
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_14_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_order_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="$20.00"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_25_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_order_amt_text" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/tv_order_amt"
+                app:layout_constraintTop_toTopOf="@+id/tv_order_amt_text">
+
+                <ImageView
+                    android:id="@+id/img_prepaid"
+                    android:layout_width="@dimen/_60_px"
+                    android:layout_height="@dimen/_30_px"
+                    android:background="@drawable/ic_prepaid"
+                    android:visibility="visible" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_cash_collect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10_px"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/img_checkbox"
+                        android:layout_width="@dimen/_20_px"
+                        android:layout_height="@dimen/_20_px"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_check_off" />
+
+                    <TextView
+                        android:id="@+id/tv_cash_collect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5_px"
+                        android:layout_toRightOf="@+id/img_checkbox"
+                        android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                        android:text="Cash\nCollected"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_15_px" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/dev1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_5_px"
+                android:background="@color/gray"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_order_amt" />
+
+            <ImageView
+                android:id="@+id/img_user"
+                android:layout_width="@dimen/_20_px"
+                android:layout_height="@dimen/_20_px"
+                android:layout_marginTop="@dimen/_10_px"
+                android:background="@drawable/ic_user"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_order_amt_text"
+                app:layout_constraintTop_toBottomOf="@+id/dev1" />
+
+            <TextView
+                android:id="@+id/tv_use_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="User Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15_px"
+                app:layout_constraintBottom_toBottomOf="@+id/img_user"
+                app:layout_constraintLeft_toRightOf="@+id/img_user"
+                app:layout_constraintTop_toTopOf="@+id/img_user" />
+
+
+            <ImageView
+                android:id="@+id/img_phone"
+                android:layout_width="@dimen/_20_px"
+                android:layout_height="@dimen/_20_px"
+                android:layout_marginRight="@dimen/_5_px"
+                android:background="@drawable/ic_phone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_call"
+                app:layout_constraintRight_toLeftOf="@+id/tv_call"
+                app:layout_constraintTop_toTopOf="@+id/tv_call" />
+
+
+            <TextView
+                android:id="@+id/tv_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:layout_marginRight="@dimen/_10_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="CALL"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15_px"
+                app:layout_constraintBottom_toBottomOf="@+id/img_user"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/img_user" />
+
+
+            <TextView
+                android:id="@+id/tv_order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Order ID :"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13_px"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_order_amt_text"
+                app:layout_constraintTop_toBottomOf="@+id/img_user" />
+
+            <TextView
+                android:id="@+id/tv_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="#Im09867678"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13_px"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_order_text"
+                app:layout_constraintLeft_toRightOf="@+id/tv_order_text"
+                app:layout_constraintTop_toTopOf="@+id/tv_order_text" />
+
+            <View
+                android:id="@+id/dev2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_10_px"
+                android:background="@color/gray"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_order" />
+
+            <TextView
+                android:id="@+id/tv_earning_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="Earning"
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_14_px"
+                app:layout_constraintLeft_toLeftOf="@id/tv_order_amt_text"
+                app:layout_constraintTop_toBottomOf="@+id/dev2" />
+
+
+            <TextView
+                android:id="@+id/tv_earn_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5_px"
+                android:layout_marginBottom="@dimen/_5_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="$10.00"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_earning_text" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_swipe_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50_px"
+            android:layout_marginTop="@dimen/_10_px"
+            android:background="@drawable/slidable_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_details_layuot">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:text="SWIPE"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15_px" />
+
+            <ImageView
+                android:id="@+id/swipe_thumb"
+                android:layout_width="@dimen/_50_px"
+                android:layout_height="@dimen/_50_px"
+                android:background="@drawable/slidable_cursor" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

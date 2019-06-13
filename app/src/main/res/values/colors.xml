@@ -11,4 +11,5 @@
     <color name="greencolor">#58a62b</color>
     <color name="yellow">#eb872b</color>
     <color name="green_order_color">#40801e</color>
+    <color name="transarent">#00FFFFFF</color>
 </resources>

@@ -96,7 +96,7 @@
             android:id="@+id/tv_ref_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5_px"
+            android:layout_marginLeft="@dimen/_10_px"
             android:layout_marginTop="@dimen/_5_px"
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
             android:text='12345678987654321'

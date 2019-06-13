@@ -45,17 +45,17 @@ public class UploadDocViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public MutableLiveData<UserModel> uploadImage(Context mContext, Bitmap mBitmap, String key) {
+    public MutableLiveData<UserModel> uploadImage(Context mContext, MultipartBody.Part[] part) {
         modelData = new MutableLiveData<UserModel>();
-        uploadToServer(mContext, MultipartUtils.createFile(mContext, mBitmap, key));
+        uploadToServer(mContext, part);
         return modelData;
     }
 
 
-    private void uploadToServer(final Context mContext, MultipartBody.Part body) {
+    private void uploadToServer(final Context mContext,MultipartBody.Part[] part) {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(mContext);
         ((MyApplication) getApplication()).getConfiguration().inject(this);
-        apiInterface.uploadDoc(body)
+        apiInterface.uploadDoc(part)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResponseModel<UserModel>>() {
@@ -73,12 +73,9 @@ public class UploadDocViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(ApiResponseModel<UserModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
                             MySharedPreference.getInstance(mContext).setUser(response.getData());
-                            mContext.startActivity(new Intent(mContext, MainActivity.class));
-                            ((Activity) mContext).finish();
                         } else {
                             modelData = null;
                             ResponseDialog.showErrorDialog(mContext, response.getMessage());

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.foodies.vedriver.adapter.GooglePlacesAutocompleteAdapter;
+import com.foodies.vedriver.constants.Constants;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
@@ -26,7 +27,7 @@ public class GoogleApiUtils {
 
 
     public static String getAddressFromLatLong(LatLng latLng) {
-        String urlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latLng.longitude + "," + latLng.longitude + "&key=" + GooglePlacesAutocompleteAdapter.API_KEY;
+        String urlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latLng.longitude + "," + latLng.longitude + "&key=" + Constants.API_KEY;
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
@@ -94,11 +95,11 @@ public class GoogleApiUtils {
 
         try {
 
-            StringBuilder sb = new StringBuilder(GooglePlacesAutocompleteAdapter.PLACES_API_BASE + GooglePlacesAutocompleteAdapter.TYPE_DETAILS + GooglePlacesAutocompleteAdapter.OUT_JSON);
+            StringBuilder sb = new StringBuilder(Constants.PLACES_API_BASE + Constants.TYPE_DETAILS + Constants.OUT_JSON);
 
             sb.append("?placeid=" + URLEncoder.encode(placeID, "utf8"));
 
-            sb.append("&key=" + GooglePlacesAutocompleteAdapter.API_KEY);
+            sb.append("&key=" + Constants.API_KEY);
 
             URL url = new URL(sb.toString());
 

@@ -13,6 +13,7 @@ public class UrlConstants {
     public static final String LOGIN = DRIVER + "/login";
     public static final String UPLOAD_DOC = DRIVER + "/document-upload";
     public static final String RESET_PASS = DRIVER + "/reset-password";
+    public static final String UPLOAD_PROFILE = DRIVER + "/avtar";
 
 
 }

@@ -54,5 +54,6 @@ public class CurrentTaskAdapter extends RecyclerView.Adapter<CurrentTaskAdapter.
         }
 
 
+
     }
 }

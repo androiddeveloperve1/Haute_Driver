@@ -17,7 +17,38 @@ public class UserModel extends BaseObservable {
     private String employee_id;
     private Docs driverlicense;
     private Docs insurance;
+    private String is_mobile_verify;
+    private String is_document_verify;
+    private String fname;
+    private String country_code;
+    private String lname;
+    private String mobile_no;
+    private String service_area;
+    private Location location;
+    private String email;
+    private String is_document_upload;
+    private String avtar;
 
+
+    @Bindable
+    public String getAvtar() {
+        return avtar;
+    }
+
+    public void setAvtar(String avtar) {
+        this.avtar = avtar;
+        this.notifyPropertyChanged(BR.avtar);
+    }
+
+    @Bindable
+    public String getIs_document_upload() {
+        return is_document_upload;
+    }
+
+    public void setIs_document_upload(String is_document_upload) {
+        this.is_document_upload = is_document_upload;
+        this.notifyPropertyChanged(BR.is_document_upload);
+    }
 
     @Bindable
     public String getEmployee_id() {
@@ -49,15 +80,6 @@ public class UserModel extends BaseObservable {
         this.notifyPropertyChanged(BR.insurance);
     }
 
-    private String is_mobile_verify;
-    private String is_document_verify;
-    private String fname;
-    private String country_code;
-    private String lname;
-    private String mobile_no;
-    private String service_area;
-    private Location location;
-    private String email;
 
     @Bindable
     public String get_id() {

@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
+            android:id="@+id/img_user"
             android:layout_width="@dimen/_60_px"
             android:layout_height="@dimen/_60_px"
             android:layout_margin="@dimen/_10_px"
@@ -42,8 +42,8 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_15_px"
             app:layout_constraintBottom_toTopOf="@+id/tv_mob"
-            app:layout_constraintLeft_toRightOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            app:layout_constraintLeft_toRightOf="@+id/img_user"
+            app:layout_constraintTop_toTopOf="@+id/img_user" />
 
         <TextView
             android:id="@+id/tv_mob"
@@ -53,7 +53,7 @@
             android:text="+19898989898"
             android:textColor="@color/white"
             android:textSize="@dimen/_14_px"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/img_user"
             app:layout_constraintLeft_toLeftOf="@+id/tv_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 

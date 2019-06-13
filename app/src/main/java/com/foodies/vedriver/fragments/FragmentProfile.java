@@ -1,6 +1,8 @@
 package com.foodies.vedriver.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,21 +24,34 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.foodies.vedriver.R;
+import com.foodies.vedriver.activities.MainActivity;
+import com.foodies.vedriver.activities.MyApplication;
 import com.foodies.vedriver.activities.UploadDocumentActivity;
 import com.foodies.vedriver.constants.PermissionConstants;
 import com.foodies.vedriver.databinding.FragmentProfileBinding;
 import com.foodies.vedriver.databinding.FragmentTasksBinding;
 import com.foodies.vedriver.dialogs.ImageCaptureDialog;
+import com.foodies.vedriver.dialogs.ResponseDialog;
 import com.foodies.vedriver.interfaces.ImageOrGalarySelector;
+import com.foodies.vedriver.model.ApiResponseModel;
 import com.foodies.vedriver.model.UserModel;
+import com.foodies.vedriver.network.APIInterface;
 import com.foodies.vedriver.permission.PermissionHandlerListener;
 import com.foodies.vedriver.permission.PermissionUtils;
 import com.foodies.vedriver.prefes.MySharedPreference;
+import com.foodies.vedriver.utils.MultipartUtils;
 import com.mindorks.paracamera.Camera;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import okhttp3.MultipartBody;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Create By Rahul Mangal
@@ -44,6 +59,10 @@ import java.util.ArrayList;
  */
 
 public class FragmentProfile extends Fragment {
+
+
+    @Inject
+    APIInterface apiInterface;
 
     private UserModel userData;
     private FragmentProfileBinding binder;
@@ -74,6 +93,7 @@ public class FragmentProfile extends Fragment {
         userData = MySharedPreference.getInstance(getActivity()).getUser();
         binder.tvName.setText(userData.getFname() + " " + userData.getLname());
         binder.tvMob.setText(userData.getMobile_no());
+        Picasso.with(getActivity()).load(userData.getAvtar()).placeholder(R.drawable.ic_profile_placeholder).into(binder.imgProfile);
         View view = binder.getRoot();
         return view;
     }
@@ -135,6 +155,8 @@ public class FragmentProfile extends Fragment {
         capturedImage = mBitmap;
         if (mBitmap != null) {
             binder.imgProfile.setImageBitmap(capturedImage);
+            uploadImage(MultipartUtils.createFile(getActivity(), capturedImage, "driver_avtar"));
+
         } else {
             Toast.makeText(getActivity(), "Picture not taken!", Toast.LENGTH_SHORT).show();
         }
@@ -179,6 +201,38 @@ public class FragmentProfile extends Fragment {
                 binder.rlSwipeArea.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+    }
+
+    private void uploadImage(MultipartBody.Part part) {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
+        ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
+        apiInterface.uploadProfile(part)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel<UserModel>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(getActivity(), throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel<UserModel> response) {
+                        progressDialog.dismiss();
+                        if (response.getStatus().equals("200")) {
+                            MySharedPreference.getInstance(getActivity()).setUser(response.getData());
+
+                            ((MainActivity) getActivity()).updateProfile(response.getData().getAvtar());
+                        } else {
+                            ResponseDialog.showErrorDialog(getActivity(), response.getMessage());
+                        }
+
+                    }
+                });
     }
 
     public class Presenter {

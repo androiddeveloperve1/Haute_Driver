@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.foodies.vedriver.R;
 import com.foodies.vedriver.adapter.CurrentTaskAdapter;
 import com.foodies.vedriver.adapter.NewTaskAdapter;
 import com.foodies.vedriver.databinding.FragmentTasksBinding;
+import com.foodies.vedriver.dialogs.SwipeViewDialog;
 import com.foodies.vedriver.interfaces.RecycleItemClickListener;
 
 
@@ -32,12 +35,13 @@ public class FragmentTasks extends Fragment {
         binder.setCurrentTaskAdapter(new CurrentTaskAdapter(new RecycleItemClickListener() {
             @Override
             public void onItemClicked(int position, Object data) {
-
             }
         }));
         binder.setNewTaskAdapter(new NewTaskAdapter(new RecycleItemClickListener() {
             @Override
             public void onItemClicked(int position, Object data) {
+
+
 
             }
         }));

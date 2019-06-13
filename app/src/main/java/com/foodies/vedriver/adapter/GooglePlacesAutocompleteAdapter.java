@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.foodies.vedriver.constants.Constants;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,11 +25,7 @@ import java.util.ArrayList;
 
 public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
 
-    public static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    public static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    public static final String TYPE_DETAILS = "/details";
-    public static final String OUT_JSON = "/json";
-    public static final String API_KEY = "AIzaSyBbNBMYzMBd9A_YuakL89TuZR8buL7kSiU";
+
     private ArrayList resultList;
     ArrayList placeIdList = null;
 
@@ -93,9 +91,9 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Fil
 
         try {
 
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
+            StringBuilder sb = new StringBuilder(Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON);
 
-            sb.append("?key=" + API_KEY);
+            sb.append("?key=" + Constants.API_KEY);
 
 //            sb.append("&components=country:in");
 

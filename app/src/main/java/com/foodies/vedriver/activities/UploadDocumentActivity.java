@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodies.vedriver.R;
@@ -34,6 +35,7 @@ import com.foodies.vedriver.interfaces.ImageOrGalarySelector;
 import com.foodies.vedriver.model.UserModel;
 import com.foodies.vedriver.permission.PermissionHandlerListener;
 import com.foodies.vedriver.permission.PermissionUtils;
+import com.foodies.vedriver.utils.MultipartUtils;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
 import com.foodies.vedriver.viewmodeles.UploadDocViewModel;
 import com.google.gson.Gson;
@@ -55,6 +57,8 @@ public class UploadDocumentActivity extends AppCompatActivity {
     private Bitmap imageCapturedInsurance;
     private boolean isInsuranceImage = false;
     private UploadDocViewModel uploadDocViewModel;
+    private String refNumber;
+
     private ImageOrGalarySelector listener = new ImageOrGalarySelector() {
         @Override
         public void imageSelect() {
@@ -86,6 +90,8 @@ public class UploadDocumentActivity extends AppCompatActivity {
         final Dialog editDialog = new Dialog(this);
         editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         editDialog.setContentView(R.layout.dialog_upload_success);
+        TextView tv_ref_number = editDialog.findViewById(R.id.tv_ref_number);
+        tv_ref_number.setText(refNumber);
 
         editDialog.findViewById(R.id.tv_okay).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,19 +102,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
             }
         });
 
-
-       /* editDialog.close.setOnClickListener(View.OnClickListener {
-            editDialog.dismiss()
-        })
-
-        editDialog.rv_items_list.setHasFixedSize(true)
-        editDialog.rv_items_list.layoutManager = LinearLayoutManager(context !!)
-        editDialog.rv_items_list.adapter = CartItemsAdapter(context, responseData.data.get(position).order)
-
-
-        editDialog.tv_del_fee.setText("$" + orderModel.deliveryfee !!)
-        editDialog.tv_subtotal.setText("$" + orderModel.amount !!)
-        editDialog.tv_total.setText("$" + orderModel.totalamount !!)*/
         editDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         editDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editDialog.getWindow().setGravity(Gravity.CENTER);
@@ -175,23 +168,23 @@ public class UploadDocumentActivity extends AppCompatActivity {
             if (isInsuranceImage) {
                 binder.imgInsuranceDel.setVisibility(View.VISIBLE);
                 imageCapturedInsurance = mBitmap;
-                binder.imgLicencePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+                binder.imgLicencePreview.setImageResource(R.drawable.ic_upload_placeholder);
                 binder.imgInsurancePreview.setImageBitmap(mBitmap);
 
             } else {
                 binder.imgLicenceDel.setVisibility(View.VISIBLE);
                 imageCapturedDriveLicence = mBitmap;
                 binder.imgLicencePreview.setImageBitmap(mBitmap);
-                binder.imgInsurancePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+                binder.imgInsurancePreview.setImageResource(R.drawable.ic_upload_placeholder);
             }
         } else {
             if (isInsuranceImage) {
                 binder.imgInsuranceDel.setVisibility(View.GONE);
-                binder.imgInsurancePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+                binder.imgInsurancePreview.setImageResource(R.drawable.ic_upload_placeholder);
                 imageCapturedInsurance = null;
             } else {
                 binder.imgLicenceDel.setVisibility(View.GONE);
-                binder.imgLicencePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+                binder.imgLicencePreview.setImageResource(R.drawable.ic_upload_placeholder);
                 imageCapturedDriveLicence = null;
             }
             Toast.makeText(this.getApplicationContext(), "Picture not taken!", Toast.LENGTH_SHORT).show();
@@ -264,32 +257,27 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
 
         public void delInsurance(View e) {
-            binder.imgInsurancePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+            binder.imgInsurancePreview.setImageResource(R.drawable.ic_upload_placeholder);
             imageCapturedInsurance = null;
             binder.imgInsuranceDel.setVisibility(View.GONE);
         }
 
         public void delLicence(View e) {
             binder.imgLicenceDel.setVisibility(View.GONE);
-            binder.imgLicencePreview.setBackgroundResource(R.drawable.ic_upload_placeholder);
+            binder.imgLicencePreview.setImageResource(R.drawable.ic_upload_placeholder);
             imageCapturedDriveLicence = null;
         }
 
         public void onUpload(View e) {
             if (imageCapturedDriveLicence != null && imageCapturedInsurance != null) {
-
-                uploadDocViewModel.uploadImage(UploadDocumentActivity.this, imageCapturedInsurance, "insurance").observe(UploadDocumentActivity.this, new Observer<UserModel>() {
+                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense")};
+                uploadDocViewModel.uploadImage(UploadDocumentActivity.this, part).observe(UploadDocumentActivity.this, new Observer<UserModel>() {
                     @Override
                     public void onChanged(UserModel userModel) {
-                        uploadDocViewModel.uploadImage(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense").observe(UploadDocumentActivity.this, new Observer<UserModel>() {
-                            @Override
-                            public void onChanged(UserModel userModel) {
-                                uploadSuccess();
-                            }
-                        });
+                        refNumber = userModel.getEmployee_id();
+                        uploadSuccess();
                     }
                 });
-
             } else {
                 Toast.makeText(UploadDocumentActivity.this, "Please select the document to upload", Toast.LENGTH_SHORT).show();
             }

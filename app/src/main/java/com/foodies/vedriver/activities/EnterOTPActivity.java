@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.foodies.vedriver.R;
+import com.foodies.vedriver.constants.Constants;
 import com.foodies.vedriver.databinding.ActivityEnterOtpBinding;
 import com.foodies.vedriver.model.UserModel;
 import com.foodies.vedriver.prefes.MySharedPreference;
@@ -36,7 +37,7 @@ public class EnterOTPActivity extends AppCompatActivity {
     ActivityEnterOtpBinding binder;
     private UserModel userData;
     private OtpVerifyViewModel otpVerifyViewModel;
-    private boolean isFromForgotPassScreen = false;
+    private int isFromForgotPassScreen = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,9 @@ public class EnterOTPActivity extends AppCompatActivity {
         binder.setHandler(new Listener());
         userData = MySharedPreference.getInstance(this).getUser();
         binder.textMobile.setText("We have send an OTP to " + userData.getMobile_no());
-        isFromForgotPassScreen = getIntent().getBooleanExtra("flag", false);
+        isFromForgotPassScreen = getIntent().getIntExtra("flag", 0);
 
-        if (isFromForgotPassScreen) {
+        if (isFromForgotPassScreen != Constants.FROM_SIGNUP) {
             binder.textMobileEdit.setVisibility(View.GONE);
         }
         setOtpEditTextListener();
@@ -149,7 +150,7 @@ public class EnterOTPActivity extends AppCompatActivity {
         }
 
         public void onResend(View e) {
-
+            binder.otp1.requestFocus();
             binder.otp1.setText("");
             binder.otp2.setText("");
             binder.otp3.setText("");
@@ -157,12 +158,10 @@ public class EnterOTPActivity extends AppCompatActivity {
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", userData.getMobile_no());
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
-
         }
 
         public void onEdit(View e) {
             finish();
-
         }
 
         public void onVerify(View e) {
@@ -172,11 +171,18 @@ public class EnterOTPActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(UserModel userModel) {
                     MySharedPreference.getInstance(EnterOTPActivity.this).setUser(userModel);
-                    if (isFromForgotPassScreen) {
+                    if (isFromForgotPassScreen == Constants.FROM_FORGOT_PASS) {
                         startActivity(new Intent(EnterOTPActivity.this, ResetPasswordActivity.class));
                         finishAffinity();
-                    } else {
+                    } else if (isFromForgotPassScreen == Constants.FROM_SIGNUP) {
                         startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
+                        finishAffinity();
+                    } else {
+                        if (userModel.getIs_document_upload().equals("1")) {
+                            startActivity(new Intent(EnterOTPActivity.this, MainActivity.class));
+                        } else {
+                            startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
+                        }
                         finishAffinity();
                     }
                 }

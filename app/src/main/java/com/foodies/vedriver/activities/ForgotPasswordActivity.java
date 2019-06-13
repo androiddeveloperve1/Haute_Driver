@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.foodies.vedriver.R;
+import com.foodies.vedriver.constants.Constants;
 import com.foodies.vedriver.databinding.ActivityForgotPasswordBinding;
 import com.foodies.vedriver.dialogs.ResponseDialog;
 import com.foodies.vedriver.model.ApiResponseModel;
@@ -67,7 +68,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         if (response.getStatus().equals("200")) {
                             MySharedPreference.getInstance(ForgotPasswordActivity.this).setUser(response.getData());
                             Intent mIntent = new Intent(ForgotPasswordActivity.this, EnterOTPActivity.class);
-                            mIntent.putExtra("flag", true);
+                            mIntent.putExtra("flag", Constants.FROM_FORGOT_PASS);
                             startActivity(mIntent);
                         } else {
                             ResponseDialog.showErrorDialog(ForgotPasswordActivity.this, response.getMessage());

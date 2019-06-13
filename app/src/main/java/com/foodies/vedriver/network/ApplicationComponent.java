@@ -6,6 +6,8 @@ import com.foodies.vedriver.activities.LoginActivity;
 import com.foodies.vedriver.activities.MainActivity;
 import com.foodies.vedriver.activities.MapsActivity;
 import com.foodies.vedriver.activities.SignupActivity;
+import com.foodies.vedriver.activities.SplashActivity;
+import com.foodies.vedriver.fragments.FragmentProfile;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
 import com.foodies.vedriver.viewmodeles.OtpVerifyViewModel;
 import com.foodies.vedriver.viewmodeles.ResetPassViewModel;
@@ -26,5 +28,7 @@ public interface ApplicationComponent {
     void inject(LoginViewModel model);
     void inject(UploadDocViewModel model);
     void inject(ResetPassViewModel model);
+    void inject(SplashActivity model);
+    void inject(FragmentProfile model);
 
 }
