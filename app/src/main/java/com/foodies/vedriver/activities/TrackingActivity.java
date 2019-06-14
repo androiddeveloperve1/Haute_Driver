@@ -8,12 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,10 +26,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import com.foodies.vedriver.R;
+import com.foodies.vedriver.constants.Constants;
 import com.foodies.vedriver.constants.PermissionConstants;
 import com.foodies.vedriver.dialogs.ResponseDialog;
+import com.foodies.vedriver.interfaces.TaskLoadedCallback;
 import com.foodies.vedriver.permission.PermissionHandlerListener;
 import com.foodies.vedriver.permission.PermissionUtils;
+import com.foodies.vedriver.utils.FetchURL;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,12 +47,17 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -56,19 +68,25 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
  * Project SignupLibrary Screen
  */
 
-public class TrackingActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class TrackingActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, TaskLoadedCallback {
     public static final int LocationTag = 10001;
+    Bitmap currentLocationIcon;
+    private Polyline currentPolyline;
+
     private MarkerOptions mMarkerOptions;
+    private LatLng usersLatlong = new LatLng(27.176670, 78.008072);
     private GoogleMap mMap;
+    private ImageView help;
+    private ImageView toolbar_back;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private MarkerOptions usersLocation;
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             showLocationOnMap(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()));
-
         }
     };
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +94,25 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_tracking);
+        help = findViewById(R.id.help);
+        toolbar_back = findViewById(R.id.toolbar_back);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        toolbar_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopLocationUpdate();
+                finish();
+            }
+        });
+        usersLocation = new MarkerOptions();
+        usersLocation.position(usersLatlong);
+        BitmapDrawable b = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_current_location);
+        currentLocationIcon = Bitmap.createScaledBitmap(b.getBitmap(), (int) getResources().getDimension(R.dimen._20_px), (int) getResources().getDimension(R.dimen._20_px), false);
     }
 
     @Override
@@ -234,18 +271,49 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onStop() {
         super.onStop();
+        stopLocationUpdate();
+    }
+
+    void showLocationOnMap(final LatLng loc) {
+        Log.e("@@@@@@", "location updated" + loc.latitude + ":" + loc.longitude);
+        mMap.clear();
+        mMap.addMarker(mMarkerOptions.position(loc).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(currentLocationIcon)));
+        mMap.addMarker(usersLocation);
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        boundsBuilder.include(usersLatlong).include(loc);
+        LatLngBounds bounds = boundsBuilder.build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+        mMap.animateCamera(cameraUpdate);
+        new FetchURL(TrackingActivity.this).execute(getUrl(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
+    }
+
+    void stopLocationUpdate() {
         getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
 
-    void showLocationOnMap(final LatLng loc) {
-        Log.e("@@@@@@", "location updated" +loc.latitude + ":" + loc.longitude);
-        mMap.clear();
-        mMap.addMarker(mMarkerOptions.position(loc).draggable(true).title("My Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + Constants.API_KEY;
+        return url;
+    }
 
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 }

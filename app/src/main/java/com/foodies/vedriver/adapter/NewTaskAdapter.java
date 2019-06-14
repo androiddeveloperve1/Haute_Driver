@@ -41,7 +41,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter<NewTaskAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 1;
     }
 
 

@@ -203,33 +203,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/img_profile"
             app:layout_constraintRight_toRightOf="@+id/img_profile" />
 
-        <RelativeLayout
 
-            android:id="@+id/rl_swipe_area"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50_px"
-            android:background="@drawable/slidable_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="SWIPE"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15_px" />
-
-            <ImageView
-
-                android:id="@+id/swipe_thumb"
-                android:layout_width="@dimen/_50_px"
-                android:layout_height="@dimen/_50_px"
-                android:background="@drawable/slidable_cursor" />
-
-
-        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

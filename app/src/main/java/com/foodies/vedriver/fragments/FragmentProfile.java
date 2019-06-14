@@ -162,47 +162,6 @@ public class FragmentProfile extends Fragment {
         }
 
     }
-
-    void initSlider() {
-        binder.rlSwipeArea.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                binder.swipeThumb.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        int action = motionEvent.getAction();
-                        switch (action) {
-                            case MotionEvent.ACTION_DOWN:
-                                Log.e("@@@@@@AREA X", "" + binder.rlSwipeArea.getRight());
-                                return true;
-                            case MotionEvent.ACTION_MOVE:
-                                if (binder.rlSwipeArea.getRight() >= (motionEvent.getRawX() + binder.swipeThumb.getWidth())) {
-                                    binder.swipeThumb.setX(motionEvent.getRawX());
-                                }
-                                Log.e("@@@@@@swipr X", "" + (motionEvent.getRawX() + binder.swipeThumb.getWidth()));
-
-                                return true;
-                            case MotionEvent.ACTION_UP:
-
-                                if ((motionEvent.getRawX() + binder.swipeThumb.getWidth()) < (binder.rlSwipeArea.getRight() / 2)) {
-                                    binder.swipeThumb.setX(0);
-                                } else if ((motionEvent.getRawX() + binder.swipeThumb.getWidth()) > (binder.rlSwipeArea.getRight() / 2)) {
-                                    binder.swipeThumb.setX(binder.rlSwipeArea.getRight() - binder.swipeThumb.getWidth());
-                                }
-
-
-                                return true;
-                            case MotionEvent.ACTION_CANCEL:
-                                return true;
-                        }
-                        return true;
-                    }
-                });
-                binder.rlSwipeArea.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-    }
-
     private void uploadImage(MultipartBody.Part part) {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
         ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);

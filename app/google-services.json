@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "403676606203",
+    "firebase_url": "https://hautecommon-1560491724184.firebaseio.com",
+    "project_id": "hautecommon-1560491724184",
+    "storage_bucket": "hautecommon-1560491724184.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403676606203:android:f507990878729991",
+        "android_client_info": {
+          "package_name": "com.foodies.vedriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403676606203-k108jmirhfkouha7ihbum2slpegl67m0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foodies.vedriver",
+            "certificate_hash": "46ca964f589e828d283bdcd81361f65fada0d93a"
+          }
+        },
+        {
+          "client_id": "403676606203-fv71b6fs9p44icjolck5bafqpvcf0v36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDquGc91CaCEb0uEOwiqbXZ0Ibrh9e3Mjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403676606203-fv71b6fs9p44icjolck5bafqpvcf0v36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

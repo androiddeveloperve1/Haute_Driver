@@ -23,6 +23,8 @@ import java.util.List;
 public class PermissionUtils {
     public static final int RequestCode = 1000;
     private static PermissionUtils instance = null;
+    private static String permissionArrayForLocation[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+    };
     private PermissionHandlerListener listener;
 
     public static PermissionUtils getInstance() {
@@ -38,6 +40,35 @@ public class PermissionUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean checkAllPermissionForLocation(Context mContext) {
+        if (checkBuildLess23()) {
+            return true;
+        } else {
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            for (int i = 0; i < permissionArrayForLocation.length; i++) {
+                if (ContextCompat.checkSelfPermission(mContext, permissionArrayForLocation[i]) != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(permissionArrayForLocation[i]);
+                }
+            }
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions((Activity) mContext, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), PermissionConstants.AllPermission);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean checkResultAllPrmission(Context mContext, String permissions[], int[] grantResults) {
+        boolean isPermissionGranted = true;
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                isPermissionGranted = false;
+                break;
+            }
+        }
+        return isPermissionGranted;
     }
 
     public void checkAllPermission(Activity mContext, String permissionArray[], PermissionHandlerListener listener) {
@@ -59,7 +90,6 @@ public class PermissionUtils {
             }
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void checkAllPermissionFragment(Activity mContext, String permissionArray[], PermissionHandlerListener listener) {
@@ -112,7 +142,6 @@ public class PermissionUtils {
         }
     }
 
-
     public void hendlePermissionForFragment(Activity mActivity, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         ArrayList<String> remiansPermission = new ArrayList<>();
         ArrayList<String> rationalPermission = new ArrayList<>();
@@ -142,42 +171,6 @@ public class PermissionUtils {
                 break;
         }
     }
-
-
-
-    private static String permissionArrayForLocation[] = { Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-
-    public static boolean checkAllPermissionForLocation(Context mContext) {
-        if (checkBuildLess23()) {
-            return true;
-        } else {
-            List<String> listPermissionsNeeded = new ArrayList<>();
-            for (int i = 0; i < permissionArrayForLocation.length; i++) {
-                if (ContextCompat.checkSelfPermission(mContext, permissionArrayForLocation[i]) != PackageManager.PERMISSION_GRANTED) {
-                    listPermissionsNeeded.add(permissionArrayForLocation[i]);
-                }
-            }
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions((Activity) mContext, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), PermissionConstants.AllPermission);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean checkResultAllPrmission(Context mContext, String permissions[], int[] grantResults) {
-        boolean isPermissionGranted = true;
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                isPermissionGranted = false;
-                break;
-            }
-        }
-        return isPermissionGranted;
-    }
-
-
 
 
 }

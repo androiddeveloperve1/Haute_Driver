@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +34,7 @@ import com.foodies.vedriver.R;
 import com.foodies.vedriver.adapter.GooglePlacesAutocompleteAdapter;
 import com.foodies.vedriver.constants.PermissionConstants;
 import com.foodies.vedriver.dialogs.ResponseDialog;
+import com.foodies.vedriver.interfaces.OnAddressListener;
 import com.foodies.vedriver.permission.PermissionHandlerListener;
 import com.foodies.vedriver.permission.PermissionUtils;
 import com.foodies.vedriver.utils.GoogleApiUtils;
@@ -151,17 +153,32 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 googlePlacesAutocompleteAdapter.getFilter().filter(s.toString());
-
             }
         });
-
 
         enter_new_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LatLng selectedAddressLatlng = GoogleApiUtils.getLatLongByPlace(googlePlacesAutocompleteAdapter.getPlacesList().get(position));
-                showLocationOnMap(selectedAddressLatlng);
+                GoogleApiUtils.getLatLongByPlace(googlePlacesAutocompleteAdapter.getPlacesList().get(position), new OnAddressListener() {
+                    @Override
+                    public void onAddressFound(final Object address) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showLocationOnMap((LatLng) address);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onAddressError(String error) {
+
+                    }
+                });
+
             }
         });
 
@@ -263,8 +280,30 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
 
     void hitApiToGetAddress() {
         Log.e("@@@@@@@", "api" + new Gson().toJson(selectedLocation));
-        address = "Address from Api";
-        GoogleApiUtils.getAddressFromLatLong(selectedLocation);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                GoogleApiUtils.getAddressFromLatLong(selectedLocation, new OnAddressListener() {
+                    @Override
+                    public void onAddressFound(Object addressFound) {
+                        address = (String) addressFound;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                enter_new_address.setText(address);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onAddressError(String error) {
+
+                    }
+                });
+            }
+        });
+
     }
 
     @Override

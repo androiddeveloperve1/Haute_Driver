@@ -41,7 +41,7 @@ public class CurrentTaskAdapter extends RecyclerView.Adapter<CurrentTaskAdapter.
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 1;
     }
 
 

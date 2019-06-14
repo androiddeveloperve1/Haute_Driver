@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.foodies.vedriver.activities.LoginActivity;
 import com.foodies.vedriver.activities.MainActivity;
 import com.foodies.vedriver.activities.MyApplication;
 import com.foodies.vedriver.dialogs.ResponseDialog;
@@ -72,14 +73,13 @@ public class ResetPassViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
-                            MySharedPreference.getInstance(mContext).setUser(response.getData());
-                            mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            MySharedPreference.getInstance(mContext).clearMyPreference();
+                            mContext.startActivity(new Intent(mContext, LoginActivity.class));
                             ((Activity) mContext).finishAffinity();
                         } else {
                             modelData = null;
                             ResponseDialog.showErrorDialog(mContext, response.getMessage());
                         }
-
                     }
                 });
     }

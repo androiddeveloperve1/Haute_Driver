@@ -223,34 +223,14 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/rl_swipe_area"
+        <com.foodies.vedriver.utils.SwipeView
+            android:id="@+id/mSwipeView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50_px"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10_px"
-            android:background="@drawable/slidable_bg"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_details_layuot">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="SWIPE"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15_px" />
-
-            <ImageView
-                android:id="@+id/swipe_thumb"
-                android:layout_width="@dimen/_50_px"
-                android:layout_height="@dimen/_50_px"
-                android:background="@drawable/slidable_cursor" />
-
-
-        </RelativeLayout>
+            app:layout_constraintTop_toBottomOf="@+id/cl_details_layuot" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

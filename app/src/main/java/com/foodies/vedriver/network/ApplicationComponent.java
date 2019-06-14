@@ -2,6 +2,7 @@ package com.foodies.vedriver.network;
 
 
 import com.foodies.vedriver.activities.ForgotPasswordActivity;
+import com.foodies.vedriver.activities.MainActivity;
 import com.foodies.vedriver.activities.SplashActivity;
 import com.foodies.vedriver.fragments.FragmentProfile;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
@@ -25,5 +26,6 @@ public interface ApplicationComponent {
     void inject(ResetPassViewModel model);
     void inject(SplashActivity model);
     void inject(FragmentProfile model);
+    void inject(MainActivity model);
 
 }

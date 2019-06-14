@@ -1,5 +1,7 @@
 package com.foodies.vedriver.activities;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -20,19 +22,35 @@ import com.foodies.vedriver.BuildConfig;
 import com.foodies.vedriver.R;
 import com.foodies.vedriver.databinding.ActivityMainBinding;
 import com.foodies.vedriver.databinding.NavHeaderMainBinding;
+import com.foodies.vedriver.dialogs.ResponseDialog;
+import com.foodies.vedriver.dialogs.SwipeViewDialog;
 import com.foodies.vedriver.fragments.FragmentEarning;
 import com.foodies.vedriver.fragments.FragmentProfile;
 import com.foodies.vedriver.fragments.FragmentSupport;
 import com.foodies.vedriver.fragments.FragmentTasks;
+import com.foodies.vedriver.interfaces.SwipeListener;
 import com.foodies.vedriver.interfaces.ToolbarItemsClick;
+import com.foodies.vedriver.model.ApiResponseModel;
 import com.foodies.vedriver.model.UserModel;
+import com.foodies.vedriver.network.APIInterface;
 import com.foodies.vedriver.prefes.MySharedPreference;
 import com.foodies.vedriver.utils.FragmentTransactionUtils;
 import com.foodies.vedriver.utils.Statusbar;
+import com.foodies.vedriver.utils.SwipeView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
+import javax.inject.Inject;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class MainActivity extends AppCompatActivity {
+    @Inject
+    APIInterface apiInterface;
 
     private TextView tv_tasks;
     private TextView tv_earnings;
@@ -56,7 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onRefreshClick(View v) {
-            startActivity(new Intent(MainActivity.this, TrackingActivity.class));
+            new SwipeViewDialog(MainActivity.this, new SwipeListener() {
+                @Override
+                public void swipeStarted() {
+                    Log.e("@@@@@@@", "Started");
+                }
+
+                @Override
+                public void Swiped(int flag) {
+
+                    if (flag == SwipeView.SWIPED_LEFT) {
+                        Log.e("@@@@@@@", "Left");
+                    } else {
+                        Log.e("@@@@@@@", "Right");
+                    }
+
+                }
+            }).show();
+            //startActivity(new Intent(MainActivity.this, TrackingActivity.class));
         }
     };
 
@@ -153,11 +188,72 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private void logOut() {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(MainActivity.this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.doLogout()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(MainActivity.this, throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel response) {
+                        progressDialog.dismiss();
+                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
+                        if (response.getStatus().equals("200")) {
+                            MySharedPreference.getInstance(MainActivity.this).clearMyPreference();
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finishAffinity();
+                        } else {
+                            ResponseDialog.showErrorDialog(MainActivity.this, response.getMessage());
+                        }
+                    }
+                });
+    }
+
+    private void getUserProfile() {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(MainActivity.this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.getUserProfile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel<UserModel>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(MainActivity.this, throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel<UserModel> response) {
+                        progressDialog.dismiss();
+                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
+                        if (response.getStatus().equals("200")) {
+                            MySharedPreference.getInstance(MainActivity.this).setUser(response.getData());
+                        } else {
+                            ResponseDialog.showErrorDialog(MainActivity.this, response.getMessage());
+                        }
+                    }
+                });
+    }
+
     public class Presenter {
         public void onLogout(View view) {
-            MySharedPreference.getInstance(MainActivity.this).clearMyPreference();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finishAffinity();
+            logOut();
+
         }
 
         public void onNavigationClick(View view) {
