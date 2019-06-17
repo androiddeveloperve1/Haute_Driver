@@ -1,7 +1,6 @@
 package com.foodies.vedriver.activities;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -39,8 +38,6 @@ import com.foodies.vedriver.utils.Statusbar;
 import com.foodies.vedriver.utils.SwipeView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -135,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         changeTheToolbarTitle("Tasks");
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -165,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void backAlert() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Alert");
         builder.setMessage("Are you sure, want to exit from app ?");
@@ -174,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 finishAffinity();
-
-
             }
         });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -250,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
     public class Presenter {
         public void onLogout(View view) {
             logOut();
@@ -299,9 +293,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
             }
-
         }
-
     }
-
 }

@@ -1,13 +1,16 @@
 package com.foodies.vedriver.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.foodies.vedriver.R;
 import com.foodies.vedriver.constants.Constants;
@@ -16,6 +19,10 @@ import com.foodies.vedriver.model.ApiResponseModel;
 import com.foodies.vedriver.model.UserModel;
 import com.foodies.vedriver.network.APIInterface;
 import com.foodies.vedriver.prefes.MySharedPreference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 
@@ -75,8 +82,10 @@ public class SplashActivity extends AppCompatActivity {
                 });
     }
 
+
     private class ActivityRunnable implements Runnable {
         private UserModel model;
+
         @Override
         public void run() {
             model = MySharedPreference.getInstance(SplashActivity.this).getUser();
@@ -100,6 +109,4 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

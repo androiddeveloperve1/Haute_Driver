@@ -23,6 +23,7 @@ import com.foodies.vedriver.interfaces.SwipeListener;
 public class SwipeView extends RelativeLayout {
     public static int SWIPED_LEFT = 0;
     public static int SWIPED_RIGHT = 1;
+    private static int PREV_STATE = -1;
     private RelativeLayout rl_swipe_area;
     private ImageView swipe_thumb;
     private SwipeListener mSwipeListener;
@@ -77,11 +78,23 @@ public class SwipeView extends RelativeLayout {
                             case MotionEvent.ACTION_UP:
 
                                 if ((motionEvent.getRawX() + swipe_thumb.getWidth()) < (rl_swipe_area.getRight() / 2)) {
+
+                                    if (PREV_STATE != SWIPED_LEFT) {
+                                        mSwipeListener.Swiped(SWIPED_LEFT);
+                                    }
                                     swipe_thumb.setX(0);
-                                    mSwipeListener.Swiped(SWIPED_LEFT);
+                                    PREV_STATE = SWIPED_LEFT;
+
+
                                 } else if ((motionEvent.getRawX() + swipe_thumb.getWidth()) > (rl_swipe_area.getRight() / 2)) {
+
+
+                                    if (PREV_STATE != SWIPED_RIGHT) {
+                                        mSwipeListener.Swiped(SWIPED_RIGHT);
+                                    }
                                     swipe_thumb.setX(rl_swipe_area.getRight() - swipe_thumb.getWidth());
-                                    mSwipeListener.Swiped(SWIPED_RIGHT);
+                                    PREV_STATE = SWIPED_RIGHT;
+
                                 }
                                 return true;
                             case MotionEvent.ACTION_CANCEL:

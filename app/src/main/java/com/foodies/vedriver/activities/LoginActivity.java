@@ -15,8 +15,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.foodies.vedriver.R;
+import com.foodies.vedriver.constants.Constants;
 import com.foodies.vedriver.databinding.ActivityLoginBinding;
 import com.foodies.vedriver.model.UserModel;
+import com.foodies.vedriver.prefes.MySharedPreference;
 import com.foodies.vedriver.viewmodeles.LoginViewModel;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -62,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
 
             HashMap<String, String> param = new HashMap<>();
             param.put("employee_id", binder.etEmpid.getText().toString().trim());
+            param.put("deviceId", MySharedPreference.getInstance(LoginActivity.this).getFCM());
+            param.put("deviceType", Constants.ANDROID_KEY);
             param.put("password", binder.etPass.getText().toString().trim());
 
             loginViewModel.getData(LoginActivity.this, param).observe(LoginActivity.this, new Observer<UserModel>() {

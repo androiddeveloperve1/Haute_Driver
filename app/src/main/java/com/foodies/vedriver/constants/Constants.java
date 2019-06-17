@@ -10,7 +10,8 @@ public class Constants {
     public static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     public static final String TYPE_DETAILS = "/details";
     public static final String OUT_JSON = "/json";
-    public static final String API_KEY = /*"AIzaSyBbNBMYzMBd9A_YuakL89TuZR8buL7kSiU";*/"AIzaSyCDsRgo39ffsW2wM4YujyoMSh9wiDGWMW8";
+    public static final String ANDROID_KEY = "android";
+    public static final String API_KEY = "AIzaSyBhSXAqJVcWbQ2JuZd7dI2QL1339FAM9cc";
     public static int FROM_FORGOT_PASS = 1;
     public static int FROM_SPLASH = 2;
     public static int FROM_SIGNUP = 0;

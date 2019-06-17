@@ -12,6 +12,7 @@ public class MySharedPreference {
     public static final String APP_PREFERENCE = "haute_driver_ve";
     private static final String User_Detail = "user_data";
     private static final String USER_SESSION_TOKEN = "user_session_token";
+    private static final String FCM_TOKEN = "fcm_token";
 
 
     private static MySharedPreference instence;
@@ -66,6 +67,17 @@ public class MySharedPreference {
     public void setSessionToken(String data) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(USER_SESSION_TOKEN, data);
+        editor.commit();
+    }
+
+
+    public String getFCM() {
+        return sharedpreferences.getString(FCM_TOKEN, null);
+    }
+
+    public void setFCM(String data) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(FCM_TOKEN, data);
         editor.commit();
     }
 

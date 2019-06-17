@@ -166,6 +166,8 @@ public class EnterOTPActivity extends AppCompatActivity {
 
         public void onVerify(View e) {
             HashMap<String, String> param = new HashMap<>();
+            param.put("deviceId", MySharedPreference.getInstance(EnterOTPActivity.this).getFCM());
+            param.put("deviceType", Constants.ANDROID_KEY);
             param.put("otp", binder.otp1.getText().toString() + binder.otp2.getText().toString() + binder.otp3.getText().toString() + binder.otp4.getText().toString());
             otpVerifyViewModel.getData(EnterOTPActivity.this, param).observe(EnterOTPActivity.this, new Observer<UserModel>() {
                 @Override
