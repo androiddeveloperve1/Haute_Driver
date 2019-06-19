@@ -25,10 +25,4 @@ public class BindingAdapters {
     }
 
 
-    @BindingAdapter("android:imageUrl")
-    public static void loadImage(@Nullable ImageView view, @Nullable String image) {
-        Picasso.with(view.getContext()).load(image).placeholder(R.drawable.icon).into(view);
-    }
-
-
 }

@@ -27,10 +27,6 @@ public class UploadWorker extends Worker {
                 e.printStackTrace();
             }
             Log.e("@@@@@@@", "" + i);
-
-            if (i == 50) {
-                return Result.retry();
-            }
         }
         return Result.success();
     }

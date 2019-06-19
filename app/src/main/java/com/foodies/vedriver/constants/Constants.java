@@ -11,7 +11,7 @@ public class Constants {
     public static final String TYPE_DETAILS = "/details";
     public static final String OUT_JSON = "/json";
     public static final String ANDROID_KEY = "android";
-    public static final String API_KEY = "AIzaSyBhSXAqJVcWbQ2JuZd7dI2QL1339FAM9cc";
+    public static final String API_KEY = "AIzaSyCTu44xCpgndu1HjRT3CruvzM63pf87-6Q";
     public static int FROM_FORGOT_PASS = 1;
     public static int FROM_SPLASH = 2;
     public static int FROM_SIGNUP = 0;

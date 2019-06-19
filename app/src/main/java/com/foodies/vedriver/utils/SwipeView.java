@@ -68,6 +68,7 @@ public class SwipeView extends RelativeLayout {
                         int action = motionEvent.getAction();
                         switch (action) {
                             case MotionEvent.ACTION_DOWN:
+                                if(mSwipeListener!=null)
                                 mSwipeListener.swipeStarted();
                                 return true;
                             case MotionEvent.ACTION_MOVE:
@@ -80,6 +81,7 @@ public class SwipeView extends RelativeLayout {
                                 if ((motionEvent.getRawX() + swipe_thumb.getWidth()) < (rl_swipe_area.getRight() / 2)) {
 
                                     if (PREV_STATE != SWIPED_LEFT) {
+                                        if(mSwipeListener!=null)
                                         mSwipeListener.Swiped(SWIPED_LEFT);
                                     }
                                     swipe_thumb.setX(0);
@@ -90,6 +92,7 @@ public class SwipeView extends RelativeLayout {
 
 
                                     if (PREV_STATE != SWIPED_RIGHT) {
+                                        if(mSwipeListener!=null)
                                         mSwipeListener.Swiped(SWIPED_RIGHT);
                                     }
                                     swipe_thumb.setX(rl_swipe_area.getRight() - swipe_thumb.getWidth());

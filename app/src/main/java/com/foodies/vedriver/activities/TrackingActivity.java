@@ -316,4 +316,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
+
+
 }

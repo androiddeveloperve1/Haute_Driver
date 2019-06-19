@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.foodies.vedriver.BuildConfig;
 import com.foodies.vedriver.R;
@@ -36,6 +40,7 @@ import com.foodies.vedriver.prefes.MySharedPreference;
 import com.foodies.vedriver.utils.FragmentTransactionUtils;
 import com.foodies.vedriver.utils.Statusbar;
 import com.foodies.vedriver.utils.SwipeView;
+import com.foodies.vedriver.worker.UploadWorker;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onRefreshClick(View v) {
-            new SwipeViewDialog(MainActivity.this, new SwipeListener() {
+            /*new SwipeViewDialog(MainActivity.this, new SwipeListener() {
                 @Override
                 public void swipeStarted() {
                     Log.e("@@@@@@@", "Started");
@@ -87,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
-            }).show();
-            //startActivity(new Intent(MainActivity.this, TrackingActivity.class));
+            }).show();*/
+            startActivity(new Intent(MainActivity.this, TrackingActivity.class));
         }
     };
 
@@ -130,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         NavHeaderMainBinding.bind(navView).setClickHandler(p);
         FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
         changeTheToolbarTitle("Tasks");
+
     }
 
     @Override
@@ -243,6 +249,18 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    void startWorkes() {
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(UploadWorker.class).build();
+        WorkManager.getInstance().enqueue(req);
+        WorkManager.getInstance().getWorkInfoByIdLiveData(req.getId()).observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                Log.e("@@@@@@@", workInfo.getState().name());
+
+            }
+        });
+
+    }
 
     public class Presenter {
         public void onLogout(View view) {
