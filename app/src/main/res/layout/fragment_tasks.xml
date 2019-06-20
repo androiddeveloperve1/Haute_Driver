@@ -4,12 +4,8 @@
     <data>
 
         <variable
-            name="currentTaskAdapter"
-            type="com.foodies.vedriver.adapter.CurrentTaskAdapter" />
-
-        <variable
-            name="newTaskAdapter"
-            type="com.foodies.vedriver.adapter.NewTaskAdapter" />
+            name="click"
+            type="com.app.mylibertadriver.fragments.FragmentTasks.Presenter" />
 
     </data>
 
@@ -30,45 +26,31 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5_px"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="New deliveries will apear here"
+                android:text="Current task"
                 android:textSize="@dimen/_12_px"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_new_task"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="@dimen/_10_px"
-                android:adapter="@{newTaskAdapter}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header" />
+                app:layout_constraintTop_toBottomOf="@+id/header">
 
-            <TextView
-                android:id="@+id/header2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5_px"
-                android:layout_marginTop="@dimen/_10_px"
-                android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="Current task"
-                android:textSize="@dimen/_12_px"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_new_task" />
+                <include
+                    android:id="@+id/ll_current_task"
+                    layout="@layout/item_current_task"
+                    android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_current_task"
-                android:layout_width="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10_px"
-                android:adapter="@{currentTaskAdapter}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header2" />
+                <include
+                    android:id="@+id/ll_new_task"
+                    layout="@layout/items_new_task"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

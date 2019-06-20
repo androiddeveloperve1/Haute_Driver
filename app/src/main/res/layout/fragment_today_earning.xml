@@ -6,7 +6,7 @@
 
         <variable
             name="adapt"
-            type="com.foodies.vedriver.adapter.TodayEarningAdapter" />
+            type="com.app.mylibertadriver.adapter.TodayEarningAdapter" />
 
     </data>
 

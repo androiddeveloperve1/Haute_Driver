@@ -17,4 +17,5 @@
     <string name="signup_guide_text">After successful sign up, we will do a background check and,
 get you an employe ID after that we will let you know that you
 can start using app via email/Phone call</string>
+    <string name="title_activity_accept_order">Map</string>
 </resources>

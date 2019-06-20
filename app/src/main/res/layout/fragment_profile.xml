@@ -5,11 +5,11 @@
 
         <variable
             name="user"
-            type="com.foodies.vedriver.model.UserModel" />
+            type="com.app.mylibertadriver.model.DriverModel" />
 
         <variable
             name="clickHandler"
-            type="com.foodies.vedriver.fragments.FragmentProfile.Presenter" />
+            type="com.app.mylibertadriver.fragments.FragmentProfile.Presenter" />
 
     </data>
 

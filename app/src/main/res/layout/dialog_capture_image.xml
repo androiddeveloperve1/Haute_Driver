@@ -7,7 +7,7 @@
 
         <variable
             name="clickHandler"
-            type="com.foodies.vedriver.interfaces.ImageOrGalarySelector" />
+            type="com.app.mylibertadriver.interfaces.ImageOrGalarySelector" />
     </data>
 
 

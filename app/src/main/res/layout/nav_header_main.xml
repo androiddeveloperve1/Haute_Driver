@@ -7,7 +7,7 @@
 
         <variable
             name="clickHandler"
-            type="com.foodies.vedriver.activities.MainActivity.Presenter" />
+            type="com.app.mylibertadriver.activities.MainActivity.Presenter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

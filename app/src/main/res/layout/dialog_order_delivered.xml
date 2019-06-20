@@ -223,7 +223,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.foodies.vedriver.utils.SwipeView
+        <com.app.mylibertadriver.utils.SwipeView
             android:id="@+id/mSwipeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

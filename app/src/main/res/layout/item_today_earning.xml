@@ -5,7 +5,7 @@
 
         <variable
             name="itemClickListener"
-            type="com.foodies.vedriver.interfaces.RecycleItemClickListener" />
+            type="com.app.mylibertadriver.interfaces.RecycleItemClickListener" />
 
     </data>
 

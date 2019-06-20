@@ -129,7 +129,7 @@
                     app:layout_constraintLeft_toLeftOf="@+id/iv_img_restaurant"
                     app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_name" />
 
-                <com.foodies.vedriver.utils.SwipeView
+                <com.app.mylibertadriver.utils.SwipeView
                     android:id="@+id/swipe_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
