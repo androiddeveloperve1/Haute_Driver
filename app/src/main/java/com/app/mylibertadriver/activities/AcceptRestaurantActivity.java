@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
@@ -70,6 +71,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_restaurant);
+
         restaurantDetails = new Gson().fromJson(getIntent().getStringExtra("data"), TaskModel.class);
         restaurantLatlong = new LatLng(restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
         binder.setData(restaurantDetails);
@@ -183,9 +185,14 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
     void buildWorkManager() {
         Log.e("@@@@@@@", "New Back Request");
+        Data.Builder geofenceData = new Data.Builder();
+        geofenceData.putString("lat", ""+restaurantLatlong.latitude);
+        geofenceData.putString("longi", ""+restaurantLatlong.longitude);
+
         driverLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         driverLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
         driverLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
+        driverLocationRequest.setInputData(geofenceData.build());
         driverLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
     }
 

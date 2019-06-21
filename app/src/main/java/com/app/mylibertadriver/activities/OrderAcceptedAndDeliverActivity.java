@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
@@ -197,8 +198,13 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
     void buildWorkManager() {
         Log.e("@@@@@@@", "New Back Request");
+        Data.Builder geofenceData = new Data.Builder();
+        geofenceData.putString("lat", ""+delivarableLatLongUser.latitude);
+        geofenceData.putString("longi", ""+delivarableLatLongUser.longitude);
+        Log.e("@@@@@@@", "New Back Request");
         userLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         userLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
+        userLocationRequest.setInputData(geofenceData.build());
         userLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
         userLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
     }
