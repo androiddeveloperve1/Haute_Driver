@@ -5,6 +5,7 @@ import androidx.databinding.Bindable;
 
 import com.app.mylibertadriver.BR;
 import com.app.mylibertadriver.model.DriverModel;
+import com.app.mylibertadriver.model.UserModel;
 
 import java.util.ArrayList;
 
@@ -14,8 +15,8 @@ import java.util.ArrayList;
  */
 
 public class OrderDetailsModel extends BaseObservable {
-    private DriverModel userInfo;
-    private RestaurantInfoModel restaurantInfo;
+    private UserModel user_id;
+    private RestaurantInfoModel restaurant_id;
     private ArrayList<OrderItemModel> order;
     private String _id;
     private String amount;
@@ -24,94 +25,53 @@ public class OrderDetailsModel extends BaseObservable {
     private String payment_type;
     private String promo_code;
     private String stripe_charge_id;
-    private String restaurant_id;
-    private String user_id;
     private String address_id;
     private String createdAt;
     private String updatedAt;
     private String address_type;
     private String delivery_status;
+    private String distance;
+    private String order_no;
 
-
     @Bindable
-    public DriverModel getUserInfo() {
-        return userInfo;
-    }
-    @Bindable
-    public RestaurantInfoModel getRestaurantInfo() {
-        return restaurantInfo;
-    }
-    @Bindable
-    public ArrayList<OrderItemModel> getOrder() {
-        return order;
-    }
-    @Bindable
-    public String get_id() {
-        return _id;
-    }
-    @Bindable
-    public String getAmount() {
-        return amount;
-    }
-    @Bindable
-    public String getDeliveryfee() {
-        return deliveryfee;
-    }
-    @Bindable
-    public String getTotalamount() {
-        return totalamount;
-    }
-    @Bindable
-    public String getPayment_type() {
-        return payment_type;
-    }
-    @Bindable
-    public String getPromo_code() {
-        return promo_code;
-    }
-    @Bindable
-    public String getStripe_charge_id() {
-        return stripe_charge_id;
-    }
-    @Bindable
-    public String getRestaurant_id() {
-        return restaurant_id;
-    }
-    @Bindable
-    public String getUser_id() {
+    public UserModel getUser_id() {
         return user_id;
     }
-    @Bindable
-    public String getAddress_id() {
-        return address_id;
-    }
-    @Bindable
-    public String getCreatedAt() {
-        return createdAt;
-    }
-    @Bindable
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-    @Bindable
-    public String getAddress_type() {
-        return address_type;
-    }
-    @Bindable
-    public String getDelivery_status() {
-        return delivery_status;
 
+    @Bindable
+    public RestaurantInfoModel getRestaurant_id() {
+        return restaurant_id;
     }
 
+    @Bindable
+    public String getDistance() {
+        return distance;
+    }
 
-    public void setUserInfo(DriverModel userInfo) {
-        this.userInfo = userInfo;
-        this.notifyPropertyChanged(BR.userInfo);
+    @Bindable
+    public String getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(String order_no) {
+        this.order_no = order_no;
+        this.notifyPropertyChanged(BR.order_no);
+    }
+
+
+    @Bindable
+    public RestaurantInfoModel getRestaurantInfo() {
+        return restaurant_id;
     }
 
     public void setRestaurantInfo(RestaurantInfoModel restaurantInfo) {
-        this.restaurantInfo = restaurantInfo;
+        this.restaurant_id = restaurantInfo;
         this.notifyPropertyChanged(BR.userInfo);
+    }
+
+    @Bindable
+    public ArrayList<OrderItemModel> getOrder() {
+        return order;
     }
 
     public void setOrder(ArrayList<OrderItemModel> order) {
@@ -119,9 +79,19 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.order);
     }
 
+    @Bindable
+    public String get_id() {
+        return _id;
+    }
+
     public void set_id(String _id) {
         this._id = _id;
         this.notifyPropertyChanged(BR._id);
+    }
+
+    @Bindable
+    public String getAmount() {
+        return amount;
     }
 
     public void setAmount(String amount) {
@@ -129,9 +99,19 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.amount);
     }
 
+    @Bindable
+    public String getDeliveryfee() {
+        return deliveryfee;
+    }
+
     public void setDeliveryfee(String deliveryfee) {
         this.deliveryfee = deliveryfee;
         this.notifyPropertyChanged(BR.deliveryfee);
+    }
+
+    @Bindable
+    public String getTotalamount() {
+        return totalamount;
     }
 
     public void setTotalamount(String totalamount) {
@@ -139,9 +119,19 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.totalamount);
     }
 
+    @Bindable
+    public String getPayment_type() {
+        return payment_type;
+    }
+
     public void setPayment_type(String payment_type) {
         this.payment_type = payment_type;
         this.notifyPropertyChanged(BR.payment_type);
+    }
+
+    @Bindable
+    public String getPromo_code() {
+        return promo_code;
     }
 
     public void setPromo_code(String promo_code) {
@@ -149,19 +139,19 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.promo_code);
     }
 
+    @Bindable
+    public String getStripe_charge_id() {
+        return stripe_charge_id;
+    }
+
     public void setStripe_charge_id(String stripe_charge_id) {
         this.stripe_charge_id = stripe_charge_id;
         this.notifyPropertyChanged(BR.stripe_charge_id);
     }
 
-    public void setRestaurant_id(String restaurant_id) {
-        this.restaurant_id = restaurant_id;
-        this.notifyPropertyChanged(BR.restaurant_id);
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-        this.notifyPropertyChanged(BR.user_id);
+    @Bindable
+    public String getAddress_id() {
+        return address_id;
     }
 
     public void setAddress_id(String address_id) {
@@ -169,9 +159,19 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.address_id);
     }
 
+    @Bindable
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
         this.notifyPropertyChanged(BR.createdAt);
+    }
+
+    @Bindable
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setUpdatedAt(String updatedAt) {
@@ -179,13 +179,42 @@ public class OrderDetailsModel extends BaseObservable {
         this.notifyPropertyChanged(BR.updatedAt);
     }
 
+    @Bindable
+    public String getAddress_type() {
+        return address_type;
+    }
+
     public void setAddress_type(String address_type) {
         this.address_type = address_type;
         this.notifyPropertyChanged(BR.address_type);
+    }
+
+    @Bindable
+    public String getDelivery_status() {
+        return delivery_status;
+
     }
 
     public void setDelivery_status(String delivery_status) {
         this.delivery_status = delivery_status;
         this.notifyPropertyChanged(BR.delivery_status);
     }
+
+    public void setUser_id(UserModel user_id) {
+        this.user_id = user_id;
+        this.notifyPropertyChanged(BR.user_id);
+    }
+
+    public void setRestaurant_id(RestaurantInfoModel restaurant_id) {
+        this.restaurant_id = restaurant_id;
+        this.notifyPropertyChanged(BR.restaurant_id);
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+        this.notifyPropertyChanged(BR.distance);
+    }
 }
+
+
+

@@ -5,20 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
@@ -32,23 +29,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
-public class CurrentLocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public abstract class GoogleServicesActivationActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final int LocationTag = 13001;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onResume() {
         super.onResume();
-        PermissionUtils.getInstance().checkAllPermission(CurrentLocationActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
+        PermissionUtils.getInstance().checkAllPermission(GoogleServicesActivationActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
             @Override
             public void onGrant() {
-                if (checkGooglePlayServiceAvailability(CurrentLocationActivity.this)) {
+                if (checkGooglePlayServiceAvailability(GoogleServicesActivationActivity.this)) {
                     buildGoogleApiClient();
                 }
             }
@@ -86,7 +80,7 @@ public class CurrentLocationActivity extends AppCompatActivity implements Google
 
 
     protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(CurrentLocationActivity.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(GoogleServicesActivationActivity.this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -122,11 +116,11 @@ public class CurrentLocationActivity extends AppCompatActivity implements Google
                 Status status = result.getStatus();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        startProgressNow();
+                        onServicesReady();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult(CurrentLocationActivity.this, LocationTag);
+                            status.startResolutionForResult(GoogleServicesActivationActivity.this, LocationTag);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }
@@ -143,7 +137,7 @@ public class CurrentLocationActivity extends AppCompatActivity implements Google
         if (requestCode == LocationTag) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    startProgressNow();
+                    onServicesReady();
                     break;
                 case Activity.RESULT_CANCELED:
                     gpsDisableAlert();
@@ -152,21 +146,9 @@ public class CurrentLocationActivity extends AppCompatActivity implements Google
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void startProgressNow() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        LocationServices.getFusedLocationProviderClient(CurrentLocationActivity.this).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
+    protected abstract void onServicesReady();
 
-
-            }
-        });
-    }
-
-    void gpsDisableAlert() {
+    private void gpsDisableAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Alert");
         builder.setMessage("You have to turn on locatin service to track order");
@@ -187,4 +169,11 @@ public class CurrentLocationActivity extends AppCompatActivity implements Google
         builder.show();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
 }

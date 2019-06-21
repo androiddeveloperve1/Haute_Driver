@@ -23,7 +23,6 @@ import com.app.mylibertadriver.interfaces.SwipeListener;
 public class SwipeView extends RelativeLayout {
     public static int SWIPED_LEFT = 0;
     public static int SWIPED_RIGHT = 1;
-    private static int PREV_STATE = -1;
     private RelativeLayout rl_swipe_area;
     private ImageView swipe_thumb;
     private TextView tv_taxt;
@@ -46,23 +45,16 @@ public class SwipeView extends RelativeLayout {
 
                     if ((motionEvent.getRawX() + swipe_thumb.getWidth()) < (rl_swipe_area.getRight() / 2)) {
 
-                        if (PREV_STATE != SWIPED_LEFT) {
-                            if (mSwipeListener != null)
-                                mSwipeListener.Swiped(SWIPED_LEFT);
-                        }
+                        if (mSwipeListener != null)
+                            mSwipeListener.Swiped(SWIPED_LEFT);
                         swipe_thumb.setX(0);
-                        PREV_STATE = SWIPED_LEFT;
 
 
                     } else if ((motionEvent.getRawX() + swipe_thumb.getWidth()) > (rl_swipe_area.getRight() / 2)) {
 
-
-                        if (PREV_STATE != SWIPED_RIGHT) {
-                            if (mSwipeListener != null)
-                                mSwipeListener.Swiped(SWIPED_RIGHT);
-                        }
+                        if (mSwipeListener != null)
+                            mSwipeListener.Swiped(SWIPED_RIGHT);
                         swipe_thumb.setX(rl_swipe_area.getRight() - swipe_thumb.getWidth());
-                        PREV_STATE = SWIPED_RIGHT;
 
                     }
                     return true;
@@ -119,10 +111,14 @@ public class SwipeView extends RelativeLayout {
 
 
     public void enableSwipe() {
+        swipe_thumb.setEnabled(true);
+        swipe_thumb.setClickable(true);
         swipe_thumb.setOnTouchListener(touchListener);
     }
 
     public void disableSwipe() {
+        swipe_thumb.setEnabled(false);
+        swipe_thumb.setClickable(false);
         swipe_thumb.setOnTouchListener(null);
     }
 

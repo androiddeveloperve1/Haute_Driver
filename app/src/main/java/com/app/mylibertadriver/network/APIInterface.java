@@ -64,8 +64,7 @@ public interface APIInterface {
     Observable<ApiResponseModel<DriverModel>> getUserProfile();
 
 
-    @GET(UrlConstants.ORDER_DETAIL + "{id}")
-    Observable<ApiResponseModel<OrderDetailsModel>> getOrderDetails(@Path("id") String orderId);
+
 
 
     @Headers("Content-Type: application/json")
@@ -79,6 +78,13 @@ public interface APIInterface {
 
     @GET(UrlConstants.ACCEPT_ORDER + "{id}")
     Observable<ApiResponseModel> acceptOrder(@Path("id") String orderId);
+
+    @GET(UrlConstants.ORDER_DETAIL + "{id}")
+    Observable<ApiResponseModel<OrderDetailsModel>> getOrderDetails(@Path("id") String orderId);
+
+
+    @GET(UrlConstants.PICKED_ORDER + "{id}")
+    Observable<ApiResponseModel> orderPicked(@Path("id") String orderId);
 
 
 }

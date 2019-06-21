@@ -44,6 +44,7 @@ import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.utils.FetchURL;
+import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -95,7 +96,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     public static final int LocationTag = 10001;
     @Inject
     APIInterface apiInterface;
-    Bitmap currentLocationIcon;
 
     private String workRequestTag = "REQUEST_DRIVER_LOCATION_UPDATE";
     private Polyline currentPolyline;
@@ -138,8 +138,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         });
         usersLocation = new MarkerOptions();
         usersLocation.position(usersLatlong);
-        BitmapDrawable b = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_current_location);
-        currentLocationIcon = Bitmap.createScaledBitmap(b.getBitmap(), (int) getResources().getDimension(R.dimen._20_px), (int) getResources().getDimension(R.dimen._20_px), false);
         driverLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         driverLocationRequest.addTag(workRequestTag);
         driverLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
@@ -309,14 +307,14 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     void showLocationOnMap(final LatLng loc) {
         Log.e("@@@@@@", "location updated" + loc.latitude + ":" + loc.longitude);
         mMap.clear();
-        mMap.addMarker(mMarkerOptions.position(loc).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(currentLocationIcon)));
+        mMap.addMarker(mMarkerOptions.position(loc).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(TrackingActivity.this))));
         mMap.addMarker(usersLocation);
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(usersLatlong).include(loc);
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
-        new FetchURL(TrackingActivity.this).execute(getUrl(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
+        new FetchURL(TrackingActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
     }
 
     void stopLocationUpdate() {
@@ -330,21 +328,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
-    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
-        String mode = "mode=" + directionMode;
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + Constants.API_KEY;
-        return url;
-    }
 
     @Override
     public void onTaskDone(Object... values) {

@@ -14,9 +14,8 @@ public class ItemDataModel extends BaseObservable {
 
     private String _id;
     private String name;
-    private String createdAt;
-    private String updatedAt;
-    private String __v;
+    private ItemInfoModel itemInfo;
+
 
     @Bindable
     public String get_id() {
@@ -39,32 +38,12 @@ public class ItemDataModel extends BaseObservable {
     }
 
     @Bindable
-    public String getCreatedAt() {
-        return createdAt;
+    public ItemInfoModel getItemInfo() {
+        return itemInfo;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-        this.notifyPropertyChanged(BR.createdAt);
-    }
-
-    @Bindable
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-        this.notifyPropertyChanged(BR.updatedAt);
-    }
-
-    @Bindable
-    public String get__v() {
-        return __v;
-    }
-
-    public void set__v(String __v) {
-        this.__v = __v;
-        this.notifyPropertyChanged(BR.__v);
+    public void setItemInfo(ItemInfoModel itemInfo) {
+        this.itemInfo = itemInfo;
+        this.notifyPropertyChanged(BR.itemInfo);
     }
 }

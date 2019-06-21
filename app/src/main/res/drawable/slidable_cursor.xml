@@ -3,12 +3,12 @@
     <item
         android:width="@dimen/_50_px"
         android:height="@dimen/_50_px">
-        <shape android:shape="rectangle">
+        <shape android:shape="oval">
             <solid android:color="@color/greencolor" />
             <stroke
                 android:width="@dimen/_1_px"
                 android:color="@color/gray_text" />
-            <corners android:radius="@dimen/_5_px" />
+            <corners android:radius="@dimen/_15_px" />
         </shape>
     </item>
     <item

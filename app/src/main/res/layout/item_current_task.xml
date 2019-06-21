@@ -64,7 +64,7 @@
             android:layout_height="@dimen/_50_px"
             android:layout_marginLeft="@dimen/_10_px"
             android:layout_marginTop="@dimen/_5_px"
-            android:background="@drawable/ic_restaurant_orders"
+            android:imageUrl="@{data.restaurantInfo.images.get(0)}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_order" />

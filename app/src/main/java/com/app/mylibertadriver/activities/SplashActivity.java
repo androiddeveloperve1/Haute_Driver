@@ -25,6 +25,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+
+
+
 public class SplashActivity extends AppCompatActivity {
     ActivityRunnable runnable;
     Handler handler = new Handler();

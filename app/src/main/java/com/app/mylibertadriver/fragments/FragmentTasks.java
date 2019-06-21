@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
+import com.app.mylibertadriver.activities.AcceptRestaurantActivity;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.databinding.FragmentTasksBinding;
@@ -247,11 +248,11 @@ public class FragmentTasks extends Fragment implements GoogleApiClient.Connectio
             public void onSuccess(Location location) {
                 if (bindableModel != null)
                     bindableModel.getOrderInfo().
-                            setDistance("" +
+                            setDistance(
                                     GoogleApiUtils.getDistanceBitweenLatlongInKM(
                                             new LatLng(location.getLatitude(), location.getLongitude()),
                                             new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1))
-                                    ) + " km"
+                                    ) + " Km."
 
                             );
 
@@ -281,11 +282,15 @@ public class FragmentTasks extends Fragment implements GoogleApiClient.Connectio
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
-            startActivity(new Intent(getActivity(), AcceptOrderActivity.class));
+            Intent mIntent = new Intent(getActivity(), AcceptRestaurantActivity.class);
+            mIntent.putExtra("data", new Gson().toJson(bindableModel));
+            startActivity(mIntent);
         }
 
         public void onNewTaskClicked(View view) {
-            startActivity(new Intent(getActivity(), AcceptOrderActivity.class));
+            Intent mIntent = new Intent(getActivity(), AcceptOrderActivity.class);
+            mIntent.putExtra("data", new Gson().toJson(bindableModel));
+            startActivity(mIntent);
         }
     }
 

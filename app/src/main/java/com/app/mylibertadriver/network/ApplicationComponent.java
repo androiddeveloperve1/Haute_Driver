@@ -4,6 +4,7 @@ package com.app.mylibertadriver.network;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.ForgotPasswordActivity;
 import com.app.mylibertadriver.activities.MainActivity;
+import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
 import com.app.mylibertadriver.activities.SplashActivity;
 import com.app.mylibertadriver.activities.TrackingActivity;
 import com.app.mylibertadriver.fragments.FragmentProfile;
@@ -35,5 +36,6 @@ public interface ApplicationComponent {
     void inject(TrackingActivity model);
     void inject(DriverLocationUpdateService model);
     void inject(AcceptOrderActivity model);
+    void inject(ReachedRestaurantActivty model);
 
 }

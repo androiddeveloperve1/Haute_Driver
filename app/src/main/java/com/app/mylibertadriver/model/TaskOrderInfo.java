@@ -27,7 +27,7 @@ public class TaskOrderInfo extends BaseObservable {
     private String restaurant_id;
     private String user_id;
     private String address_id;
-    private ArrayList<OrderItemModel> order;
+    //private ArrayList<OrderItemModel> order;
     private UserModel userInfo;
     private RestaurantInfoModel restaurantInfo;
 
@@ -143,7 +143,7 @@ public class TaskOrderInfo extends BaseObservable {
         this.notifyPropertyChanged(BR.address_id);
     }
 
-    @Bindable
+    /*@Bindable
     public ArrayList<OrderItemModel> getOrder() {
         return order;
     }
@@ -151,7 +151,7 @@ public class TaskOrderInfo extends BaseObservable {
     public void setOrder(ArrayList<OrderItemModel> order) {
         this.order = order;
         this.notifyPropertyChanged(BR.order);
-    }
+    }*/
 
     @Bindable
     public UserModel getUserInfo() {
