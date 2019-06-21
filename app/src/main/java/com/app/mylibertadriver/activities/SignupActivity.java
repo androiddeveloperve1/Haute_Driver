@@ -71,8 +71,7 @@ public class SignupActivity extends AppCompatActivity {
 
     void hitSignUp() {
         HashMap<String, String> param = new HashMap<>();
-        //param.put("service_area", ""+binder.etServiceArea.getText().toString());
-        param.put("service_area", " ");
+        param.put("service_area", ""+binder.etServiceArea.getText().toString());
         param.put("fname", binder.etFname.getText().toString().trim());
         param.put("lname", binder.etLname.getText().toString().trim());
         param.put("email", binder.etEmail.getText().toString().trim());

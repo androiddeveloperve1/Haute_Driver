@@ -16,6 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
@@ -29,6 +35,7 @@ import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
+import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,7 +49,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -59,6 +69,8 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     private LatLng delivarableLatLong = new LatLng(27.176670, 78.008072);
     private TaskModel orderData;
     private ActivityAcceptOrderBinding binder;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +97,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptOrderActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
         mMap = googleMap;
@@ -157,7 +170,10 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                 mapFragment.getMapAsync(AcceptOrderActivity.this);
             }
         });
+
     }
+
+
 
     public class MyClick {
 

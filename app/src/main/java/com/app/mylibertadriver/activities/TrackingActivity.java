@@ -96,6 +96,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     public static final int LocationTag = 10001;
     @Inject
     APIInterface apiInterface;
+    Bitmap currentLocationIcon;
 
     private String workRequestTag = "REQUEST_DRIVER_LOCATION_UPDATE";
     private Polyline currentPolyline;
@@ -138,9 +139,10 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         });
         usersLocation = new MarkerOptions();
         usersLocation.position(usersLatlong);
+        BitmapDrawable b = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_current_location);
+        currentLocationIcon = Bitmap.createScaledBitmap(b.getBitmap(), (int) getResources().getDimension(R.dimen._20_px), (int) getResources().getDimension(R.dimen._20_px), false);
         driverLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         driverLocationRequest.addTag(workRequestTag);
-        driverLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
         driverLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
     }
 
@@ -307,7 +309,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
     void showLocationOnMap(final LatLng loc) {
         Log.e("@@@@@@", "location updated" + loc.latitude + ":" + loc.longitude);
         mMap.clear();
-        mMap.addMarker(mMarkerOptions.position(loc).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(TrackingActivity.this))));
+        mMap.addMarker(mMarkerOptions.position(loc).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(currentLocationIcon)));
         mMap.addMarker(usersLocation);
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(usersLatlong).include(loc);
@@ -342,11 +344,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
             ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(workRequestTag);
             List<WorkInfo> work2 = work.get();
             if (work2.size() > 0) {
-                if (!work2.get(0).getState().equals(WorkInfo.State.CANCELLED)) {
-                    Log.e("@@@@@@@", "Already in execution");
-                } else {
-                    Log.e("@@@@@@@", "WORK CANCELLED");
-                    Log.e("@@@@@@@", "New Request AGAIN");
+                if (work2.get(0).getState().equals(WorkInfo.State.CANCELLED)) {
                     OneTimeWorkRequest req = driverLocationRequest.build();
                     WorkManager.getInstance().enqueue(req);
                 }

@@ -6,6 +6,8 @@ package com.app.mylibertadriver.constants;
  */
 
 public class Constants {
+
+    public static final String BACKGROUND_WORKER_REQUEST = "REQUEST_DRIVER_LOCATION_UPDATE";
     public static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     public static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     public static final String TYPE_DETAILS = "/details";

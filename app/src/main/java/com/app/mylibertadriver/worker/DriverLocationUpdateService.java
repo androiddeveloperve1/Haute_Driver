@@ -18,8 +18,13 @@ import androidx.work.WorkerParameters;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -43,6 +48,7 @@ public class DriverLocationUpdateService extends Worker {
     APIInterface apiInterface;
     private Context mContext;
 
+
     public DriverLocationUpdateService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.mContext = context;
@@ -55,7 +61,6 @@ public class DriverLocationUpdateService extends Worker {
         return startProgressNow();
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public Result startProgressNow() {
         if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -66,12 +71,11 @@ public class DriverLocationUpdateService extends Worker {
                 sendDriverCurrentLocationToServer(new LatLng(location.getLatitude(), location.getLongitude()));
             }
         });
-
         return Result.retry();
     }
 
-
     void sendDriverCurrentLocationToServer(LatLng latlng) {
+        Log.e("@@@@@@@@", "location updated in background");
         HashMap param = new HashMap();
         param.put("latitude", "" + latlng.latitude);
         param.put("longitude", "" + latlng.longitude);
