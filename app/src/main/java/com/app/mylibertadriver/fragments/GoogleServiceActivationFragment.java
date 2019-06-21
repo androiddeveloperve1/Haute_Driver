@@ -1,18 +1,9 @@
-package com.app.mylibertadriver.activities;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
+package com.app.mylibertadriver.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -20,6 +11,12 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
+import com.app.mylibertadriver.activities.GoogleServicesActivationActivity;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
@@ -41,18 +38,35 @@ import com.google.android.gms.location.SettingsClient;
 
 import java.util.ArrayList;
 
-public abstract class GoogleServicesActivationActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    public static final int LocationTag = 13001;
+public abstract class GoogleServiceActivationFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    public static final int LocationTag = 14001;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
+
     @Override
-    protected void onResume() {
+    public void onConnected(@Nullable Bundle bundle) {
+        checkResolutionAndProceed();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onResume() {
         super.onResume();
-        PermissionUtils.getInstance().checkAllPermission(GoogleServicesActivationActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
+        PermissionUtils.getInstance().checkAllPermission(getActivity(), PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
             @Override
             public void onGrant() {
-                if (checkGooglePlayServiceAvailability(GoogleServicesActivationActivity.this)) {
+                if (checkGooglePlayServiceAvailability(getActivity())) {
                     buildGoogleApiClient();
                 }
             }
@@ -69,17 +83,16 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         });
     }
 
-
     public boolean checkGooglePlayServiceAvailability(Context context) {
         int statusCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
         if ((statusCode == ConnectionResult.SUCCESS)) {
             return true;
         } else {
-            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, this, 10, new DialogInterface.OnCancelListener() {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, getActivity(), 10, new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     dialog.dismiss();
-                    finish();
+                    getActivity().finish();
                 }
             });
             dialog.setCanceledOnTouchOutside(false);
@@ -88,33 +101,14 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         }
     }
 
-
     protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(GoogleServicesActivationActivity.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
 
-    }
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        checkResolutionAndProceed();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-        Log.e("@@@@@@@@", "suspended");
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("@@@@@@@@", "failure");
     }
 
     private void checkResolutionAndProceed() {
@@ -126,7 +120,7 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
         settingsClient.checkLocationSettings(locationSettingsRequest);
         builder.setAlwaysShow(true);
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
@@ -141,7 +135,7 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult(GoogleServicesActivationActivity.this, LocationTag);
+                            status.startResolutionForResult(getActivity(), LocationTag);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }
@@ -151,71 +145,16 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         });
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LocationTag) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    requestLocatipnUpdate();
-                    break;
-                case Activity.RESULT_CANCELED:
-                    gpsDisableAlert();
-                    break;
-            }
-        }
-    }
-
-    protected abstract void onServicesReady();
-
-    protected abstract void onUpdatedLocation(LocationResult locationResult);
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
 
-        onServicesReady();
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        onMapServiceReady();
+        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationServices.getFusedLocationProviderClient(GoogleServicesActivationActivity.this).removeLocationUpdates(mLocationCallback);
-        LocationServices.getFusedLocationProviderClient(GoogleServicesActivationActivity.this).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(mLocationCallback);
+        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-
-    }
-
-    private void gpsDisableAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Alert");
-        builder.setMessage("You have to turn on locatin service to track order");
-        builder.setPositiveButton("Turn On", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                checkResolutionAndProceed();
-            }
-        });
-        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                finish();
-            }
-        });
-        builder.show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    public void stopLocationUpdate() {
-        LocationServices.getFusedLocationProviderClient(GoogleServicesActivationActivity.this).removeLocationUpdates(mLocationCallback);
 
     }
 
@@ -227,5 +166,18 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
             onUpdatedLocation(locationResult);
         }
     };
+    public void stopLocationUpdate() {
+        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(mLocationCallback);
 
+    }
+
+    protected abstract void onMapServiceReady();
+
+    protected abstract void onUpdatedLocation(LocationResult locationResult);
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.getInstance().hendlePermissionForFragment(getActivity(), requestCode, permissions, grantResults);
+    }
 }

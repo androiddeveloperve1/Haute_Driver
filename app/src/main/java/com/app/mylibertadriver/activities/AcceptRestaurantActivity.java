@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -46,7 +47,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 
@@ -54,13 +57,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AcceptRestaurantActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
-    LocationCallback mLocationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            Log.e("@@@@@@", "Map updating");
-        }
-    };
+
     private LatLng myCurrentLatLong = null;
     private GoogleMap mMap;
     private LatLng restaurantLatlong;
@@ -68,7 +65,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     private ActivityAcceptRestaurantBinding binder;
     private TaskModel restaurantDetails;
     private OneTimeWorkRequest.Builder driverLocationRequest;
-    private LocationRequest mLocationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,32 +97,19 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(500);
-
-        LocationServices.getFusedLocationProviderClient(AcceptRestaurantActivity.this).removeLocationUpdates(mLocationCallback);
-        LocationServices.getFusedLocationProviderClient(AcceptRestaurantActivity.this).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-        LocationServices.getFusedLocationProviderClient(AcceptRestaurantActivity.this).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                myCurrentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
-                mapFragment.getMapAsync(AcceptRestaurantActivity.this);
-            }
-        });
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
+        mapFragment.getMapAsync(AcceptRestaurantActivity.this);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    protected void onUpdatedLocation(LocationResult locationResult) {
+        myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+        stopLocationUpdate();
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptRestaurantActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(restaurantLatlong);
-        mMap = googleMap;
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
         mMap.addMarker(delivarableLatLongMarker);
-
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(myCurrentLatLong).include(restaurantLatlong);
         LatLngBounds bounds = boundsBuilder.build();
@@ -136,6 +119,13 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(restaurantLatlong, 8));
         new FetchURL(AcceptRestaurantActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         listentoBackground();
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.clear();
 
     }
 
@@ -161,6 +151,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     }
 
     void onRestaurantSelected() {
+        WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
         Intent intent = new Intent(AcceptRestaurantActivity.this, ReachedRestaurantActivty.class);
         intent.putExtra("order_id", restaurantDetails.getOrder_id());
         startActivity(intent);
@@ -172,22 +163,17 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
             ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(Constants.BACKGROUND_WORKER_REQUEST);
             List<WorkInfo> work2 = work.get();
             if (work2.size() > 0) {
-                Log.e("@@@@@@@", "Already Request");
+                Log.e("@@@@@@@", "Already Request and its status is" + work2.get(0).getState().name());
                 if (work2.get(0).getState().isFinished()) {
-                    Log.e("@@@@@@@", "Again Back Request");
+                    buildWorkManager();
                     OneTimeWorkRequest req = driverLocationRequest.build();
                     WorkManager.getInstance().enqueue(req);
+
                 }
             } else {
                 buildWorkManager();
                 OneTimeWorkRequest req = driverLocationRequest.build();
                 WorkManager.getInstance().enqueue(req);
-                WorkManager.getInstance().getWorkInfoByIdLiveData(req.getId()).observe(AcceptRestaurantActivity.this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        Log.e("@@@@@@@", "Work status" + workInfo.getState().name());
-                    }
-                });
             }
         } catch (Exception e) {
 

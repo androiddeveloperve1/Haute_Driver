@@ -143,15 +143,32 @@
                     app:layout_constraintLeft_toLeftOf="@+id/iv_img_restaurant"
                     app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_name" />
 
-                <com.app.mylibertadriver.utils.SwipeView
-                    android:id="@+id/swipe_view"
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_swipe_layout"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_50_px"
                     android:layout_marginTop="@dimen/_10_px"
                     android:layout_marginRight="@dimen/_10_px"
                     app:layout_constraintLeft_toLeftOf="@id/iv_img_restaurant"
                     app:layout_constraintRight_toLeftOf="@+id/tv_est_time"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id">
+
+                    <com.app.mylibertadriver.utils.SwipeView
+                        android:id="@+id/swipe_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:id="@+id/disableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha=".5"
+                        android:visibility="gone"
+                        android:background="@color/white" />
+
+                </RelativeLayout>
 
 
                 <TextView
@@ -163,9 +180,9 @@
                     android:text="ETA\n 1 min"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12_px"
-                    app:layout_constraintBottom_toBottomOf="@+id/swipe_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/rl_swipe_layout"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/swipe_view" />
+                    app:layout_constraintTop_toTopOf="@id/rl_swipe_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

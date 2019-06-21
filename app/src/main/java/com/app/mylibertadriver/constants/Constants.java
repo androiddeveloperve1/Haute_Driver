@@ -17,4 +17,9 @@ public class Constants {
     public static int FROM_FORGOT_PASS = 1;
     public static int FROM_SPLASH = 2;
     public static int FROM_SIGNUP = 0;
+
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    public static final long LOCATION_DISTANCE_IN_METER = 20;
+
 }

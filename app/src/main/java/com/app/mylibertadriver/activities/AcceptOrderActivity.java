@@ -36,6 +36,7 @@ import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -97,24 +98,8 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptOrderActivity.this)));
-        MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
         mMap = googleMap;
         mMap.clear();
-        mMap.addMarker(myCurrentLatLongMarker);
-        mMap.addMarker(delivarableLatLongMarker);
-
-       /* LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
-        boundsBuilder.include(myCurrentLatLong).include(delivarableLatLong);
-        LatLngBounds bounds = boundsBuilder.build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100,100,50);
-        mMap.animateCamera(cameraUpdate);*/
-
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(delivarableLatLong, 8));
-
-        new FetchURL(AcceptOrderActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
     }
 
 
@@ -162,17 +147,34 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationServices.getFusedLocationProviderClient(AcceptOrderActivity.this).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                myCurrentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
-                mapFragment.getMapAsync(AcceptOrderActivity.this);
-            }
-        });
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
+        mapFragment.getMapAsync(AcceptOrderActivity.this);
 
     }
 
+    @Override
+    protected void onUpdatedLocation(LocationResult locationResult) {
+        myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+        mMap.clear();
+        stopLocationUpdate();
+        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptOrderActivity.this)));
+        MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
+        mMap.clear();
+        mMap.addMarker(myCurrentLatLongMarker);
+        mMap.addMarker(delivarableLatLongMarker);
+
+       /* LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        boundsBuilder.include(myCurrentLatLong).include(delivarableLatLong);
+        LatLngBounds bounds = boundsBuilder.build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100,100,50);
+        mMap.animateCamera(cameraUpdate);*/
+
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(delivarableLatLong, 8));
+
+        new FetchURL(AcceptOrderActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
+
+    }
 
 
     public class MyClick {
