@@ -17,11 +17,13 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.AcceptRestaurantActivity;
 import com.app.mylibertadriver.activities.MyApplication;
+import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.FragmentTasksBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,7 +43,7 @@ import rx.schedulers.Schedulers;
  * Project SignupLibrary Screen
  */
 
-public class FragmentTasks extends GoogleServiceActivationFragment  {
+public class FragmentTasks extends GoogleServiceActivationFragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
@@ -102,28 +104,30 @@ public class FragmentTasks extends GoogleServiceActivationFragment  {
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onResume() {
         super.onResume();
         getTask();
-
-
     }
 
 
     @Override
-    protected void onMapServiceReady() {
+    public void onServicesReady() {
 
     }
 
     @Override
-    protected void onUpdatedLocation(LocationResult locationResult) {
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(getActivity(), Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
+    }
+
+    @Override
+    public void onUpdatedLocation(LocationResult locationResult) {
         stopLocationUpdate();
         bindableModel.getOrderInfo().
                 setDistance(
-                        GoogleApiUtils.getDistanceBitweenLatlongInKM(
+                        AppUtils.getDistanceBitweenLatlongInKM(
                                 new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
                                 new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1))
                         ) + " Km."
@@ -132,15 +136,12 @@ public class FragmentTasks extends GoogleServiceActivationFragment  {
     }
 
 
-
-
-
     void updateTimeToExpire() {
         if (bindableModel != null) {
             if (bindableModel.getStatus().equals("0"))  // mean it new task
             {
-                Date date = GoogleApiUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
-                Date myTime = GoogleApiUtils.getCurrentDateINUTC();
+                Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
+                Date myTime = AppUtils.getCurrentDateINUTC();
                 long mills = myTime.getTime() - date.getTime();
                 long hours = mills / (1000 * 60 * 60);
                 long mins = (mills / (1000 * 60)) % 60;
@@ -168,8 +169,6 @@ public class FragmentTasks extends GoogleServiceActivationFragment  {
             startActivity(mIntent);
         }
     }
-
-
 
 
 }

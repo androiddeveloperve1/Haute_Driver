@@ -1,16 +1,5 @@
 package com.app.mylibertadriver.activities;
 
-import androidx.annotation.RequiresApi;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.work.BackoffPolicy;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,13 +11,25 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
+import androidx.databinding.DataBindingUtil;
+import androidx.work.BackoffPolicy;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityOrderAcceptedAndDeliverBinding;
+import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.dialogs.SwipeViewDialog;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
@@ -60,6 +61,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     private Polyline currentPolyline;
     private OrderDetailsModel orderDetails;
     private OneTimeWorkRequest.Builder userLocationRequest;
+    private SwipeViewDialog orderDeliveredDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onServicesReady() {
+    public void onServicesReady() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -105,15 +107,15 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     }
 
     @Override
-    protected void onUpdatedLocation(LocationResult locationResult) {
+    public void onUpdatedLocation(LocationResult locationResult) {
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
         mMap.clear();
         stopLocationUpdate();
-        orderDetails.setDistance(GoogleApiUtils.getDistanceBitweenLatlongInKM(
+        orderDetails.setDistance(AppUtils.getDistanceBitweenLatlongInKM(
                 new LatLng(myCurrentLatLong.latitude, myCurrentLatLong.longitude),
                 new LatLng(orderDetails.getRestaurant_id().getLocation().getCoordinates().get(0), orderDetails.getRestaurant_id().getLocation().getCoordinates().get(1))
         ) + " Km.");
-        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(OrderAcceptedAndDeliverActivity.this)));
+        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(OrderAcceptedAndDeliverActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLongUser);
         mMap.addMarker(myCurrentLatLongMarker);
         mMap.addMarker(delivarableLatLongMarker);
@@ -122,7 +124,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
-        new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
+        new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         listentoBackground();
 
     }
@@ -141,20 +143,23 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     }
 
     void startSwipeDialog() {
-        SwipeViewDialog d = new SwipeViewDialog(OrderAcceptedAndDeliverActivity.this, new SwipeListener() {
-            @Override
-            public void swipeStarted() {
-
-            }
-
-            @Override
-            public void Swiped(int flag) {
-                finish();
-            }
-        });
-        d.show();
+        orderDeliveredDialog = new SwipeViewDialog(this, orderDeliver);
+        orderDeliveredDialog.show();
 
     }
+
+    SwipeListener orderDeliver = new SwipeListener() {
+        @Override
+        public void swipeStarted() {
+
+        }
+
+        @Override
+        public void Swiped(int flag) {
+            orderDeliveredDialog.dismiss();
+            finish();
+        }
+    };
 
     public class MyClick {
         public void onBack(View v) {
@@ -162,7 +167,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         }
 
         public void onCall(View v) {
-            GoogleApiUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getRestaurant_id().getContact_no());
+            AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getRestaurant_id().getContact_no());
         }
 
         public void onNavifationStart(View v) {
@@ -199,8 +204,8 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     void buildWorkManager() {
         Log.e("@@@@@@@", "New Back Request");
         Data.Builder geofenceData = new Data.Builder();
-        geofenceData.putString("lat", ""+delivarableLatLongUser.latitude);
-        geofenceData.putString("longi", ""+delivarableLatLongUser.longitude);
+        geofenceData.putString("lat", "" + delivarableLatLongUser.latitude);
+        geofenceData.putString("longi", "" + delivarableLatLongUser.longitude);
         Log.e("@@@@@@@", "New Back Request");
         userLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         userLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
@@ -220,5 +225,10 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
         binder.ivNavigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 }

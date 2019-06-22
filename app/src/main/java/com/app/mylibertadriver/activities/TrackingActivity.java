@@ -43,6 +43,7 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
@@ -316,7 +317,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
-        new FetchURL(TrackingActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
+        new FetchURL(TrackingActivity.this).execute(AppUtils.getUrlForDrawRoute(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
     }
 
     void stopLocationUpdate() {

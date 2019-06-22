@@ -1,42 +1,27 @@
 package com.app.mylibertadriver.worker;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.network.APIInterface;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -56,6 +41,7 @@ public class DriverLocationUpdateService extends Worker {
     private Context mContext;
     private String geofenceLatitude;
     private String geofenceLongitude;
+    private PendingIntent geofencePendingIntent;
 
     public DriverLocationUpdateService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -73,6 +59,8 @@ public class DriverLocationUpdateService extends Worker {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public Result startProgressNow() {
+
+
         if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         LocationServices.getFusedLocationProviderClient(mContext).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -108,29 +96,5 @@ public class DriverLocationUpdateService extends Worker {
                     }
                 });
     }
-
-
-
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(mContext);
-        List<Geofence> geofenceList = new ArrayList<>();
-        geofenceList.add(new Geofence.Builder().setRequestId("qd").setCircularRegion(
-                Double.parseDouble(geofenceLatitude),
-                Double.parseDouble(geofenceLongitude),
-                100
-        )
-                .setExpirationDuration(Geofence.GEOFENCE_TRANSITION_ENTER)
-                .setTransitionTypes(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .build());
-
-
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(geofenceList);
-        return builder.build();
-    }
-
-
-
 
 }

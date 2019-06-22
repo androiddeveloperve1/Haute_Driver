@@ -30,7 +30,7 @@ public class OrderDetailsModel extends BaseObservable {
     private String updatedAt;
     private String address_type;
     private String delivery_status;
-    private String distance;
+    private String distance="Getting distance.....";
     private String order_no;
 
     @Bindable

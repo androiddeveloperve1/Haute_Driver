@@ -32,6 +32,7 @@ import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
@@ -143,7 +144,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onServicesReady() {
+    public void onServicesReady() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -153,11 +154,11 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     }
 
     @Override
-    protected void onUpdatedLocation(LocationResult locationResult) {
+    public void onUpdatedLocation(LocationResult locationResult) {
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
         mMap.clear();
         stopLocationUpdate();
-        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptOrderActivity.this)));
+        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(AcceptOrderActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
@@ -172,7 +173,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(delivarableLatLong, 8));
 
-        new FetchURL(AcceptOrderActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
+        new FetchURL(AcceptOrderActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
 
     }
 
@@ -184,8 +185,13 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         }
 
         public void onCall(View v) {
-            GoogleApiUtils.requestCall(AcceptOrderActivity.this, orderData.getOrderInfo().getRestaurantInfo().getContact_no());
+            AppUtils.requestCall(AcceptOrderActivity.this, orderData.getOrderInfo().getRestaurantInfo().getContact_no());
         }
+    }
+
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 }
 

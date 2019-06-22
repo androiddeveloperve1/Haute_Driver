@@ -1,6 +1,7 @@
 package com.app.mylibertadriver.activities;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -26,9 +27,11 @@ import androidx.work.WorkManager;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityAcceptRestaurantBinding;
+import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.orders.TaskModel;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
@@ -95,7 +98,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onServicesReady() {
+    public void onServicesReady() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -103,11 +106,13 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         mapFragment.getMapAsync(AcceptRestaurantActivity.this);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    protected void onUpdatedLocation(LocationResult locationResult) {
+    public void onUpdatedLocation(LocationResult locationResult) {
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+        Log.e("@@@@current latlong", "" + myCurrentLatLong.latitude + ":" + myCurrentLatLong.longitude);
         stopLocationUpdate();
-        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(GoogleApiUtils.getLocatinIcon(AcceptRestaurantActivity.this)));
+        MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(AcceptRestaurantActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(restaurantLatlong);
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
@@ -119,7 +124,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         mMap.animateCamera(cameraUpdate);
 
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(restaurantLatlong, 8));
-        new FetchURL(AcceptRestaurantActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
+        new FetchURL(AcceptRestaurantActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         listentoBackground();
 
     }
@@ -139,10 +144,12 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     }
 
 
+    @TargetApi(Build.VERSION_CODES.M)
     void enableButton() {
         binder.swipeView.enableSwipe();
         binder.disableView.setVisibility(View.GONE);
         binder.ivNavigation.setVisibility(View.GONE);
+
     }
 
 
@@ -186,8 +193,8 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     void buildWorkManager() {
         Log.e("@@@@@@@", "New Back Request");
         Data.Builder geofenceData = new Data.Builder();
-        geofenceData.putString("lat", ""+restaurantLatlong.latitude);
-        geofenceData.putString("longi", ""+restaurantLatlong.longitude);
+        geofenceData.putString("lat", "" + restaurantLatlong.latitude);
+        geofenceData.putString("longi", "" + restaurantLatlong.longitude);
 
         driverLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
         driverLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
@@ -207,7 +214,12 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         }
 
         public void onCall(View v) {
-            GoogleApiUtils.requestCall(AcceptRestaurantActivity.this, "" + restaurantDetails.getOrderInfo().getRestaurantInfo().getContact_no());
+            AppUtils.requestCall(AcceptRestaurantActivity.this, "" + restaurantDetails.getOrderInfo().getRestaurantInfo().getContact_no());
         }
+    }
+
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 }

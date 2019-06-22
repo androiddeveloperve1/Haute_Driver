@@ -9,18 +9,18 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.app.mylibertadriver.activities.GoogleServicesActivationActivity;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
+import com.app.mylibertadriver.utils.AppUtils;
+import com.app.mylibertadriver.interfaces.CommanTaskListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,7 +38,7 @@ import com.google.android.gms.location.SettingsClient;
 
 import java.util.ArrayList;
 
-public abstract class GoogleServiceActivationFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public abstract class GoogleServiceActivationFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, CommanTaskListener, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int LocationTag = 14001;
     private GoogleApiClient mGoogleApiClient;
@@ -63,24 +63,29 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
     @Override
     public void onResume() {
         super.onResume();
-        PermissionUtils.getInstance().checkAllPermission(getActivity(), PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
-            @Override
-            public void onGrant() {
-                if (checkGooglePlayServiceAvailability(getActivity())) {
-                    buildGoogleApiClient();
+        if (AppUtils.isNetworkConnected(getActivity())) {
+            PermissionUtils.getInstance().checkAllPermission(getActivity(), PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
+                @Override
+                public void onGrant() {
+                    if (checkGooglePlayServiceAvailability(getActivity())) {
+                        buildGoogleApiClient();
+                    }
                 }
-            }
 
-            @Override
-            public void onReject(ArrayList<String> remainsPermissonList) {
+                @Override
+                public void onReject(ArrayList<String> remainsPermissonList) {
 
-            }
+                }
 
-            @Override
-            public void onRationalPermission(ArrayList<String> rationalPermissonList) {
-                super.onRationalPermission(rationalPermissonList);
-            }
-        });
+                @Override
+                public void onRationalPermission(ArrayList<String> rationalPermissonList) {
+                    super.onRationalPermission(rationalPermissonList);
+                }
+            });
+        } else {
+            onNoInternetFound();
+        }
+
     }
 
     public boolean checkGooglePlayServiceAvailability(Context context) {
@@ -147,8 +152,7 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
-
-        onMapServiceReady();
+        onServicesReady();
         if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -162,18 +166,14 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
-            Log.e("@@@@@@", "Map updating");
             onUpdatedLocation(locationResult);
         }
     };
+
     public void stopLocationUpdate() {
         LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(mLocationCallback);
 
     }
-
-    protected abstract void onMapServiceReady();
-
-    protected abstract void onUpdatedLocation(LocationResult locationResult);
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

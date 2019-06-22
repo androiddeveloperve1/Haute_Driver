@@ -31,7 +31,7 @@ public class TaskOrderInfo extends BaseObservable {
     private UserModel userInfo;
     private RestaurantInfoModel restaurantInfo;
 
-    private String distance;
+    private String distance="Getting distance.....";
 
     @Bindable
     public String get_id() {
