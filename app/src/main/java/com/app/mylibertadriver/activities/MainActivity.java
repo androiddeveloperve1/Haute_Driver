@@ -12,17 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
 import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.R;
+import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityMainBinding;
 import com.app.mylibertadriver.databinding.NavHeaderMainBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
@@ -30,6 +26,7 @@ import com.app.mylibertadriver.fragments.FragmentEarning;
 import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentSupport;
 import com.app.mylibertadriver.fragments.FragmentTasks;
+import com.app.mylibertadriver.fragments.GoogleServiceActivationActivityForHandleFragment;
 import com.app.mylibertadriver.interfaces.ToolbarItemsClick;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
@@ -37,7 +34,7 @@ import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.FragmentTransactionUtils;
 import com.app.mylibertadriver.utils.Statusbar;
-import com.app.mylibertadriver.worker.UploadWorker;
+import com.google.android.gms.location.LocationResult;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +44,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends GoogleServiceActivationActivityForHandleFragment {
     @Inject
     APIInterface apiInterface;
 
@@ -119,16 +116,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
+        fragmentTasks.getTask();
+        Log.e("@@@@@@@", "Resume Activity");
         DriverModel driverModel = MySharedPreference.getInstance(this).getUser();
         Log.e("@@@@", "" + new Gson().toJson(driverModel));
         tv_name.setText(driverModel.getFname() + " " + driverModel.getLname());
         tv_mob.setText(driverModel.getMobile_no());
         updateProfile(driverModel.getAvtar());
-    }
 
+    }
 
     public void updateProfile(String img) {
         Picasso.with(this).load(img).placeholder(R.drawable.ic_profile_placeholder).into(img_user);
@@ -230,16 +230,21 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    void startWorkes() {
-        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(UploadWorker.class).build();
-        WorkManager.getInstance().enqueue(req);
-        WorkManager.getInstance().getWorkInfoByIdLiveData(req.getId()).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                Log.e("@@@@@@@", workInfo.getState().name());
 
-            }
-        });
+    @Override
+    public void onServicesReady() {
+
+    }
+
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
+    }
+
+    @Override
+    public void onUpdatedLocation(LocationResult locationResult) {
+        stopLocationUpdate();
+        fragmentTasks.onUpdatedLocation(locationResult);
 
     }
 

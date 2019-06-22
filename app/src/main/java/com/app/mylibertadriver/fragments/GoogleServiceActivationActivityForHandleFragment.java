@@ -9,11 +9,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
@@ -38,7 +39,7 @@ import com.google.android.gms.location.SettingsClient;
 
 import java.util.ArrayList;
 
-public abstract class GoogleServiceActivationFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, CommanTaskListener, GoogleApiClient.OnConnectionFailedListener {
+public abstract class GoogleServiceActivationActivityForHandleFragment extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, CommanTaskListener, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int LocationTag = 14001;
     private GoogleApiClient mGoogleApiClient;
@@ -63,11 +64,11 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
     @Override
     public void onResume() {
         super.onResume();
-        if (AppUtils.isNetworkConnected(getActivity())) {
-            PermissionUtils.getInstance().checkAllPermission(getActivity(), PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
+        if (AppUtils.isNetworkConnected(GoogleServiceActivationActivityForHandleFragment.this)) {
+            PermissionUtils.getInstance().checkAllPermission(GoogleServiceActivationActivityForHandleFragment.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
                 @Override
                 public void onGrant() {
-                    if (checkGooglePlayServiceAvailability(getActivity())) {
+                    if (checkGooglePlayServiceAvailability(GoogleServiceActivationActivityForHandleFragment.this)) {
                         buildGoogleApiClient();
                     }
                 }
@@ -93,11 +94,11 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
         if ((statusCode == ConnectionResult.SUCCESS)) {
             return true;
         } else {
-            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, getActivity(), 10, new DialogInterface.OnCancelListener() {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode, GoogleServiceActivationActivityForHandleFragment.this, 10, new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     dialog.dismiss();
-                    getActivity().finish();
+                    GoogleServiceActivationActivityForHandleFragment.this.finish();
                 }
             });
             dialog.setCanceledOnTouchOutside(false);
@@ -107,9 +108,9 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
     }
 
     protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(GoogleServiceActivationActivityForHandleFragment.this)
+                .addConnectionCallbacks(GoogleServiceActivationActivityForHandleFragment.this)
+                .addOnConnectionFailedListener(GoogleServiceActivationActivityForHandleFragment.this)
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
@@ -125,7 +126,7 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
-        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
+        SettingsClient settingsClient = LocationServices.getSettingsClient(GoogleServiceActivationActivityForHandleFragment.this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
         builder.setAlwaysShow(true);
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
@@ -140,7 +141,7 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult(getActivity(), LocationTag);
+                            status.startResolutionForResult(GoogleServiceActivationActivityForHandleFragment.this, LocationTag);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }
@@ -153,11 +154,11 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
         onServicesReady();
-        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(mLocationCallback);
-        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).removeLocationUpdates(mLocationCallback);
+        LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
 
     }
@@ -166,18 +167,19 @@ public abstract class GoogleServiceActivationFragment extends Fragment implement
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
+            Log.e("@@@@@@@@@","Location FOund");
             onUpdatedLocation(locationResult);
         }
     };
 
     public void stopLocationUpdate() {
-        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(mLocationCallback);
+        LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).removeLocationUpdates(mLocationCallback);
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionUtils.getInstance().hendlePermissionForFragment(getActivity(), requestCode, permissions, grantResults);
+        PermissionUtils.getInstance().hendlePermissionForFragment(GoogleServiceActivationActivityForHandleFragment.this, requestCode, permissions, grantResults);
     }
 }

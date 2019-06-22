@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
@@ -43,7 +44,7 @@ import rx.schedulers.Schedulers;
  * Project SignupLibrary Screen
  */
 
-public class FragmentTasks extends GoogleServiceActivationFragment {
+public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
@@ -104,27 +105,9 @@ public class FragmentTasks extends GoogleServiceActivationFragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onResume() {
-        super.onResume();
-        getTask();
-    }
 
 
-    @Override
-    public void onServicesReady() {
-
-    }
-
-    @Override
-    public void onNoInternetFound() {
-        ResponseDialog.showErrorDialog(getActivity(), Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
-    }
-
-    @Override
     public void onUpdatedLocation(LocationResult locationResult) {
-        stopLocationUpdate();
         bindableModel.getOrderInfo().
                 setDistance(
                         AppUtils.getDistanceBitweenLatlongInKM(

@@ -26,7 +26,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-
+// Reached Restaurant activityy response user fname an dlast name not coming
+// api that tell that user reached restaurant, item colected, reached to user and delivered to user
 
 public class SplashActivity extends AppCompatActivity {
     ActivityRunnable runnable;

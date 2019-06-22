@@ -226,6 +226,7 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
+            Log.e("@@@@@@@@@","Location FOund");
             onUpdatedLocation(locationResult);
         }
     };

@@ -122,4 +122,10 @@ public class SwipeView extends RelativeLayout {
         swipe_thumb.setOnTouchListener(null);
     }
 
+    public void swipeLeft() {
+        swipe_thumb.setX(0);
+    }
+
+
+
 }

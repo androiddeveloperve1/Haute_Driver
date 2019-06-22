@@ -5,9 +5,11 @@ package com.app.mylibertadriver.interfaces;
  * Project SignupLibrary Screen
  */
 
-public interface SwipeListener {
+public abstract class SwipeListener {
 
-    void swipeStarted();
+    public abstract void swipeStarted();
 
-    void Swiped(int flag);
+    public abstract void Swiped(int flag);
+
+    public  void onCrossButton(){};
 }

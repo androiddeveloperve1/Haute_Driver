@@ -63,6 +63,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     private OneTimeWorkRequest.Builder userLocationRequest;
     private SwipeViewDialog orderDeliveredDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +144,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     }
 
     void startSwipeDialog() {
-        orderDeliveredDialog = new SwipeViewDialog(this, orderDeliver);
+        orderDeliveredDialog = new SwipeViewDialog(this, orderDetails, orderDeliver);
         orderDeliveredDialog.show();
 
     }
@@ -151,6 +152,13 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     SwipeListener orderDeliver = new SwipeListener() {
         @Override
         public void swipeStarted() {
+
+        }
+
+
+        @Override
+        public void onCrossButton() {
+            binder.swipeView.swipeLeft();
 
         }
 
