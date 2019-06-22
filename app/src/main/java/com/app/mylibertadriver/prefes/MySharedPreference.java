@@ -13,6 +13,7 @@ public class MySharedPreference {
     private static final String User_Detail = "user_data";
     private static final String USER_SESSION_TOKEN = "user_session_token";
     private static final String FCM_TOKEN = "fcm_token";
+    static final String GEOFENCES_ADDED_KEY = "GEOFENCES_ADDED_KEY";
 
 
     private static MySharedPreference instence;
@@ -78,6 +79,17 @@ public class MySharedPreference {
     public void setFCM(String data) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(FCM_TOKEN, data);
+        editor.commit();
+    }
+
+
+    public boolean getIsGeoFencingAdded() {
+        return sharedpreferences.getBoolean(GEOFENCES_ADDED_KEY, false);
+    }
+
+    public void setGeoFencingAdded(boolean data) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(GEOFENCES_ADDED_KEY, data);
         editor.commit();
     }
 

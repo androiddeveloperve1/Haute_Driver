@@ -151,6 +151,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
         mapFragment.getMapAsync(AcceptOrderActivity.this);
 
+
     }
 
     @Override
