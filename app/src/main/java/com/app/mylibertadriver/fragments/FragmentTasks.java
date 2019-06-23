@@ -57,7 +57,6 @@ public class FragmentTasks extends Fragment {
         binder.llCurrentTask.setClick(p);
         binder.llNewTask.setClick(p);
         View view = binder.getRoot();
-
         return view;
     }
 

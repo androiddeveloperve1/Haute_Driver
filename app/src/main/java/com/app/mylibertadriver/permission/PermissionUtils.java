@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -85,6 +86,7 @@ public class PermissionUtils {
             }
             if (!listPermissionsNeeded.isEmpty()) {
                 ActivityCompat.requestPermissions(mContext, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), RequestCode);
+
             } else {
                 this.listener.onGrant();
             }
@@ -101,6 +103,8 @@ public class PermissionUtils {
             for (int j = 0; j < permissionArray.length; j++) {
                 if (ContextCompat.checkSelfPermission(mContext, permissionArray[j]) != PackageManager.PERMISSION_GRANTED) {
                     // add the denide permission in the list
+
+
                     listPermissionsNeeded.add(permissionArray[j]);
                 }
             }

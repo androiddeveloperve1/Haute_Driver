@@ -1,11 +1,5 @@
 package com.app.mylibertadriver.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,22 +9,28 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
 
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.geofencing.GeofenceBroadcastReceiver;
-import com.app.mylibertadriver.geofencing.GeofenceErrorMessages;
+import com.app.mylibertadriver.interfaces.CommanTaskListener;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
-import com.app.mylibertadriver.interfaces.CommanTaskListener;
+import com.app.mylibertadriver.utils.GoogleConnectionCallBackAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,39 +53,45 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-public abstract class GoogleServicesActivationActivity extends FragmentActivity implements CommanTaskListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public abstract class GoogleServicesActivationActivity extends FragmentActivity implements CommanTaskListener, GoogleConnectionCallBackAdapter {
     public static final int LocationTag = 13001;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Geofence> mGeofenceList;
     private GeofencingClient mGeofencingClient;
     private PendingIntent mGeofencePendingIntent;
+    protected static boolean isRationalPermissionDEtect = false;
+    protected boolean isSelectNoThanks = false;
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (AppUtils.isNetworkConnected(this)) {
-            PermissionUtils.getInstance().checkAllPermission(GoogleServicesActivationActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
-                @Override
-                public void onGrant() {
-                    if (checkGooglePlayServiceAvailability(GoogleServicesActivationActivity.this)) {
-                        buildGoogleApiClient();
+        if (!isRationalPermissionDEtect && !isSelectNoThanks) {
+            if (AppUtils.isNetworkConnected(GoogleServicesActivationActivity.this)) {
+                PermissionUtils.getInstance().checkAllPermission(GoogleServicesActivationActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
+                    @Override
+                    public void onGrant() {
+                        isRationalPermissionDEtect = false;
+                        if (checkGooglePlayServiceAvailability(GoogleServicesActivationActivity.this)) {
+                            buildGoogleApiClient();
+                        }
                     }
-                }
 
-                @Override
-                public void onReject(ArrayList<String> remainsPermissonList) {
+                    @Override
+                    public void onReject(ArrayList<String> remainsPermissonList) {
+                        isRationalPermissionDEtect = false;
+                    }
 
-                }
-
-                @Override
-                public void onRationalPermission(ArrayList<String> rationalPermissonList) {
-                    super.onRationalPermission(rationalPermissonList);
-                }
-            });
-        } else {
-            onNoInternetFound();
+                    @Override
+                    public void onRationalPermission(ArrayList<String> rationalPermissonList) {
+                        isRationalPermissionDEtect = true;
+                        firePerimisionActivity(GoogleServicesActivationActivity.this);
+                    }
+                });
+            } else {
+                onNoInternetFound();
+            }
         }
 
 
@@ -130,13 +136,11 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
     @Override
     public void onConnectionSuspended(int i) {
 
-        Log.e("@@@@@@@@", "suspended");
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("@@@@@@@@", "failure");
+
     }
 
     private void checkResolutionAndProceed() {
@@ -180,9 +184,10 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         if (requestCode == LocationTag) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    requestLocatipnUpdate();
+                    isSelectNoThanks = false;
                     break;
                 case Activity.RESULT_CANCELED:
+                    isSelectNoThanks = true;
                     gpsDisableAlert();
                     break;
             }
@@ -204,18 +209,20 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
 
     private void gpsDisableAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Alert");
-        builder.setMessage("You have to turn on locatin service to track order");
-        builder.setPositiveButton("Turn On", new DialogInterface.OnClickListener() {
+        builder.setTitle("GPS Disable!");
+        builder.setMessage("Please turn your device's GPS functionality, otherwise application functionality will not work.");
+        builder.setPositiveButton("Turn GPS On", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                isSelectNoThanks = false;
                 dialogInterface.dismiss();
                 checkResolutionAndProceed();
             }
         });
-        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("EXIT FROM APP.", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                isSelectNoThanks = false;
                 dialogInterface.dismiss();
                 finish();
             }
@@ -248,7 +255,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
 
     @SuppressWarnings("MissingPermission")
     protected void addGeofences() {
-
         if (!MySharedPreference.getInstance(GoogleServicesActivationActivity.this).getIsGeoFencingAdded()) {
             Log.e("@@@@@@@@@@@@", "GeoFence  added");
             mGeofencingClient = LocationServices.getGeofencingClient(this);
@@ -286,12 +292,13 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
 
     @SuppressWarnings("MissingPermission")
     protected void removeGeofences() {
-        mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                MySharedPreference.getInstance(GoogleServicesActivationActivity.this).setGeoFencingAdded(false);
-            }
-        });
+        if (mGeofencingClient != null)
+            mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    MySharedPreference.getInstance(GoogleServicesActivationActivity.this).setGeoFencingAdded(false);
+                }
+            });
     }
 
 
@@ -304,5 +311,34 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         return mGeofencePendingIntent;
     }
 
+    private void firePerimisionActivity(final Activity mActivity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("Permission Denied");
+        builder.setMessage("For access the application functionality you have to enable the required permission. otherwise application functionality will not work. \n Are you sure want to enable permission?");
+        builder.setPositiveButton("SETTING", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                isRationalPermissionDEtect = false;
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", mActivity.getPackageName(), null);
+                intent.setData(uri);
+                mActivity.startActivity(intent);
 
+            }
+        });
+        builder.setNegativeButton("EXIT FROM APP.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                isRationalPermissionDEtect = false;
+                dialogInterface.dismiss();
+                mActivity.finishAffinity();
+            }
+        });
+
+        builder.show();
+
+
+    }
 }

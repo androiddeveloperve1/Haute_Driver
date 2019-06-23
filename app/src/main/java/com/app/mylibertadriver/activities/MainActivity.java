@@ -123,7 +123,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         fragmentTasks.getTask();
         Log.e("@@@@@@@", "Resume Activity");
         DriverModel driverModel = MySharedPreference.getInstance(this).getUser();
-        Log.e("@@@@", "" + new Gson().toJson(driverModel));
         tv_name.setText(driverModel.getFname() + " " + driverModel.getLname());
         tv_mob.setText(driverModel.getMobile_no());
         updateProfile(driverModel.getAvtar());
@@ -299,4 +298,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
             }
         }
     }
+
+
 }

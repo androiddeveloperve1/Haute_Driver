@@ -39,8 +39,6 @@ public class DriverLocationUpdateService extends Worker {
     @Inject
     APIInterface apiInterface;
     private Context mContext;
-    private String geofenceLatitude;
-    private String geofenceLongitude;
     private PendingIntent geofencePendingIntent;
 
     public DriverLocationUpdateService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -52,8 +50,6 @@ public class DriverLocationUpdateService extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        geofenceLatitude = getInputData().getString("lat");
-        geofenceLongitude = getInputData().getString("longi");
         return startProgressNow();
     }
 
@@ -73,7 +69,6 @@ public class DriverLocationUpdateService extends Worker {
     }
 
     void sendDriverCurrentLocationToServer(LatLng latlng) {
-        Log.e("@@@@@@@@", "location updated in background");
         HashMap param = new HashMap();
         param.put("latitude", "" + latlng.latitude);
         param.put("longitude", "" + latlng.longitude);
