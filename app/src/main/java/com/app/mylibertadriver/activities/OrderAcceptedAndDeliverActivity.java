@@ -31,7 +31,6 @@ import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
-import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import com.google.android.gms.location.LocationResult;
@@ -112,10 +111,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
         mMap.clear();
         stopLocationUpdate();
-        orderDetails.setDistance(AppUtils.getDistanceBitweenLatlongInKM(
-                new LatLng(myCurrentLatLong.latitude, myCurrentLatLong.longitude),
-                new LatLng(orderDetails.getRestaurant_id().getLocation().getCoordinates().get(0), orderDetails.getRestaurant_id().getLocation().getCoordinates().get(1))
-        ) + " Km.");
+
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(OrderAcceptedAndDeliverActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLongUser);
         mMap.addMarker(myCurrentLatLongMarker);
@@ -141,6 +137,8 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+        orderDetails.setDistance(values[1].toString());
+        orderDetails.setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
     }
 
     void startSwipeDialog() {
@@ -210,7 +208,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     }
 
     void buildWorkManager() {
-        Log.e("@@@@@@@", "New Back Request");
         Data.Builder geofenceData = new Data.Builder();
         geofenceData.putString("lat", "" + delivarableLatLongUser.latitude);
         geofenceData.putString("longi", "" + delivarableLatLongUser.longitude);

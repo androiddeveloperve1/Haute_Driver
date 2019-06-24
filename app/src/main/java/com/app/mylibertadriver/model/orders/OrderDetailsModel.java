@@ -33,6 +33,20 @@ public class OrderDetailsModel extends BaseObservable {
     private String distance="Getting distance.....";
     private String order_no;
 
+    private String travelTime="0.0";
+
+
+    @Bindable
+    public String getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(String travelTime) {
+
+        this.travelTime = travelTime;
+        this.notifyPropertyChanged(BR.travelTime);
+    }
+
     @Bindable
     public UserModel getUser_id() {
         return user_id;

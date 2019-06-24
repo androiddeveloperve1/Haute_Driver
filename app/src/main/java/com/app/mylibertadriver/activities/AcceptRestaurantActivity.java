@@ -130,6 +130,11 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+        restaurantDetails.getOrderInfo().setDistance(values[1].toString());
+        restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+
+
+
     }
 
 

@@ -18,13 +18,16 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.AcceptRestaurantActivity;
 import com.app.mylibertadriver.activities.MyApplication;
+import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.FragmentTasksBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
+import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
+import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,7 +47,7 @@ import rx.schedulers.Schedulers;
  * Project SignupLibrary Screen
  */
 
-public class FragmentTasks extends Fragment {
+public class FragmentTasks extends Fragment  {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
@@ -104,17 +107,19 @@ public class FragmentTasks extends Fragment {
     }
 
 
-
-
     public void onUpdatedLocation(LocationResult locationResult) {
-        bindableModel.getOrderInfo().
+        new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
+                , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
+
+
+       /* bindableModel.getOrderInfo().
                 setDistance(
                         AppUtils.getDistanceBitweenLatlongInKM(
                                 new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
                                 new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1))
                         ) + " Km."
 
-                );
+                );*/
     }
 
 
@@ -136,6 +141,11 @@ public class FragmentTasks extends Fragment {
                 }
             }
         }
+    }
+
+    public void onTaskDone(String distance) {
+        bindableModel.getOrderInfo().
+                setDistance(distance);
     }
 
     public class Presenter {

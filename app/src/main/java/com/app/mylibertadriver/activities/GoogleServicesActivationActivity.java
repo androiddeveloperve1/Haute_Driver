@@ -30,7 +30,7 @@ import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
-import com.app.mylibertadriver.utils.GoogleConnectionCallBackAdapter;
+import com.app.mylibertadriver.interfaces.GoogleConnectionCallBackAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -247,7 +247,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
-            Log.e("@@@@@@@@@", "Location FOund");
             onUpdatedLocation(locationResult);
         }
     };

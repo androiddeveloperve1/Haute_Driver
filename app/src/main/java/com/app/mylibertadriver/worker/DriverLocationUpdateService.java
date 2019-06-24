@@ -39,7 +39,6 @@ public class DriverLocationUpdateService extends Worker {
     @Inject
     APIInterface apiInterface;
     private Context mContext;
-    private PendingIntent geofencePendingIntent;
 
     public DriverLocationUpdateService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

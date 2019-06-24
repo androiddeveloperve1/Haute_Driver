@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +27,7 @@ import com.app.mylibertadriver.interfaces.CommanTaskListener;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.utils.AppUtils;
-import com.app.mylibertadriver.utils.GoogleConnectionCallBackAdapter;
+import com.app.mylibertadriver.interfaces.GoogleConnectionCallBackAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -181,7 +180,6 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
-            Log.e("@@@@@@@@@", "Location FOund");
             onUpdatedLocation(locationResult);
         }
     };
@@ -216,17 +214,19 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
     private void firePerimisionActivity(final Activity mActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Permission Denied");
-        builder.setMessage("For access the application functionality you have to enable the required permission. otherwise application functionality will not work. \n Are you sure want to enable permission?");
+        builder.setMessage("For access the application functionality you have to enable  the required permission. otherwise application functionality will not work. \n Are you sure want to enable permission?");
         builder.setPositiveButton("SETTING", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
                 isRationalPermissionDEtect = false;
                 Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", mActivity.getPackageName(), null);
                 intent.setData(uri);
                 mActivity.startActivity(intent);
+
 
             }
         });

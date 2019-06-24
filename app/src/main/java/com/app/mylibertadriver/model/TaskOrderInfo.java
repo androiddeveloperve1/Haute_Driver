@@ -32,6 +32,18 @@ public class TaskOrderInfo extends BaseObservable {
     private RestaurantInfoModel restaurantInfo;
 
     private String distance="Getting distance.....";
+    private String travelTime="0.0";
+
+
+    @Bindable
+    public String getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(String travelTime) {
+        this.travelTime = travelTime;
+        this.notifyPropertyChanged(BR.travelTime);
+    }
 
     @Bindable
     public String get_id() {

@@ -27,6 +27,7 @@ import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentSupport;
 import com.app.mylibertadriver.fragments.FragmentTasks;
 import com.app.mylibertadriver.fragments.GoogleServiceActivationActivityForHandleFragment;
+import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.interfaces.ToolbarItemsClick;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
@@ -44,7 +45,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends GoogleServiceActivationActivityForHandleFragment {
+public class MainActivity extends GoogleServiceActivationActivityForHandleFragment implements TaskLoadedCallback {
     @Inject
     APIInterface apiInterface;
 
@@ -121,7 +122,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
     public void onResume() {
         super.onResume();
         fragmentTasks.getTask();
-        Log.e("@@@@@@@", "Resume Activity");
         DriverModel driverModel = MySharedPreference.getInstance(this).getUser();
         tv_name.setText(driverModel.getFname() + " " + driverModel.getLname());
         tv_mob.setText(driverModel.getMobile_no());
@@ -245,6 +245,11 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         stopLocationUpdate();
         fragmentTasks.onUpdatedLocation(locationResult);
 
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        fragmentTasks.onTaskDone(values[1].toString());
     }
 
     public class Presenter {

@@ -55,6 +55,8 @@ public class ResponseDialog {
     }
 
     public static Dialog showProgressDialog(Context mContext) {
+
+
         DialogProgressBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_progress, null, false);
         final Dialog termAndConditionDialog = new Dialog(mContext);
         termAndConditionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

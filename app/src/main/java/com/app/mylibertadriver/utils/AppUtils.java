@@ -13,10 +13,14 @@ import com.app.mylibertadriver.constants.Constants;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+
+//code improvement, handle permission gps, geofencing , distance and time ,
 
 /**
  * Create By Rahul Mangal
@@ -39,15 +43,6 @@ public class AppUtils {
         return cm.getActiveNetworkInfo() != null;
     }
 
-
-    private static double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private static double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
-
     public static Date getUTCDateObjectFromUTCTime(String data) {
         try {
             utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -66,39 +61,6 @@ public class AppUtils {
 
     }
 
-    public static String getDistanceBitweenLatlongInKM(LatLng from, LatLng to) {
-
-        Log.e("@@@@@", "FROM" + from.latitude + ":" + from.longitude + "--TO" + to.latitude + ":" + to.longitude);
-        double lat1 = from.latitude;
-        double lon1 = from.longitude;
-        double lat2 = to.latitude;
-        double lon2 = to.longitude;
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-
-        return String.format("%.2f", dist);  // in km*/
-
-
-       /* Location fromLocation = new Location("From");
-        fromLocation.setLatitude(from.latitude);
-        fromLocation.setLongitude(from.longitude);
-
-
-        Location toLocation = new Location("To");
-        toLocation.setLatitude(to.latitude);
-        toLocation.setLongitude(to.longitude);
-
-
-        return String.format("%.2f", (fromLocation.distanceTo(toLocation)) / 1000);  // in km*/
-
-    }
 
     public static String getUrlForDrawRoute(LatLng origin, LatLng dest, String directionMode) {
         // Origin of route
@@ -128,5 +90,26 @@ public class AppUtils {
     }
 
 
+    public static String getDrivingTimeFromValue(String value) {
+        Log.e("@@@@@@@@",""+value);
+        DecimalFormat f = new DecimalFormat("##.00");
+        String travelTime = "0 Mins";
+        try{
+            float valueFloat = Float.parseFloat(value) / 3600;
+            String valueString = String.valueOf(f.format(valueFloat));
+            String hours = valueString.split("\\.")[0];
+            String mins = valueString.split("\\.")[1];
+            if (hours.equals("0")) {
+                travelTime = mins + "Mins.";
+            } else if (mins.equals("0")) {
+                travelTime = hours + "Hours";
+            }else {
+                travelTime = hours + " Hours\n"+mins+" Min.(s)";
+            }
 
+        }catch (Exception e){}
+
+
+        return travelTime;
+    }
 }

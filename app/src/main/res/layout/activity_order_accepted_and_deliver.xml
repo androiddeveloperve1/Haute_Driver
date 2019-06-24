@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:fontStyleName="@{`Roboto_Regular.ttf`}"
                     android:gravity="center"
-                    android:text="ETA\n 1 min"
+                    android:text="@{data.travelTime}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12_px"
                     app:layout_constraintBottom_toBottomOf="@+id/rl_swipe_layout"
