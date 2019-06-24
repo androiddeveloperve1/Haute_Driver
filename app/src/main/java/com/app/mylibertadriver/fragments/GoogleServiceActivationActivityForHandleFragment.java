@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.interfaces.CommanTaskListener;
@@ -221,7 +222,7 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
     private void firePerimisionActivity(final Activity mActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Permission Denied");
-        builder.setMessage("For access the application functionality you have to enable  the required permission. otherwise application functionality will not work. \n Are you sure want to enable permission?");
+        builder.setMessage(getResources().getString(R.string.permission_require));
         builder.setPositiveButton("SETTING", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

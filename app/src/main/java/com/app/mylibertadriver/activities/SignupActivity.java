@@ -1,8 +1,12 @@
 package com.app.mylibertadriver.activities;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -31,6 +36,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -74,12 +80,12 @@ public class SignupActivity extends AppCompatActivity {
 
     void hitSignUp() {
         HashMap<String, String> param = new HashMap<>();
-        param.put("service_area", ""+binder.etServiceArea.getText().toString());
+        param.put("service_area", "" + binder.etServiceArea.getText().toString());
         param.put("fname", binder.etFname.getText().toString().trim());
         param.put("lname", binder.etLname.getText().toString().trim());
         param.put("email", binder.etEmail.getText().toString().trim());
         param.put("password", binder.etPass.getText().toString().trim());
-        param.put("country_code", "1");
+        param.put("country_code", binder.spnrCountry.getSelectedItem().toString().replace("+", ""));
         param.put("mobile_no", binder.etMob.getText().toString().trim());
         HashMap<String, String> location = new HashMap<>();
         location.put("type", "Point");
@@ -98,6 +104,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+
     public class Listener {
         public void onCurrentLocation(View e) {
             PermissionUtils.getInstance().checkAllPermission(SignupActivity.this, PermissionConstants.permissionArrayForLocation, new PermissionHandlerListener() {
@@ -112,7 +119,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 @Override
                 public void onRationalPermission(ArrayList<String> rationalPermissonList) {
-                    super.onRationalPermission(rationalPermissonList);
+                    PermissionUtils.firePerimisionActivity(SignupActivity.this);
                 }
             });
 

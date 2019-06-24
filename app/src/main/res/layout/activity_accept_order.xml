@@ -5,7 +5,7 @@
 
         <variable
             name="data"
-            type="com.app.mylibertadriver.model.orders.TaskModel" />
+            type="com.app.mylibertadriver.model.orders.TaskResponse" />
         <variable
             name="click"
             type="com.app.mylibertadriver.activities.AcceptOrderActivity.MyClick" />

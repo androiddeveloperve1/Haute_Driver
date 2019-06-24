@@ -77,7 +77,7 @@ public interface APIInterface {
 
 
     @GET(UrlConstants.TASK_DETAILS)
-    Observable<ApiResponseModel<TaskModel>> getTaskDetails();
+    Observable<ApiResponseModel<TaskResponse>> getTaskDetails();
 
 
     @GET(UrlConstants.ACCEPT_ORDER + "{id}")

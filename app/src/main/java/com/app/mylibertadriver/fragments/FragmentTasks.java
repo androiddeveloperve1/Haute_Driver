@@ -31,6 +31,7 @@ import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
+import com.app.mylibertadriver.model.orders.TaskResponse;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
@@ -57,7 +58,7 @@ public class FragmentTasks extends Fragment {
     @Inject
     APIInterface apiInterface;
     private FragmentTasksBinding binder;
-    private TaskModel bindableModel;
+    private TaskResponse bindableModel;
     private boolean isTaskAvailable = false;
     private MainActivity mainActivity;
 
@@ -77,7 +78,7 @@ public class FragmentTasks extends Fragment {
         apiInterface.getTaskDetails()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ApiResponseModel<TaskModel>>() {
+                .subscribe(new Subscriber<ApiResponseModel<TaskResponse>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -90,8 +91,9 @@ public class FragmentTasks extends Fragment {
 
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
-                    public void onNext(ApiResponseModel<TaskModel> response) {
+                    public void onNext(ApiResponseModel<TaskResponse> response) {
                         progressDialog.dismiss();
+                        Log.e("@@@@@@@", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
                             isTaskAvailable = true;
                             binder.rlTask.setVisibility(View.VISIBLE);
@@ -203,9 +205,7 @@ public class FragmentTasks extends Fragment {
                 mIntent.putExtra("data", new Gson().toJson(bindableModel));
                 startActivity(mIntent);
             }
-
         }
-
         public void onNewTaskClicked(View view) {
             Intent mIntent = new Intent(getActivity(), AcceptOrderActivity.class);
             mIntent.putExtra("data", new Gson().toJson(bindableModel));

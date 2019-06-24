@@ -2,6 +2,7 @@ package com.app.mylibertadriver.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -42,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -217,11 +221,14 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
                 @Override
                 public void onRationalPermission(ArrayList<String> rationalPermissonList) {
-                    super.onRationalPermission(rationalPermissonList);
+                    PermissionUtils.firePerimisionActivity(UploadDocumentActivity.this);
+
+
                 }
             });
 
         }
+
 
         public void pickDrivingLicImage(View e) {
 

@@ -23,6 +23,8 @@ can start using app via email/Phone call</string>
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
+    <string name="permission_require">For access the application functionality you have to enable the required permission. otherwise application functionality will not work.
+ Are you sure want to enable permission?</string>
 
     <string name="unknown_geofence_error">
         Unknown error: the Geofence service is not available now
@@ -36,4 +38,12 @@ can start using app via email/Phone call</string>
     <string name="geofence_too_many_pending_intents">
         You have provided too many PendingIntents to the addGeofences() call
     </string>
+
+    <string-array name="country_list">
+        <item>+1</item>
+        <item>+91</item>
+
+    </string-array>
+
+
 </resources>

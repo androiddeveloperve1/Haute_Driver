@@ -20,6 +20,7 @@ import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
+import com.app.mylibertadriver.model.orders.TaskResponse;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
@@ -52,17 +53,19 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     private GoogleMap mMap;
     private Polyline currentPolyline;
     private LatLng myCurrentLatLong = null;
-    private LatLng delivarableLatLong = new LatLng(27.176670, 78.008072);
-    private TaskModel orderData;
+    private LatLng delivarableLatLong = null;
+    private TaskResponse orderData;
     private ActivityAcceptOrderBinding binder;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_order);
-        orderData = new Gson().fromJson(getIntent().getStringExtra("data"), TaskModel.class);
+        orderData = new Gson().fromJson(getIntent().getStringExtra("data"), TaskResponse.class);
+
+        delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0),
+                orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
+        Log.e("@@@@", new Gson().toJson(delivarableLatLong));
         binder.setData(orderData);
         binder.setClick(new MyClick());
         binder.swipeView.setEventListener(new SwipeListener() {
@@ -161,6 +164,10 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
     }
 
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
+    }
 
     public class MyClick {
 
@@ -171,11 +178,6 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         public void onCall(View v) {
             AppUtils.requestCall(AcceptOrderActivity.this, orderData.getOrderInfo().getRestaurantInfo().getContact_no());
         }
-    }
-
-    @Override
-    public void onNoInternetFound() {
-        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 }
 

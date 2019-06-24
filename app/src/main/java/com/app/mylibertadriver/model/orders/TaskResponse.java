@@ -24,7 +24,6 @@ public class TaskResponse extends BaseObservable {
     private String driver_id;
     private String createdAt;
     private String updatedAt;
-    @SerializedName("OrderInfo")
     private TaskOrderInfo orderInfo;
 
     @Bindable

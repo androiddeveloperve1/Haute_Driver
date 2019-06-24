@@ -2,12 +2,14 @@ package com.app.mylibertadriver.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -156,6 +159,7 @@ public class FragmentProfile extends Fragment {
         }
 
     }
+
     private void uploadImage(MultipartBody.Part part) {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
         ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
@@ -187,6 +191,8 @@ public class FragmentProfile extends Fragment {
                     }
                 });
     }
+
+
 
     public class Presenter {
         public void onCollpase(View view) {
@@ -220,7 +226,9 @@ public class FragmentProfile extends Fragment {
 
                 @Override
                 public void onRationalPermission(ArrayList<String> rationalPermissonList) {
-                    super.onRationalPermission(rationalPermissonList);
+                    PermissionUtils.firePerimisionActivity(getActivity());
+
+
                 }
             });
         }

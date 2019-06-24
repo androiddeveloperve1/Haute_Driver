@@ -30,6 +30,7 @@ import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
+import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +48,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -59,7 +61,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     private Polyline currentPolyline;
     private ActivityAcceptRestaurantBinding binder;
     private TaskModel restaurantDetails;
-    private OneTimeWorkRequest.Builder driverLocationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(restaurantLatlong, 8));
         new FetchURL(AcceptRestaurantActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
-        listentoBackground();
+        WorkUtils.startBackgroundService();
 
     }
 
@@ -135,7 +136,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         restaurantDetails.getOrderInfo().setDistance(values[1].toString());
         restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
-
 
 
     }
@@ -158,40 +158,16 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
     void onRestaurantSelected() {
         removeGeofences();
-        WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
+        WorkUtils.stopBackgroundService();
         Intent intent = new Intent(AcceptRestaurantActivity.this, ReachedRestaurantActivty.class);
         intent.putExtra("order_id", restaurantDetails.getOrder_id());
         startActivity(intent);
         finish();
     }
 
-    void listentoBackground() {
-        try {
-            ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(Constants.BACKGROUND_WORKER_REQUEST);
-            List<WorkInfo> work2 = work.get();
-            if (work2.size() > 0) {
-                if (work2.get(0).getState().isFinished()) {
-                    buildWorkManager();
-                    OneTimeWorkRequest req = driverLocationRequest.build();
-                    WorkManager.getInstance().enqueue(req);
-
-                }
-            } else {
-                buildWorkManager();
-                OneTimeWorkRequest req = driverLocationRequest.build();
-                WorkManager.getInstance().enqueue(req);
-            }
-        } catch (Exception e) {
-
-        }
-
-    }
-
-    void buildWorkManager() {
-        driverLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
-        driverLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
-        driverLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
-        driverLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
+    @Override
+    public void onNoInternetFound() {
+        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 
     public class MyClick {
@@ -207,10 +183,5 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         public void onCall(View v) {
             AppUtils.requestCall(AcceptRestaurantActivity.this, "" + restaurantDetails.getOrderInfo().getRestaurantInfo().getContact_no());
         }
-    }
-
-    @Override
-    public void onNoInternetFound() {
-        ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
     }
 }

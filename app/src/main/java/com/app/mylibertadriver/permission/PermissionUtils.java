@@ -3,15 +3,21 @@ package com.app.mylibertadriver.permission;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.PermissionConstants;
 
 import java.util.ArrayList;
@@ -20,6 +26,7 @@ import java.util.List;
 
 // PermissionUtils.getInstance().checkAllPermission(mAcivity, permissonArray, listener);
 //PermissionUtils.getInstance().hendlePermission(mAcivity, requestCode, permissions, grantResults);
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -73,6 +80,35 @@ public class PermissionUtils {
             }
         }
         return isPermissionGranted;
+    }
+
+    public static void firePerimisionActivity(final Activity mActivity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("Permission Denied");
+        builder.setMessage(mActivity.getResources().getString(R.string.permission_require));
+        builder.setPositiveButton("SETTING", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", mActivity.getPackageName(), null);
+                intent.setData(uri);
+                mActivity.startActivity(intent);
+
+            }
+        });
+        builder.setNegativeButton("EXIT FROM APP.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                mActivity.finishAffinity();
+            }
+        });
+
+        builder.show();
+
+
     }
 
     public void checkAllPermission(Activity mContext, String permissionArray[], PermissionHandlerListener listener) {

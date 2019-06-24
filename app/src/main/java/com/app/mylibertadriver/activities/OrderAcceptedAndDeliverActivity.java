@@ -38,6 +38,7 @@ import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
+import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,7 +78,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     private LatLng myCurrentLatLong = null;
     private Polyline currentPolyline;
     private OrderDetailsModel orderDetails;
-    private OneTimeWorkRequest.Builder userLocationRequest;
     private SwipeViewDialog orderDeliveredDialog;
     SwipeListener orderDeliver = new SwipeListener() {
         @Override
@@ -120,7 +120,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
             @Override
             public void Swiped(int flag) {
                 if (flag == SwipeView.SWIPED_RIGHT) {
-                    WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
+                    WorkUtils.stopBackgroundService();
                     startSwipeDialog();
                 }
             }
@@ -157,7 +157,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
         new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
-        listentoBackground();
+        WorkUtils.startBackgroundService();
 
     }
 
@@ -182,40 +182,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
     }
 
-    void listentoBackground() {
-        try {
-            ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(Constants.BACKGROUND_WORKER_REQUEST);
-            List<WorkInfo> work2 = work.get();
-            if (work2.size() > 0) {
-                if (work2.get(0).getState().isFinished()) {
-                    buildWorkManager();
-                    OneTimeWorkRequest req = userLocationRequest.build();
-                    WorkManager.getInstance().enqueue(req);
-
-                }
-            } else {
-                buildWorkManager();
-                OneTimeWorkRequest req = userLocationRequest.build();
-                WorkManager.getInstance().enqueue(req);
-
-            }
-        } catch (Exception e) {
-
-        }
-
-    }
-
-    void buildWorkManager() {
-        Data.Builder geofenceData = new Data.Builder();
-        geofenceData.putString("lat", "" + delivarableLatLongUser.latitude);
-        geofenceData.putString("longi", "" + delivarableLatLongUser.longitude);
-        Log.e("@@@@@@@", "New Back Request");
-        userLocationRequest = new OneTimeWorkRequest.Builder(DriverLocationUpdateService.class);
-        userLocationRequest.addTag(Constants.BACKGROUND_WORKER_REQUEST);
-        userLocationRequest.setInputData(geofenceData.build());
-        userLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
-        userLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
-    }
 
     void enableButton() {
         binder.swipeView.enableSwipe();
