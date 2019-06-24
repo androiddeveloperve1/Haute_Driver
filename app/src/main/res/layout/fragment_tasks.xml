@@ -34,6 +34,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -51,6 +52,19 @@
                     android:visibility="gone" />
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_no_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                android:text="There is no Task for you!"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20_px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -103,7 +103,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     @Override
     public void onUpdatedLocation(LocationResult locationResult) {
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
-        Log.e("@@@@current latlong", "" + myCurrentLatLong.latitude + ":" + myCurrentLatLong.longitude);
         stopLocationUpdate();
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(AcceptRestaurantActivity.this)));
         MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(restaurantLatlong);
@@ -171,7 +170,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
             ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(Constants.BACKGROUND_WORKER_REQUEST);
             List<WorkInfo> work2 = work.get();
             if (work2.size() > 0) {
-                Log.e("@@@@@@@", "Already Request and its status is" + work2.get(0).getState().name());
                 if (work2.get(0).getState().isFinished()) {
                     buildWorkManager();
                     OneTimeWorkRequest req = driverLocationRequest.build();

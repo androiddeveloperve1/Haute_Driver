@@ -66,7 +66,6 @@ public class GoogleApiUtils {
                     sb.append("?placeid=" + URLEncoder.encode(placeID, "utf8"));
                     sb.append("&key=" + Constants.API_KEY);
                     URL url = new URL(sb.toString());
-                    Log.e("@@@@@@@@@", "" + url);
                     conn = (HttpURLConnection) url.openConnection();
                     InputStreamReader in = new InputStreamReader(conn.getInputStream());
                     int read;
@@ -79,11 +78,9 @@ public class GoogleApiUtils {
                     Double lng = Double.valueOf(0);
                     lat = (Double) jsonObj.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").get("lat");
                     lng = (Double) jsonObj.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").get("lng");
-                    Log.e("@@@@@@", "" + lat + "-" + lng);
                     listener.onAddressFound(new LatLng(lat, lng));
                 } catch (Exception e) {
                     listener.onAddressError(e.getLocalizedMessage());
-                    Log.e("@@@@@@@@@@", "Error connecting to Places API", e);
                 } finally {
                     if (conn != null) {
                         conn.disconnect();
@@ -100,7 +97,6 @@ public class GoogleApiUtils {
         new AsyncTask<LatLng, Void, String>() {
             @Override
             protected String doInBackground(LatLng... strings) {
-                Log.e("@@@@@@@@", "" + strings[0]);
                 String urlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + strings[0].latitude + "," + strings[0].longitude + "&key=" + Constants.API_KEY;
                 HttpURLConnection conn = null;
                 StringBuilder jsonResults = new StringBuilder();
@@ -122,10 +118,8 @@ public class GoogleApiUtils {
                     } else {
                         listener.onAddressError("No Address found");
                     }
-                    Log.e("@@@@@@@@", jsonResults.toString());
                 } catch (Exception e) {
                     listener.onAddressError("No Address found");
-                    Log.e("@@@@@@@@", "" + e.getMessage());
                 } finally {
                     if (conn != null) {
                         conn.disconnect();

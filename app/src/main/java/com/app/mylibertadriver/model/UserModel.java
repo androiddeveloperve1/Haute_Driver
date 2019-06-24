@@ -10,10 +10,11 @@ import com.app.mylibertadriver.BR;
  * Project SignupLibrary Screen
  */
 
-public class UserModel  extends BaseObservable{
+public class UserModel extends BaseObservable {
     private String _id;
     private String fname;
     private String lname;
+    private String name;
     private String email;
     private String avatar;
     private String mobile_no;
@@ -21,43 +22,18 @@ public class UserModel  extends BaseObservable{
     private DeliveryAddress delivery_address;
 
     @Bindable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.notifyPropertyChanged(BR.name);
+    }
+
+    @Bindable
     public String get_id() {
         return _id;
-    }
-
-    @Bindable
-    public String getFname() {
-        return fname;
-    }
-
-    @Bindable
-    public String getLname() {
-        return lname;
-    }
-
-    @Bindable
-    public String getEmail() {
-        return email;
-    }
-
-    @Bindable
-    public String getAvatar() {
-        return avatar;
-    }
-
-    @Bindable
-    public String getMobile_no() {
-        return mobile_no;
-    }
-
-    @Bindable
-    public String getCountry_code() {
-        return country_code;
-    }
-
-    @Bindable
-    public DeliveryAddress getDelivery_address() {
-        return delivery_address;
     }
 
     public void set_id(String _id) {
@@ -65,9 +41,19 @@ public class UserModel  extends BaseObservable{
         this.notifyPropertyChanged(BR._id);
     }
 
+    @Bindable
+    public String getFname() {
+        return fname;
+    }
+
     public void setFname(String fname) {
         this.fname = fname;
         this.notifyPropertyChanged(BR.fname);
+    }
+
+    @Bindable
+    public String getLname() {
+        return lname;
     }
 
     public void setLname(String lname) {
@@ -75,9 +61,19 @@ public class UserModel  extends BaseObservable{
         this.notifyPropertyChanged(BR.lname);
     }
 
+    @Bindable
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
         this.notifyPropertyChanged(BR.email);
+    }
+
+    @Bindable
+    public String getAvatar() {
+        return avatar;
     }
 
     public void setAvatar(String avatar) {
@@ -85,14 +81,29 @@ public class UserModel  extends BaseObservable{
         this.notifyPropertyChanged(BR.avatar);
     }
 
+    @Bindable
+    public String getMobile_no() {
+        return mobile_no;
+    }
+
     public void setMobile_no(String mobile_no) {
         this.mobile_no = mobile_no;
         this.notifyPropertyChanged(BR.mobile_no);
     }
 
+    @Bindable
+    public String getCountry_code() {
+        return country_code;
+    }
+
     public void setCountry_code(String country_code) {
         this.country_code = country_code;
         this.notifyPropertyChanged(BR.country_code);
+    }
+
+    @Bindable
+    public DeliveryAddress getDelivery_address() {
+        return delivery_address;
     }
 
     public void setDelivery_address(DeliveryAddress delivery_address) {

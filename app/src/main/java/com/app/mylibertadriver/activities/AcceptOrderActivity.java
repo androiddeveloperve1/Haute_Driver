@@ -116,7 +116,6 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                     public void onNext(ApiResponseModel response) {
                         progressDialog.dismiss();
                         Toast.makeText(AcceptOrderActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             finish();
                         } else {

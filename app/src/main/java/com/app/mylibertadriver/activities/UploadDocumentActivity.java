@@ -207,7 +207,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
                 @Override
                 public void onReject(ArrayList<String> remainsPermissonList) {
-                    Log.e("@@@@@@@@@@@", "Permission Rejected");
                 }
 
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -236,7 +235,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
                 @Override
                 public void onReject(ArrayList<String> remainsPermissonList) {
-                    Log.e("@@@@@@@@@@@", "Permission Rejected");
                 }
 
                 @RequiresApi(api = Build.VERSION_CODES.M)

@@ -210,7 +210,6 @@ public class FragmentProfile extends Fragment {
 
                 @Override
                 public void onReject(ArrayList<String> remainsPermissonList) {
-                    Log.e("@@@@@@@@@@@", "Permission Rejected");
                 }
 
                 @RequiresApi(api = Build.VERSION_CODES.M)

@@ -108,7 +108,6 @@ public class SignupActivity extends AppCompatActivity {
 
                 @Override
                 public void onReject(ArrayList<String> remainsPermissonList) {
-                    Log.e("@@@@@@@@@@@", "Permission Rejected");
                 }
 
                 @Override

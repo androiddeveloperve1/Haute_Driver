@@ -20,7 +20,9 @@ public class UrlConstants {
     public static final String UPDATE_DRIVER_LOCATION = DRIVER + "/update-driver-location";
     public static final String TASK_DETAILS = DRIVER + "/get-task-list";
     public static final String ACCEPT_ORDER = DRIVER + "/accept-order";
-    public static final String PICKED_ORDER = DRIVER + "/pickup-order";
+    public static final String PICKED_ORDER = DRIVER + "/pickup-order/";
+    public static final String GET_ALL_TASK = DRIVER + "/get-all-task";
+    public static final String ORDER_DELIVERED = DRIVER + "/deliver-order/";
 
 
 }

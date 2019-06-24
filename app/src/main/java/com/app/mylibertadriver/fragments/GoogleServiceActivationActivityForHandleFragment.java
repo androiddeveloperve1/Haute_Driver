@@ -44,6 +44,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 
 import java.util.ArrayList;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -51,11 +52,22 @@ import java.util.ArrayList;
 public abstract class GoogleServiceActivationActivityForHandleFragment extends AppCompatActivity implements GoogleConnectionCallBackAdapter, CommanTaskListener {
 
     public static final int LocationTag = 14001;
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
     protected static boolean isRationalPermissionDEtect = false;
     protected boolean isSelectNoThanks = false;
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            // super.onLocationResult(locationResult);
+            try {
+                onUpdatedLocation(locationResult);
+            } catch (Exception e) {
 
+            }
+
+        }
+    };
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -179,14 +191,6 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
 
     }
 
-    LocationCallback mLocationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            onUpdatedLocation(locationResult);
-        }
-    };
-
     public void stopLocationUpdate() {
         LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).removeLocationUpdates(mLocationCallback);
 
@@ -204,7 +208,7 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
         if (requestCode == LocationTag) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    isSelectNoThanks=false;
+                    isSelectNoThanks = false;
                     break;
                 case Activity.RESULT_CANCELED:
                     isSelectNoThanks = true;

@@ -337,7 +337,6 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
                     WorkManager.getInstance().enqueue(req);
                 }
             } else {
-                Log.e("@@@@@@@", "New Request");
                 OneTimeWorkRequest req = driverLocationRequest.build();
                 WorkManager.getInstance().enqueue(req);
                 WorkManager.getInstance().getWorkInfoByIdLiveData(req.getId()).observe(TrackingActivity.this, new Observer<WorkInfo>() {

@@ -22,7 +22,6 @@ public class FragmentTransactionUtils {
         FragmentManager mngr = ((AppCompatActivity) context).getSupportFragmentManager();
         boolean fragmentPopped = mngr.popBackStackImmediate(Tag, 0);
         if (!fragmentPopped && mngr.findFragmentByTag(Tag) == null) {
-            Log.e("@@@@@@", "ReplACED");
             FragmentTransaction ft = mngr.beginTransaction();
             ft.replace(layout, fragment, Tag);
             ft.addToBackStack(Tag);
@@ -36,7 +35,6 @@ public class FragmentTransactionUtils {
         FragmentManager mngr = ((AppCompatActivity) context).getSupportFragmentManager();
         boolean fragmentPopped = mngr.popBackStackImmediate(Tag, 0);
         if (!fragmentPopped && mngr.findFragmentByTag(Tag) == null) {
-            Log.e("@@@@@@", "Created");
             FragmentTransaction ft = mngr.beginTransaction();
             ft.add(layout, fragment, Tag);
             ft.addToBackStack(Tag);

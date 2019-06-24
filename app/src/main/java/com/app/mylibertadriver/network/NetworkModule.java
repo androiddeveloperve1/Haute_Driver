@@ -68,8 +68,6 @@ public class NetworkModule {
                         Request d = request.build();
 
                         Response response = chain.proceed(d);
-                        Log.e("Request", d.url().toString());
-                        Log.e("params", new Gson().toJson(d.body()));
 
                         if (response.code() == 401) {
                             MySharedPreference.getInstance(applicationContext).clearMyPreference();

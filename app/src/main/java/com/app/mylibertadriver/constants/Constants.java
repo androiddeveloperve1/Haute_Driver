@@ -26,6 +26,10 @@ public class Constants {
     public static final String NO_INTERNET_CONNECTION_FOUND_MESSAGE="Please make sure, that you are connected to internet.";
 
 
-
+    public static String  DELIVERY_STATUS_0 = "New Order";
+    public static String  DELIVERY_STATUS_1 = "Accepted";
+    public static String  DELIVERY_STATUS_2 = "Rejected";
+    public static String  DELIVERY_STATUS_3 = "Picked up";
+    public static String  DELIVERY_STATUS_4 = "Delivered";
 
 }

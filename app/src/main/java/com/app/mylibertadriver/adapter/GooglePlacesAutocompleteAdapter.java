@@ -116,7 +116,6 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Fil
             }
 
         } catch (Exception e) {
-            Log.e("@@@@@@@@", "" + e.getMessage());
             return resultList;
 
         } finally {
@@ -140,12 +139,10 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Fil
             placeIdList = new ArrayList(predsJsonArray.length());
 
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                Log.e("@@@@@@@@", "Results" + predsJsonArray.getJSONObject(i).getString("description"));
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
                 placeIdList.add(predsJsonArray.getJSONObject(i).getString("place_id"));
             }
         } catch (JSONException e) {
-            Log.e("@@@@@@", "Cannot process JSON results", e);
         }
         return resultList;
     }

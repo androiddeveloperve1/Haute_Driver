@@ -6,7 +6,10 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
+import com.app.mylibertadriver.model.orders.TaskModelResponse;
+import com.app.mylibertadriver.model.orders.TaskResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.MultipartBody;
@@ -18,6 +21,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import rx.Observable;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -67,9 +71,6 @@ public interface APIInterface {
     Observable<ApiResponseModel<DriverModel>> getUserProfile();
 
 
-
-
-
     @Headers("Content-Type: application/json")
     @POST(UrlConstants.UPDATE_DRIVER_LOCATION)
     Observable<ApiResponseModel> updateDriverLocation(@Body HashMap<String, String> body);
@@ -88,6 +89,12 @@ public interface APIInterface {
 
     @GET(UrlConstants.PICKED_ORDER + "{id}")
     Observable<ApiResponseModel> orderPicked(@Path("id") String orderId);
+
+    @GET(UrlConstants.GET_ALL_TASK)
+    Observable<ApiResponseModel<TaskModelResponse>> getTaskList();
+
+    @GET(UrlConstants.ORDER_DELIVERED+ "{id}")
+    Observable<ApiResponseModel> deliverOrderNow(@Path("id") String orderId);
 
 
 }

@@ -1,6 +1,7 @@
 package com.app.mylibertadriver.activities;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
@@ -28,7 +30,10 @@ import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.dialogs.SwipeViewDialog;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
+import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
+import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.SwipeView;
@@ -50,11 +55,21 @@ import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
  */
 public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
+    @Inject
+    APIInterface apiInterface;
+
 
     ActivityOrderAcceptedAndDeliverBinding binder;
     private GoogleMap mMap;
@@ -64,7 +79,25 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     private OrderDetailsModel orderDetails;
     private OneTimeWorkRequest.Builder userLocationRequest;
     private SwipeViewDialog orderDeliveredDialog;
+    SwipeListener orderDeliver = new SwipeListener() {
+        @Override
+        public void swipeStarted() {
 
+        }
+
+
+        @Override
+        public void onCrossButton() {
+            binder.swipeView.swipeLeft();
+
+        }
+
+        @Override
+        public void Swiped(int flag) {
+            orderDeliveredDialog.dismiss();
+            orderDelivered();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +130,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -150,43 +182,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
     }
 
-    SwipeListener orderDeliver = new SwipeListener() {
-        @Override
-        public void swipeStarted() {
-
-        }
-
-
-        @Override
-        public void onCrossButton() {
-            binder.swipeView.swipeLeft();
-
-        }
-
-        @Override
-        public void Swiped(int flag) {
-            orderDeliveredDialog.dismiss();
-            finish();
-        }
-    };
-
-    public class MyClick {
-        public void onBack(View v) {
-            finish();
-        }
-
-        public void onCall(View v) {
-            AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getRestaurant_id().getContact_no());
-        }
-
-        public void onNavifationStart(View v) {
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + myCurrentLatLong.latitude + "," + myCurrentLatLong.longitude + "+&daddr=" + delivarableLatLongUser.latitude + "," + delivarableLatLongUser.longitude));
-            startActivity(intent);
-        }
-
-    }
-
-
     void listentoBackground() {
         try {
             ListenableFuture<List<WorkInfo>> work = WorkManager.getInstance().getWorkInfosByTag(Constants.BACKGROUND_WORKER_REQUEST);
@@ -228,7 +223,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         binder.ivNavigation.setVisibility(View.GONE);
     }
 
-
     void disableButton() {
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
@@ -238,5 +232,51 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     @Override
     public void onNoInternetFound() {
         ResponseDialog.showErrorDialog(this, Constants.NO_INTERNET_CONNECTION_FOUND_TAG);
+    }
+
+    private void orderDelivered() {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(OrderAcceptedAndDeliverActivity.this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.deliverOrderNow(orderDetails.get_id())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(OrderAcceptedAndDeliverActivity.this, throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel response) {
+                        progressDialog.dismiss();
+                        Toast.makeText(OrderAcceptedAndDeliverActivity.this, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (response.getStatus().equals("200")) {
+                            finish();
+                        } else {
+                            ResponseDialog.showErrorDialog(OrderAcceptedAndDeliverActivity.this, response.getMessage());
+                        }
+                    }
+                });
+    }
+
+    public class MyClick {
+        public void onBack(View v) {
+            finish();
+        }
+
+        public void onCall(View v) {
+            AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getRestaurant_id().getContact_no());
+        }
+
+        public void onNavifationStart(View v) {
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + myCurrentLatLong.latitude + "," + myCurrentLatLong.longitude + "+&daddr=" + delivarableLatLongUser.latitude + "," + delivarableLatLongUser.longitude));
+            startActivity(intent);
+        }
+
     }
 }

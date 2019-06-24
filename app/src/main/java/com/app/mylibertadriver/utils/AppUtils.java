@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 
@@ -29,6 +30,7 @@ import java.util.TimeZone;
 
 public class AppUtils {
     static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    static DateFormat humanFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static boolean eMailValidation(CharSequence target) {
         if (target == null) {
@@ -91,10 +93,9 @@ public class AppUtils {
 
 
     public static String getDrivingTimeFromValue(String value) {
-        Log.e("@@@@@@@@",""+value);
         DecimalFormat f = new DecimalFormat("##.00");
         String travelTime = "0 Mins";
-        try{
+        try {
             float valueFloat = Float.parseFloat(value) / 3600;
             String valueString = String.valueOf(f.format(valueFloat));
             String hours = valueString.split("\\.")[0];
@@ -103,13 +104,44 @@ public class AppUtils {
                 travelTime = mins + "Mins.";
             } else if (mins.equals("0")) {
                 travelTime = hours + "Hours";
-            }else {
-                travelTime = hours + " Hours\n"+mins+" Min.(s)";
+            } else {
+                travelTime = hours + " Hours\n" + mins + " Min.(s)";
             }
 
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
 
         return travelTime;
+    }
+
+
+    public static String getTextFromStatus(String status) {
+
+        String flag = null;
+        if (status.equals("0")) {
+            flag = Constants.DELIVERY_STATUS_0;
+        } else if (status.equals("1")) {
+            flag = Constants.DELIVERY_STATUS_1;
+        } else if (status.equals("2")) {
+            flag = Constants.DELIVERY_STATUS_2;
+        } else if (status.equals("3")) {
+            flag = Constants.DELIVERY_STATUS_3;
+        } else if (status.equals("4")) {
+            flag = Constants.DELIVERY_STATUS_4;
+        }
+        return flag;
+    }
+
+
+    public static String getHumanReadableTimeFromUTCString(String status) {
+        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            return humanFormat.format(utcFormat.parse(status));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

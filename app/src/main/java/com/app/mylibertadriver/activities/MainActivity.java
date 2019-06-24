@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -62,6 +63,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
     private ImageView toolbar_refresh;
     private ImageView img_user;
     private DrawerLayout drawer;
+    private FragmentTasks fragmentTasks = new FragmentTasks();
     ToolbarItemsClick toolClicks = new ToolbarItemsClick() {
         @Override
         public void onHumburgurCick(View v) {
@@ -78,13 +80,14 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
             //startActivity(new Intent(MainActivity.this, TrackingActivity.class));
         }
     };
-
-    private FragmentTasks fragmentTasks = new FragmentTasks();
     private FragmentEarning fragmentEarning = new FragmentEarning();
     private FragmentProfile fragmentProfile = new FragmentProfile();
     private FragmentSupport fragmentSupport = new FragmentSupport();
     private ActivityMainBinding binder;
     private Presenter p = new Presenter();
+
+    public LocationResult mLocationResult;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -129,6 +132,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         tv_name.setText(driverModel.getFname() + " " + driverModel.getLname());
         tv_mob.setText(driverModel.getMobile_no());
         updateProfile(driverModel.getAvtar());
+
 
     }
 
@@ -190,7 +194,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     @Override
                     public void onNext(ApiResponseModel response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             MySharedPreference.getInstance(MainActivity.this).clearMyPreference();
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -222,7 +225,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     @Override
                     public void onNext(ApiResponseModel<DriverModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             MySharedPreference.getInstance(MainActivity.this).setUser(response.getData());
                         } else {
@@ -245,9 +247,9 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
 
     @Override
     public void onUpdatedLocation(LocationResult locationResult) {
+        mLocationResult = locationResult;
         stopLocationUpdate();
         fragmentTasks.onUpdatedLocation(locationResult);
-
     }
 
     @Override
@@ -274,6 +276,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     changeTheToolbarTitle("Tasks");
                     toolbar_refresh.setVisibility(View.VISIBLE);
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
+                    fragmentTasks.getTask();
                     break;
                 case R.id.tv_earnings:
                     tv_tasks.setTextColor(getResources().getColor(R.color.gray_text));

@@ -268,7 +268,7 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
                             77.397034,
                             500
                     )
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setExpirationDuration(Geofence.GEOFENCE_TRANSITION_ENTER)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                             Geofence.GEOFENCE_TRANSITION_EXIT)
                     // Create the geofence.

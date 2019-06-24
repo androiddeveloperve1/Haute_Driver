@@ -8,9 +8,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.mylibertadriver.BR;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.databinding.ItemTodayEarningBinding;
 import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
+import com.app.mylibertadriver.model.orders.OrderItemModel;
+import com.app.mylibertadriver.model.orders.TaskResponse;
+
+import java.util.ArrayList;
 
 /**
  * Create By Rahul Mangal
@@ -19,9 +24,11 @@ import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 
 public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapter.MyViewHolder> {
     RecycleItemClickListener listenr;
+    ArrayList<TaskResponse> list;
 
-    public TodayEarningAdapter(RecycleItemClickListener listenr) {
+    public TodayEarningAdapter(ArrayList<TaskResponse> list, RecycleItemClickListener listenr) {
         this.listenr = listenr;
+        this.list = list;
     }
 
     @NonNull
@@ -35,12 +42,12 @@ public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapte
 
     @Override
     public void onBindViewHolder(@NonNull TodayEarningAdapter.MyViewHolder holder, int i) {
-        //holder.bind(item);
+        holder.bind(list.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return list.size();
     }
 
 
@@ -52,6 +59,11 @@ public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapte
             this.binding = databinding;
         }
 
+        public void bind(TaskResponse data) {
+            this.binding.setVariable(BR.data, data);
+            this.binding.setVariable(BR.position, getAdapterPosition());
+            this.binding.executePendingBindings();
+        }
 
     }
 }

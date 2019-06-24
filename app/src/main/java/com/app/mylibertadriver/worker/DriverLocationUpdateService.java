@@ -86,7 +86,6 @@ public class DriverLocationUpdateService extends Worker {
 
                     @Override
                     public void onNext(ApiResponseModel response) {
-                        Log.e("@@@@Location To Server", new Gson().toJson(response));
                     }
                 });
     }

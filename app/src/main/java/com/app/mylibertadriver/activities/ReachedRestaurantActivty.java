@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -60,12 +61,8 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
             @Override
             public void Swiped(int flag) {
                 if (flag == SwipeView.SWIPED_RIGHT) {
+                    itemCollected();
 
-
-                    Intent mIntent = new Intent(ReachedRestaurantActivty.this, OrderAcceptedAndDeliverActivity.class);
-                    mIntent.putExtra("data", new Gson().toJson(orderDetails));
-                    startActivity(mIntent);
-                    finish();
                 }
             }
         });
@@ -94,14 +91,12 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                     public void onNext(ApiResponseModel<OrderDetailsModel> response) {
                         progressDialog.dismiss();
                         Toast.makeText(ReachedRestaurantActivty.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("6666666Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             orderDetails = response.getData();
                             binder.setData(orderDetails);
                             binder.setMAdapter(new OrderItemAdapter(orderDetails.getOrder(), new RecycleItemClickListener() {
                                 @Override
                                 public void onItemClicked(int position, Object data) {
-                                    Log.e("@@@@@@", "click");
                                 }
                             }));
 
@@ -133,8 +128,11 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                     public void onNext(ApiResponseModel response) {
                         progressDialog.dismiss();
                         Toast.makeText(ReachedRestaurantActivty.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
+                            Intent mIntent = new Intent(ReachedRestaurantActivty.this, OrderAcceptedAndDeliverActivity.class);
+                            mIntent.putExtra("data", new Gson().toJson(orderDetails));
+                            startActivity(mIntent);
+                            finish();
                         } else {
                             ResponseDialog.showErrorDialog(ReachedRestaurantActivty.this, response.getMessage());
                         }

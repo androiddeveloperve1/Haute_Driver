@@ -75,7 +75,6 @@ public class OtpVerifyViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(ApiResponseModel<DriverModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
 

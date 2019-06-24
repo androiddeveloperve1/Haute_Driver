@@ -4,9 +4,11 @@ package com.app.mylibertadriver.network;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.ForgotPasswordActivity;
 import com.app.mylibertadriver.activities.MainActivity;
+import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
 import com.app.mylibertadriver.activities.SplashActivity;
 import com.app.mylibertadriver.activities.TrackingActivity;
+import com.app.mylibertadriver.fragments.FragmentEarning;
 import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentTasks;
 import com.app.mylibertadriver.viewmodeles.LoginViewModel;
@@ -40,5 +42,7 @@ public interface ApplicationComponent {
     void inject(DriverLocationUpdateService model);
     void inject(AcceptOrderActivity model);
     void inject(ReachedRestaurantActivty model);
+    void inject(FragmentEarning model);
+    void inject(OrderAcceptedAndDeliverActivity model);
 
 }

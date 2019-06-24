@@ -10,16 +10,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
  */
 public class FetchURL extends AsyncTask<String, Void, String> {
     Context mContext;
+
     public FetchURL(Context mContext) {
         this.mContext = mContext;
     }
- 
+
     @Override
     protected String doInBackground(String... strings) {
         // For storing data from web service
@@ -28,11 +30,10 @@ public class FetchURL extends AsyncTask<String, Void, String> {
             // Fetching the data from web service
             data = downloadUrl(strings[0]);
         } catch (Exception e) {
-            Log.e("Background Task", e.toString());
         }
         return data;
     }
- 
+
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
@@ -40,7 +41,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         // Invokes the thread for parsing the JSON data
         parserTask.execute(s);
     }
- 
+
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;

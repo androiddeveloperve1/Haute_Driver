@@ -63,10 +63,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
-/**
- * Create By Rahul Mangal
- * Project Haute Delivery
- */
+
 public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final int LocationTag = 10001;
     private GooglePlacesAutocompleteAdapter googlePlacesAutocompleteAdapter;
@@ -95,6 +92,7 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
         mGoogleApiClient.connect();
 
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -209,7 +207,6 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
 
     void showLocationOnMap(final LatLng loc) {
         selectedLocation = loc;
-        Log.e("@@@@@@", "location updated" + loc.latitude + ":" + loc.longitude);
         mMap.clear();
         mMap.addMarker(mMarkerOptions.position(loc).draggable(true).title("My Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
@@ -260,7 +257,6 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                Log.e("@@@@@Dragged end", "" + marker.getPosition().latitude + "-" + marker.getPosition().longitude);
                 selectedLocation = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
                 hitApiToGetAddress();
             }
@@ -281,7 +277,6 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     void hitApiToGetAddress() {
-        Log.e("@@@@@@@", "api" + new Gson().toJson(selectedLocation));
         new Handler().post(new Runnable() {
             @Override
             public void run() {

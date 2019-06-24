@@ -72,7 +72,6 @@ public class SignupViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(ApiResponseModel<DriverModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@@@@@suCCESS", new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
                             MySharedPreference.getInstance(mContext).setUser(response.getData());

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -17,13 +18,18 @@ import androidx.fragment.app.Fragment;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.AcceptRestaurantActivity;
+import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
+import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
+import com.app.mylibertadriver.adapter.OrderItemAdapter;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.FragmentTasksBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
+import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
+import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
@@ -46,19 +52,22 @@ import rx.schedulers.Schedulers;
  * Create By Rahul Mangal
  * Project Haute Delivery
  */
-public class FragmentTasks extends Fragment  {
+public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
     private FragmentTasksBinding binder;
     private TaskModel bindableModel;
-
+    private boolean isTaskAvailable = false;
+    private MainActivity mainActivity;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_tasks, container, false);
         binder.llCurrentTask.setClick(p);
+        mainActivity = (MainActivity) getActivity();
         binder.llNewTask.setClick(p);
         View view = binder.getRoot();
+
         return view;
     }
 
@@ -83,23 +92,31 @@ public class FragmentTasks extends Fragment  {
                     @Override
                     public void onNext(ApiResponseModel<TaskModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@@@@@Success", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
+                            isTaskAvailable = true;
+                            binder.rlTask.setVisibility(View.VISIBLE);
+                            binder.tvNoTask.setVisibility(View.GONE);
                             bindableModel = response.getData();
-                            if (bindableModel.getStatus().equals("1")) {
-                                //  1 (current task )
-                                binder.llCurrentTask.setIsVisible(View.VISIBLE);
-                                binder.llCurrentTask.setData(bindableModel.getOrderInfo());
-                                binder.llNewTask.setIsVisible(View.GONE);
-                            } else if (bindableModel.getStatus().equals("0")) {
+
+                            if (bindableModel.getStatus().equals("0")) {
                                 //0 (new task)
                                 binder.llCurrentTask.setIsVisible(View.GONE);
                                 binder.llNewTask.setIsVisible(View.VISIBLE);
                                 binder.llNewTask.setData(bindableModel.getOrderInfo());
+                                updateTimeToExpire();
+                            } else {
+                                // current task is running
+                                binder.llCurrentTask.setIsVisible(View.VISIBLE);
+                                binder.llCurrentTask.setData(bindableModel.getOrderInfo());
+                                binder.llNewTask.setIsVisible(View.GONE);
                             }
-                            updateTimeToExpire();
+                            if (mainActivity.mLocationResult != null) {
+                                onUpdatedLocation(mainActivity.mLocationResult);
+                            }
                         } else {
-                            ResponseDialog.showErrorDialog(getActivity(), response.getMessage());
+                            isTaskAvailable = false;
+                            binder.rlTask.setVisibility(View.GONE);
+                            binder.tvNoTask.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -107,18 +124,12 @@ public class FragmentTasks extends Fragment  {
 
 
     public void onUpdatedLocation(LocationResult locationResult) {
-        new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
-                , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
+        if (isTaskAvailable) {
+            new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
+                    , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
+        }
 
 
-       /* bindableModel.getOrderInfo().
-                setDistance(
-                        AppUtils.getDistanceBitweenLatlongInKM(
-                                new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
-                                new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1))
-                        ) + " Km."
-
-                );*/
     }
 
 
@@ -147,11 +158,52 @@ public class FragmentTasks extends Fragment  {
                 setDistance(distance);
     }
 
+    private void getOrderDetails(String orderId) {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
+        ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
+        apiInterface.getOrderDetails(orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel<OrderDetailsModel>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(getActivity(), throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel<OrderDetailsModel> response) {
+                        progressDialog.dismiss();
+                        if (response.getStatus().equals("200")) {
+                            Intent mIntent = new Intent(getActivity(), OrderAcceptedAndDeliverActivity.class);
+                            mIntent.putExtra("data", new Gson().toJson(response.getData()));
+                            startActivity(mIntent);
+
+                        } else {
+                            ResponseDialog.showErrorDialog(getActivity(), response.getMessage());
+                        }
+                    }
+                });
+    }
+
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
-            Intent mIntent = new Intent(getActivity(), AcceptRestaurantActivity.class);
-            mIntent.putExtra("data", new Gson().toJson(bindableModel));
-            startActivity(mIntent);
+            if (bindableModel.getStatus().equals("1")) {
+                Intent intent = new Intent(getActivity(), ReachedRestaurantActivty.class);
+                intent.putExtra("order_id", bindableModel.getOrder_id());
+                startActivity(intent);
+            } else if (bindableModel.getStatus().equals("3")) {
+                getOrderDetails(bindableModel.getOrder_id());
+            } else {
+                Intent mIntent = new Intent(getActivity(), AcceptRestaurantActivity.class);
+                mIntent.putExtra("data", new Gson().toJson(bindableModel));
+                startActivity(mIntent);
+            }
+
         }
 
         public void onNewTaskClicked(View view) {
