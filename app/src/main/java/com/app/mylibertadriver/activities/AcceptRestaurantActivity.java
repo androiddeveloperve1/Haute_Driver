@@ -103,8 +103,8 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         }
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(500);
+        mLocationRequest.setInterval(2000);
+        mLocationRequest.setFastestInterval(100);
 
         LocationServices.getFusedLocationProviderClient(AcceptRestaurantActivity.this).removeLocationUpdates(mLocationCallback);
         LocationServices.getFusedLocationProviderClient(AcceptRestaurantActivity.this).requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
