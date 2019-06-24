@@ -16,7 +16,10 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.DialogProgressBinding;
 import com.app.mylibertadriver.databinding.DialogResponseErrorBinding;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class ResponseDialog {
     public static void showErrorDialog(final Context mContext, String message) {
 

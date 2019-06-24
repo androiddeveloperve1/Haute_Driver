@@ -42,6 +42,10 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class AcceptOrderActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
     @Inject
     APIInterface apiInterface;

@@ -50,7 +50,10 @@ import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     ActivityOrderAcceptedAndDeliverBinding binder;

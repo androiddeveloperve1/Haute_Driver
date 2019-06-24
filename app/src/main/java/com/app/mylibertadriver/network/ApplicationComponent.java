@@ -19,7 +19,10 @@ import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import javax.inject.Singleton;
 
 import dagger.Component;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 @Singleton
 @Component(modules = {NetworkModule.class})
 public interface ApplicationComponent {

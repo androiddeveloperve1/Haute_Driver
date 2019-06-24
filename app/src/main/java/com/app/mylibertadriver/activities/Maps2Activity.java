@@ -63,7 +63,10 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final int LocationTag = 10001;
     private GooglePlacesAutocompleteAdapter googlePlacesAutocompleteAdapter;

@@ -44,9 +44,8 @@ import rx.schedulers.Schedulers;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
-
 public class FragmentTasks extends Fragment  {
     Presenter p = new Presenter();
     @Inject

@@ -47,7 +47,10 @@ import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class AcceptRestaurantActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private LatLng myCurrentLatLong = null;

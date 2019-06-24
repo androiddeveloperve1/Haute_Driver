@@ -44,7 +44,10 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 
 import java.util.ArrayList;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public abstract class GoogleServiceActivationActivityForHandleFragment extends AppCompatActivity implements GoogleConnectionCallBackAdapter, CommanTaskListener {
 
     public static final int LocationTag = 14001;

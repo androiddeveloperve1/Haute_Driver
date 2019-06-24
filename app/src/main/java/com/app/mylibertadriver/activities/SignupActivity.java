@@ -31,7 +31,10 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class SignupActivity extends AppCompatActivity {
 
     public static final int LocationTag = 1000;

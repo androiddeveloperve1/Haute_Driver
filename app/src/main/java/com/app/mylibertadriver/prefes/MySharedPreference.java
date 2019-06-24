@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 import com.app.mylibertadriver.model.DriverModel;
 import com.google.gson.Gson;
 
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class MySharedPreference {
 
     public static final String APP_PREFERENCE = "haute_driver_ve";

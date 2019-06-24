@@ -52,7 +52,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public abstract class GoogleServicesActivationActivity extends FragmentActivity implements CommanTaskListener, GoogleConnectionCallBackAdapter {
     public static final int LocationTag = 13001;
     private GoogleApiClient mGoogleApiClient;

@@ -18,7 +18,7 @@ import com.app.mylibertadriver.utils.SimpleDividerItemDecoration;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class FragmentEarning extends Fragment implements RecycleItemClickListener {

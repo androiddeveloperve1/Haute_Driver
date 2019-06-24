@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.mylibertadriver.R;
 
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 

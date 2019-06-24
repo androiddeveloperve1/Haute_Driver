@@ -50,7 +50,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class FragmentProfile extends Fragment {

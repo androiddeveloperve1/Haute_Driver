@@ -2,9 +2,8 @@ package com.app.mylibertadriver.interfaces;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
-
 public interface ImageOrGalarySelector {
 
      void imageSelect();

@@ -10,7 +10,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class FetchURL extends AsyncTask<String, Void, String> {
     Context mContext;
     public FetchURL(Context mContext) {

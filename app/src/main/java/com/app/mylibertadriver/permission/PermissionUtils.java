@@ -20,7 +20,10 @@ import java.util.List;
 
 // PermissionUtils.getInstance().checkAllPermission(mAcivity, permissonArray, listener);
 //PermissionUtils.getInstance().hendlePermission(mAcivity, requestCode, permissions, grantResults);
-
+/**
+ * Create By Rahul Mangal
+ * Project Haute Delivery
+ */
 public class PermissionUtils {
     public static final int RequestCode = 1000;
     private static PermissionUtils instance = null;
