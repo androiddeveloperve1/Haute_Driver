@@ -1,5 +1,8 @@
 package com.app.mylibertadriver.utils;
 
+import android.util.Log;
+
+import com.app.mylibertadriver.model.GooglePathDisatnceTimeModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -11,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataParser {
-    public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
- 
+
+
+    public GooglePathDisatnceTimeModel parse(JSONObject jObject) {
+        GooglePathDisatnceTimeModel googlePathDisatnceTimeModel = new GooglePathDisatnceTimeModel();
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
@@ -26,13 +31,16 @@ public class DataParser {
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
- 
+
+                    googlePathDisatnceTimeModel.setDistance(jLegs.getJSONObject(j).getJSONObject("distance").getString("text"));
+                    googlePathDisatnceTimeModel.setTime(jLegs.getJSONObject(j).getJSONObject("duration").getString("value"));
+
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
                         String polyline = "";
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = decodePoly(polyline);
- 
+
                         /** Traversing all points */
                         for (int l = 0; l < list.size(); l++) {
                             HashMap<String, String> hm = new HashMap<>();
@@ -42,27 +50,28 @@ public class DataParser {
                         }
                     }
                     routes.add(path);
+                    googlePathDisatnceTimeModel.setRoutes(routes);
                 }
             }
- 
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception e) {
         }
-        return routes;
+        return googlePathDisatnceTimeModel;
     }
- 
- 
+
+
     /**
      * Method to decode polyline points
      * Courtesy : https://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
      */
     private List<LatLng> decodePoly(String encoded) {
- 
+
         List<LatLng> poly = new ArrayList<>();
         int index = 0, len = encoded.length();
         int lat = 0, lng = 0;
- 
+
         while (index < len) {
             int b, shift = 0, result = 0;
             do {
@@ -72,7 +81,7 @@ public class DataParser {
             } while (b >= 0x20);
             int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
             lat += dlat;
- 
+
             shift = 0;
             result = 0;
             do {
@@ -82,12 +91,12 @@ public class DataParser {
             } while (b >= 0x20);
             int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
             lng += dlng;
- 
+
             LatLng p = new LatLng((((double) lat / 1E5)),
                     (((double) lng / 1E5)));
             poly.add(p);
         }
- 
+
         return poly;
     }
 }

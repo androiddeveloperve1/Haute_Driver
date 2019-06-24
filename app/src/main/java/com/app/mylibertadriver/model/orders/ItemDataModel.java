@@ -7,7 +7,7 @@ import com.app.mylibertadriver.BR;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class ItemDataModel extends BaseObservable {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class OrderDetailsModel extends BaseObservable {
@@ -30,8 +30,22 @@ public class OrderDetailsModel extends BaseObservable {
     private String updatedAt;
     private String address_type;
     private String delivery_status;
-    private String distance;
+    private String distance="Getting distance.....";
     private String order_no;
+
+    private String travelTime="0.0";
+
+
+    @Bindable
+    public String getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(String travelTime) {
+
+        this.travelTime = travelTime;
+        this.notifyPropertyChanged(BR.travelTime);
+    }
 
     @Bindable
     public UserModel getUser_id() {

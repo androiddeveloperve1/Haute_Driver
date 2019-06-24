@@ -24,9 +24,8 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         try {
             // Fetching the data from web service
             data = downloadUrl(strings[0]);
-            Log.d("mylog", "Background task data " + data.toString());
         } catch (Exception e) {
-            Log.d("Background Task", e.toString());
+            Log.e("Background Task", e.toString());
         }
         return data;
     }

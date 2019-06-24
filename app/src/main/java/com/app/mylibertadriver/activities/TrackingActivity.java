@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -26,25 +25,21 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
-import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
-import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.app.mylibertadriver.R;
-import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
-import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
-import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -72,24 +67,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class TrackingActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, TaskLoadedCallback {
@@ -316,7 +304,7 @@ public class TrackingActivity extends FragmentActivity implements OnMapReadyCall
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
-        new FetchURL(TrackingActivity.this).execute(GoogleApiUtils.getUrlForDrawRoute(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
+        new FetchURL(TrackingActivity.this).execute(AppUtils.getUrlForDrawRoute(mMarkerOptions.getPosition(), usersLocation.getPosition(), "driving"));
     }
 
     void stopLocationUpdate() {

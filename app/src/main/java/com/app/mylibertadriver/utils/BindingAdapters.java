@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class BindingAdapters {

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class ApiResponseModel<T> extends BaseObservable {

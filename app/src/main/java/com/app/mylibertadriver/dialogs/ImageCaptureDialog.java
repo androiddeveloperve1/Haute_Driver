@@ -17,7 +17,7 @@ import com.app.mylibertadriver.interfaces.ImageOrGalarySelector;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class ImageCaptureDialog extends Dialog {

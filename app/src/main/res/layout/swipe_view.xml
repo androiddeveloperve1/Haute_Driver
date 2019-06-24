@@ -14,7 +14,7 @@
         android:fontStyleName="@{`Roboto_Regular.ttf`}"
         android:text="SWIPE"
         android:textColor="@color/black"
-        android:textSize="@dimen/_12_px" />
+        android:textSize="@dimen/_10_px" />
 
     <ImageView
 

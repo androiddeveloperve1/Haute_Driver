@@ -14,7 +14,7 @@ import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapter.MyViewHolder> {

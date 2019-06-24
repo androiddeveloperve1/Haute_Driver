@@ -1,22 +1,35 @@
 package com.app.mylibertadriver.utils;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.interfaces.OnAddressListener;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,17 +41,19 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class GoogleApiUtils {
 
-    static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 
     public static void getLatLongByPlace(final String placeID, final OnAddressListener listener) {
         new AsyncTask<Void, Void, Void>() {
@@ -126,90 +141,7 @@ public class GoogleApiUtils {
         }.execute(latLng);
     }
 
-    private static double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private static double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
-
-    public static Date getUTCDateObjectFromUTCTime(String data) {
-        try {
-            utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return utcFormat.parse(data);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public static Date getCurrentDateINUTC() {
-        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return getUTCDateObjectFromUTCTime(utcFormat.format(new Date()));
 
 
-    }
 
-    public static String getDistanceBitweenLatlongInKM(LatLng from, LatLng to) {
-
-        Log.e("@@@@@", "FROM" + from.latitude + ":" + from.longitude + "--TO" + to.latitude + ":" + to.longitude);
-        double lat1 = from.latitude;
-        double lon1 = from.longitude;
-        double lat2 = to.latitude;
-        double lon2 = to.longitude;
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-
-        return String.format("%.2f", dist);  // in km*/
-
-
-       /* Location fromLocation = new Location("From");
-        fromLocation.setLatitude(from.latitude);
-        fromLocation.setLongitude(from.longitude);
-
-
-        Location toLocation = new Location("To");
-        toLocation.setLatitude(to.latitude);
-        toLocation.setLongitude(to.longitude);
-
-
-        return String.format("%.2f", (fromLocation.distanceTo(toLocation)) / 1000);  // in km*/
-
-    }
-
-    public static String getUrlForDrawRoute(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
-        String mode = "mode=" + directionMode;
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + Constants.API_KEY;
-        return url;
-    }
-
-
-    public static void requestCall(Context mContext, String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-        mContext.startActivity(intent);
-    }
-
-    public static Bitmap getLocatinIcon(Context mContext) {
-        BitmapDrawable b = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable.ic_current_location);
-        return Bitmap.createScaledBitmap(b.getBitmap(), (int) mContext.getResources().getDimension(R.dimen._20_px), (int) mContext.getResources().getDimension(R.dimen._20_px), false);
-    }
 }

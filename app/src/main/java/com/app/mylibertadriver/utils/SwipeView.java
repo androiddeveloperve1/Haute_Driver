@@ -17,7 +17,7 @@ import com.app.mylibertadriver.interfaces.SwipeListener;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class SwipeView extends RelativeLayout {
@@ -121,5 +121,11 @@ public class SwipeView extends RelativeLayout {
         swipe_thumb.setClickable(false);
         swipe_thumb.setOnTouchListener(null);
     }
+
+    public void swipeLeft() {
+        swipe_thumb.setX(0);
+    }
+
+
 
 }

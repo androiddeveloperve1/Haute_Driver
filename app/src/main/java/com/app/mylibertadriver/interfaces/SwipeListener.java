@@ -2,12 +2,14 @@ package com.app.mylibertadriver.interfaces;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
-public interface SwipeListener {
+public abstract class SwipeListener {
 
-    void swipeStarted();
+    public abstract void swipeStarted();
 
-    void Swiped(int flag);
+    public abstract void Swiped(int flag);
+
+    public  void onCrossButton(){};
 }

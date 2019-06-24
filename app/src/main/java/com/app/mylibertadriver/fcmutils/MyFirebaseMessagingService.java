@@ -8,7 +8,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {

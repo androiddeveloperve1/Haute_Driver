@@ -2,7 +2,7 @@ package com.app.mylibertadriver.constants;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class Constants {
@@ -17,4 +17,15 @@ public class Constants {
     public static int FROM_FORGOT_PASS = 1;
     public static int FROM_SPLASH = 2;
     public static int FROM_SIGNUP = 0;
+
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    public static final long LOCATION_DISTANCE_IN_METER = 20;
+
+    public static final String NO_INTERNET_CONNECTION_FOUND_TAG="No address associated with hostname";
+    public static final String NO_INTERNET_CONNECTION_FOUND_MESSAGE="Please make sure, that you are connected to internet.";
+
+
+
+
 }

@@ -4,7 +4,7 @@ import android.Manifest;
 
 /**
  * Create By Rahul Mangal
- * Project SignupLibrary Screen
+ * Project Haute Delivery
  */
 
 public class PermissionConstants {
@@ -16,14 +16,6 @@ public class PermissionConstants {
 
 
     public static final int AllPermission = 1000;
-    public static final int NO_NETWORK = 1;
-    public static final int PERMISSION_REJECTED = 2;
-    public static final int GPS_DISABLED = 3;
-    public static final int PLAYSERICE_ERROR = 4;
-    public static final int GOOGLE_PLAY_CONNECTION_ERROR = 5;
-    public static final int GOOGLE_PLAY_CONNECTION_SUSPEND = 6;
-    public static final int NO_LAST_LOCATION_FOUND = 7;
-    public static final int PERMISSION_RATIONALE = 8;
 
 
 }
