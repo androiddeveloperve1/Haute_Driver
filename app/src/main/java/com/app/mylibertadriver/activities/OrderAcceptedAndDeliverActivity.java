@@ -240,7 +240,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         }
 
         public void onCall(View v) {
-            AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getRestaurant_id().getContact_no());
+            AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getUser_id().getMobile_no());
         }
 
         public void onNavifationStart(View v) {

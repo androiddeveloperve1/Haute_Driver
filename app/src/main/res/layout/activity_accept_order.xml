@@ -6,6 +6,7 @@
         <variable
             name="data"
             type="com.app.mylibertadriver.model.orders.TaskResponse" />
+
         <variable
             name="click"
             type="com.app.mylibertadriver.activities.AcceptOrderActivity.MyClick" />
@@ -33,9 +34,10 @@
 
         <ImageView
             android:id="@+id/toolbar_back"
-            android:layout_width="@dimen/_25_px"
-            android:layout_height="@dimen/_25_px"
+            android:layout_width="@dimen/_35_px"
+            android:layout_height="@dimen/_35_px"
             android:layout_margin="@dimen/_10_px"
+            android:onClick="@{(v)->click.onBack(v)}"
             android:src="@drawable/ic_back_on_map"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +45,8 @@
 
         <ImageView
             android:id="@+id/help"
-            android:layout_width="@dimen/_30_px"
-            android:layout_height="@dimen/_30_px"
+            android:layout_width="@dimen/_40_px"
+            android:layout_height="@dimen/_40_px"
             android:layout_marginRight="@dimen/_10_px"
             android:background="@drawable/ic_help_support_white"
             app:layout_constraintRight_toRightOf="parent"
@@ -112,8 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5_px"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="CALL"
                 android:onClick="@{(v)->click.onCall(v)}"
+                android:text="CALL"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12_px"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_img_restaurant"
@@ -150,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:gravity="center"
-                android:text="ETA\n 1 min"
+                android:text="@{data.orderInfo.travelTime}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12_px"
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_view"

@@ -54,7 +54,6 @@ import java.util.concurrent.TimeUnit;
  * Project Haute Delivery
  */
 public class AcceptRestaurantActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
-
     private LatLng myCurrentLatLong = null;
     private GoogleMap mMap;
     private LatLng restaurantLatlong;

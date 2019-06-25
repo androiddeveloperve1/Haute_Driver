@@ -26,12 +26,14 @@ import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -63,8 +65,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_order);
         orderData = new Gson().fromJson(getIntent().getStringExtra("data"), TaskResponse.class);
 
-        delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0),
-                orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
+        delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
         Log.e("@@@@", new Gson().toJson(delivarableLatLong));
         binder.setData(orderData);
         binder.setClick(new MyClick());
@@ -95,13 +96,18 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
             currentPolyline.remove();
+
+
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+        orderData.getOrderInfo().setDistance(values[1].toString());
+        Log.e("@@@@@@@@", "Task Done"+values[2].toString());
+        orderData.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
     }
 
     private void hitApiToAcceptTask() {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(AcceptOrderActivity.this);
         ((MyApplication) getApplication()).getConfiguration().inject(this);
-        apiInterface.acceptOrder("")
+        apiInterface.acceptOrder(orderData.getOrder_id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResponseModel>() {
@@ -151,14 +157,11 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         mMap.addMarker(myCurrentLatLongMarker);
         mMap.addMarker(delivarableLatLongMarker);
 
-       /* LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(myCurrentLatLong).include(delivarableLatLong);
         LatLngBounds bounds = boundsBuilder.build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100,100,50);
-        mMap.animateCamera(cameraUpdate);*/
-
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(delivarableLatLong, 8));
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 60);
+        mMap.animateCamera(cameraUpdate);
 
         new FetchURL(AcceptOrderActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
 

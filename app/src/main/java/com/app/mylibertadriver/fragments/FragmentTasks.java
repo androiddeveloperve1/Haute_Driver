@@ -58,16 +58,18 @@ public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
-    private long expireInMins;
 
     private FragmentTasksBinding binder;
     private TaskResponse bindableModel;
     private boolean isTaskAvailable = false;
     private MainActivity mainActivity;
+    private long expireTime = 0;
+    private Thread timerThread;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_tasks, container, false);
         binder.llCurrentTask.setClick(p);
+        binder.llNewTask.setClick(p);
         mainActivity = (MainActivity) getActivity();
         binder.llNewTask.setClick(p);
         View view = binder.getRoot();
@@ -98,26 +100,36 @@ public class FragmentTasks extends Fragment {
                         progressDialog.dismiss();
                         Log.e("@@@@@@@", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
-                            isTaskAvailable = true;
-                            binder.rlTask.setVisibility(View.VISIBLE);
-                            binder.tvNoTask.setVisibility(View.GONE);
-                            bindableModel = response.getData();
-                            if (bindableModel.getStatus().equals("0")) {
-                                //0 (new task)
-                                binder.llCurrentTask.setIsVisible(View.GONE);
-                                binder.llNewTask.setIsVisible(View.VISIBLE);
-                                binder.llNewTask.setData(bindableModel.getOrderInfo());
-                                updateTimeToExpire();
+
+                            if (response.getData() != null && response.getData().get_id()!=null) {
+                                isTaskAvailable = true;
+                                binder.rlTask.setVisibility(View.VISIBLE);
+                                binder.tvNoTask.setVisibility(View.GONE);
+                                bindableModel = response.getData();
+                                if (bindableModel.getStatus().equals("0")) {
+                                    //0 (new task)
+                                    Log.e("@@@@@", "New Task");
+                                    binder.llCurrentTask.setIsVisible(View.GONE);
+                                    binder.llNewTask.setIsVisible(View.VISIBLE);
+                                    binder.llNewTask.setData(bindableModel.getOrderInfo());
+                                    //updateTimeToExpire();
+                                } else {
+                                    // current task is running
+                                    binder.llCurrentTask.setIsVisible(View.VISIBLE);
+                                    binder.llCurrentTask.setData(bindableModel.getOrderInfo());
+                                    binder.llNewTask.setIsVisible(View.GONE);
+                                }
+                                if (mainActivity.mLocationResult != null) {
+
+                                    onUpdatedLocation(mainActivity.mLocationResult);
+                                }
+
                             } else {
-                                // current task is running
-                                binder.llCurrentTask.setIsVisible(View.VISIBLE);
-                                binder.llCurrentTask.setData(bindableModel.getOrderInfo());
-                                binder.llNewTask.setIsVisible(View.GONE);
+                                isTaskAvailable = false;
+                                binder.rlTask.setVisibility(View.GONE);
+                                binder.tvNoTask.setVisibility(View.VISIBLE);
                             }
-                            if (mainActivity.mLocationResult != null) {
-                                Log.e("@@@@@", "From Fragment");
-                                onUpdatedLocation(mainActivity.mLocationResult);
-                            }
+
                         } else {
                             isTaskAvailable = false;
                             binder.rlTask.setVisibility(View.GONE);
@@ -138,23 +150,20 @@ public class FragmentTasks extends Fragment {
     }
 
     void updateTimeToExpire() {
-        if (bindableModel != null) {
-            Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
-            Date myTime = AppUtils.getCurrentDateINUTC();
-            long mills = myTime.getTime() - date.getTime();
-            long hours = mills / (1000 * 60 * 60);
-            expireInMins = (mills / (1000 * 60)) % 60;
-            Log.e("@@@@@", "Hours:" + hours + "\n Mins:" + expireInMins);
-            if (hours > 0) {
-                binder.llNewTask.setIsVisible(View.GONE);
-                return;
-            } else if (expireInMins > 2) {
-                binder.llNewTask.setIsVisible(View.GONE);
-                return;
-            } else {
-                // timer will start here
-            }
+        // if (bindableModel != null) {
+        Date date = AppUtils.getUTCDateObjectFromUTCTime("2019-06-25T02:30:27.082Z");
+        Date myTime = AppUtils.getCurrentDateINUTC();
+        long mills = myTime.getTime() - date.getTime();
+        Log.e("@@@@@", "Different:" + mills);
+        runThread();
+        if (mills >= 120) {
+            isTaskAvailable = false;
+            binder.rlTask.setVisibility(View.GONE);
+            binder.tvNoTask.setVisibility(View.VISIBLE);
+        } else {
+            expireTime = mills;
         }
+        //}
 
     }
 
@@ -184,6 +193,8 @@ public class FragmentTasks extends Fragment {
                     public void onNext(ApiResponseModel<OrderDetailsModel> response) {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
+
+                            Log.e("@@@@@@@@","Delivery info"+new Gson().toJson(response.getData()));
                             Intent mIntent = new Intent(getActivity(), OrderAcceptedAndDeliverActivity.class);
                             mIntent.putExtra("data", new Gson().toJson(response.getData()));
                             startActivity(mIntent);
@@ -193,6 +204,38 @@ public class FragmentTasks extends Fragment {
                         }
                     }
                 });
+    }
+
+    void runThread() {
+        if (timerThread != null) {
+            timerThread.stop();
+        }
+        timerThread = null;
+
+        if (expireTime <= 23000000) {
+
+        } else {
+            Log.e("@@@@@@@", "Thread started");
+            timerThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (expireTime <= 23000000) {
+                            timerThread.stop();
+                            Log.e("@@@@@@@", "Thread Stoped");
+                        }
+                        Thread.sleep(1000);
+                        expireTime--;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            timerThread.start();
+        }
+
+
     }
 
     public class Presenter {
