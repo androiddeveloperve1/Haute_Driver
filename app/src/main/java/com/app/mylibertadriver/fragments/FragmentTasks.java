@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,8 @@ public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
+    private long expireInMins;
+
     private FragmentTasksBinding binder;
     private TaskResponse bindableModel;
     private boolean isTaskAvailable = false;
@@ -99,7 +102,6 @@ public class FragmentTasks extends Fragment {
                             binder.rlTask.setVisibility(View.VISIBLE);
                             binder.tvNoTask.setVisibility(View.GONE);
                             bindableModel = response.getData();
-
                             if (bindableModel.getStatus().equals("0")) {
                                 //0 (new task)
                                 binder.llCurrentTask.setIsVisible(View.GONE);
@@ -113,6 +115,7 @@ public class FragmentTasks extends Fragment {
                                 binder.llNewTask.setIsVisible(View.GONE);
                             }
                             if (mainActivity.mLocationResult != null) {
+                                Log.e("@@@@@", "From Fragment");
                                 onUpdatedLocation(mainActivity.mLocationResult);
                             }
                         } else {
@@ -124,8 +127,8 @@ public class FragmentTasks extends Fragment {
                 });
     }
 
-
     public void onUpdatedLocation(LocationResult locationResult) {
+
         if (isTaskAvailable) {
             new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
                     , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
@@ -134,25 +137,25 @@ public class FragmentTasks extends Fragment {
 
     }
 
-
     void updateTimeToExpire() {
         if (bindableModel != null) {
-            if (bindableModel.getStatus().equals("0"))  // mean it new task
-            {
-                Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
-                Date myTime = AppUtils.getCurrentDateINUTC();
-                long mills = myTime.getTime() - date.getTime();
-                long hours = mills / (1000 * 60 * 60);
-                long mins = (mills / (1000 * 60)) % 60;
-                if (hours > 0) {
-                    binder.llNewTask.setIsVisible(View.GONE);
-                    return;
-                } else if (mins > 2) {
-                    binder.llNewTask.setIsVisible(View.GONE);
-                    return;
-                }
+            Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
+            Date myTime = AppUtils.getCurrentDateINUTC();
+            long mills = myTime.getTime() - date.getTime();
+            long hours = mills / (1000 * 60 * 60);
+            expireInMins = (mills / (1000 * 60)) % 60;
+            Log.e("@@@@@", "Hours:" + hours + "\n Mins:" + expireInMins);
+            if (hours > 0) {
+                binder.llNewTask.setIsVisible(View.GONE);
+                return;
+            } else if (expireInMins > 2) {
+                binder.llNewTask.setIsVisible(View.GONE);
+                return;
+            } else {
+                // timer will start here
             }
         }
+
     }
 
     public void onTaskDone(String distance) {
@@ -194,24 +197,20 @@ public class FragmentTasks extends Fragment {
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
-            if (bindableModel.getStatus().equals("1")) {
-                Intent intent = new Intent(getActivity(), ReachedRestaurantActivty.class);
-                intent.putExtra("order_id", bindableModel.getOrder_id());
-                startActivity(intent);
-            } else if (bindableModel.getStatus().equals("3")) {
+            if (bindableModel.getStatus().equals("3")) {
                 getOrderDetails(bindableModel.getOrder_id());
             } else {
-                Intent mIntent = new Intent(getActivity(), AcceptRestaurantActivity.class);
-                mIntent.putExtra("data", new Gson().toJson(bindableModel));
-                startActivity(mIntent);
+                Intent intent = new Intent(getActivity(), AcceptRestaurantActivity.class);
+                intent.putExtra("data", new Gson().toJson(bindableModel));
+                startActivity(intent);
             }
         }
+
         public void onNewTaskClicked(View view) {
             Intent mIntent = new Intent(getActivity(), AcceptOrderActivity.class);
             mIntent.putExtra("data", new Gson().toJson(bindableModel));
             startActivity(mIntent);
         }
     }
-
 
 }

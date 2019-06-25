@@ -145,7 +145,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     void enableButton() {
         binder.swipeView.enableSwipe();
         binder.disableView.setVisibility(View.GONE);
-        binder.ivNavigation.setVisibility(View.GONE);
+        binder.ivNavigation.setVisibility(View.VISIBLE);
 
     }
 

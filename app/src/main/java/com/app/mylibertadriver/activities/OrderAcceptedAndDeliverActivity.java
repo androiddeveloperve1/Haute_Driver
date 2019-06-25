@@ -94,8 +94,12 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
         @Override
         public void Swiped(int flag) {
-            orderDeliveredDialog.dismiss();
-            orderDelivered();
+            if (flag == SwipeView.SWIPED_RIGHT) {
+                orderDeliveredDialog.dismiss();
+                orderDelivered();
+            }
+
+
         }
     };
 
@@ -186,7 +190,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     void enableButton() {
         binder.swipeView.enableSwipe();
         binder.disableView.setVisibility(View.GONE);
-        binder.ivNavigation.setVisibility(View.GONE);
+        binder.ivNavigation.setVisibility(View.VISIBLE);
     }
 
     void disableButton() {

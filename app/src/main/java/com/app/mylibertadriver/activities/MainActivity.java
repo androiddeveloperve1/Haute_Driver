@@ -249,7 +249,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
     public void onUpdatedLocation(LocationResult locationResult) {
         mLocationResult = locationResult;
         stopLocationUpdate();
-        fragmentTasks.onUpdatedLocation(locationResult);
+        fragmentTasks.onUpdatedLocation(mLocationResult);
     }
 
     @Override
