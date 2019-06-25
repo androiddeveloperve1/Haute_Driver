@@ -82,7 +82,7 @@
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
             android:onClick="@{(v)->clickHandler.onNavigationClick(v)}"
             android:padding="@dimen/_5_px"
-            android:text="Earnings"
+            android:text="Order History"
             android:textColor="@color/gray_text"
             android:textSize="@dimen/_14_px"
             app:layout_constraintLeft_toLeftOf="@id/tv_tasks"

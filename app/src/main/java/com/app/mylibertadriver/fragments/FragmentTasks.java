@@ -101,7 +101,7 @@ public class FragmentTasks extends Fragment {
                         Log.e("@@@@@@@", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
 
-                            if (response.getData() != null && response.getData().get_id()!=null) {
+                            if (response.getData() != null && response.getData().get_id() != null) {
                                 isTaskAvailable = true;
                                 binder.rlTask.setVisibility(View.VISIBLE);
                                 binder.tvNoTask.setVisibility(View.GONE);
@@ -155,7 +155,6 @@ public class FragmentTasks extends Fragment {
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different:" + mills);
-        runThread();
         if (mills >= 120) {
             isTaskAvailable = false;
             binder.rlTask.setVisibility(View.GONE);
@@ -194,7 +193,7 @@ public class FragmentTasks extends Fragment {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
 
-                            Log.e("@@@@@@@@","Delivery info"+new Gson().toJson(response.getData()));
+                            Log.e("@@@@@@@@", "Delivery info" + new Gson().toJson(response.getData()));
                             Intent mIntent = new Intent(getActivity(), OrderAcceptedAndDeliverActivity.class);
                             mIntent.putExtra("data", new Gson().toJson(response.getData()));
                             startActivity(mIntent);
@@ -206,37 +205,6 @@ public class FragmentTasks extends Fragment {
                 });
     }
 
-    void runThread() {
-        if (timerThread != null) {
-            timerThread.stop();
-        }
-        timerThread = null;
-
-        if (expireTime <= 23000000) {
-
-        } else {
-            Log.e("@@@@@@@", "Thread started");
-            timerThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (expireTime <= 23000000) {
-                            timerThread.stop();
-                            Log.e("@@@@@@@", "Thread Stoped");
-                        }
-                        Thread.sleep(1000);
-                        expireTime--;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-            timerThread.start();
-        }
-
-
-    }
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {

@@ -34,9 +34,10 @@
 
         <ImageView
             android:id="@+id/toolbar_back"
-            android:layout_width="@dimen/_25_px"
-            android:layout_height="@dimen/_25_px"
+            android:layout_width="@dimen/_35_px"
+            android:layout_height="@dimen/_35_px"
             android:layout_margin="@dimen/_10_px"
+            android:onClick="@{(v)->click.onBack(v)}"
             android:src="@drawable/ic_back_on_map"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,8 +45,8 @@
 
         <ImageView
             android:id="@+id/help"
-            android:layout_width="@dimen/_30_px"
-            android:layout_height="@dimen/_30_px"
+            android:layout_width="@dimen/_40_px"
+            android:layout_height="@dimen/_40_px"
             android:layout_marginRight="@dimen/_10_px"
             android:background="@drawable/ic_help_support_white"
             app:layout_constraintRight_toRightOf="parent"
@@ -144,7 +145,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_name" />
 
 
-
                 <RelativeLayout
                     android:id="@+id/rl_swipe_layout"
                     android:layout_width="0dp"
@@ -165,8 +165,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alpha=".5"
-                        android:visibility="gone"
-                        android:background="@color/white" />
+                        android:background="@color/white"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
