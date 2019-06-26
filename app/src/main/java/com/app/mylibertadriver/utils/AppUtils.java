@@ -29,7 +29,7 @@ import java.util.TimeZone;
  */
 
 public class AppUtils {
-    static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     static DateFormat humanFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static boolean eMailValidation(CharSequence target) {
@@ -93,26 +93,13 @@ public class AppUtils {
 
 
     public static String getDrivingTimeFromValue(String value) {
-        DecimalFormat f = new DecimalFormat("##.00");
-        String travelTime = "0 Mins";
-        try {
-            float valueFloat = Float.parseFloat(value) / 3600;
-            String valueString = String.valueOf(f.format(valueFloat));
-            String hours = valueString.split("\\.")[0];
-            String mins = valueString.split("\\.")[1];
-            if (hours.equals("0")) {
-                travelTime = mins + "Mins.";
-            } else if (mins.equals("0")) {
-                travelTime = hours + "Hours";
-            } else {
-                travelTime = hours + " Hours\n" + mins + " Min.(s)";
-            }
-
-        } catch (Exception e) {
+        if (value.contains("hour")) {
+            String arr[] = value.split(" ");
+            return arr[0] + arr[1] + "\n" + arr[2] + arr[3];
+        } else {
+            String arr[] = value.split(" ");
+            return arr[0] + arr[1];
         }
-
-
-        return travelTime;
     }
 
 

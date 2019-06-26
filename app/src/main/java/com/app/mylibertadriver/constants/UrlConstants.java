@@ -23,6 +23,7 @@ public class UrlConstants {
     public static final String PICKED_ORDER = DRIVER + "/pickup-order/";
     public static final String GET_ALL_TASK = DRIVER + "/get-all-task";
     public static final String ORDER_DELIVERED = DRIVER + "/deliver-order/";
+    public static final String DOCS_STATUS = DRIVER + "/get-document-status";
 
 
 }

@@ -77,15 +77,14 @@ public class LoginViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
                         Log.e("@@@@@@@@@@@", "" + new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
-                            if (response.getData().getIs_document_verify().equals("0")) {
+                            MySharedPreference.getInstance(mContext).setUser(response.getData());
+                            if (response.getData().getIs_document_verify().equals("1") && response.getData().getIs_document_upload().equals("1")) {
+                                modelData.postValue(response.getData());
+                                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                ((Activity) mContext).finish();
+                            } else {
                                 Toast.makeText(mContext, "Your documents are not approved yet", Toast.LENGTH_SHORT).show();
                                 mContext.startActivity(new Intent(mContext, UploadDocumentActivity.class));
-                                ((Activity) mContext).finish();
-
-                            } else {
-                                modelData.postValue(response.getData());
-                                MySharedPreference.getInstance(mContext).setUser(response.getData());
-                                mContext.startActivity(new Intent(mContext, MainActivity.class));
                                 ((Activity) mContext).finish();
                             }
                         } else {

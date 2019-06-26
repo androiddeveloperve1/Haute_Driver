@@ -100,7 +100,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         orderData.getOrderInfo().setDistance(values[1].toString());
-        Log.e("@@@@@@@@", "Task Done"+values[2].toString());
+        Log.e("@@@@@@@@", "Task Done" + values[2].toString());
         orderData.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
     }
 
@@ -118,6 +118,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                     @Override
                     public void onError(Throwable throwable) {
                         progressDialog.dismiss();
+                        binder.swipeView.swipeLeft();
                         ResponseDialog.showErrorDialog(AcceptOrderActivity.this, throwable.getLocalizedMessage());
                     }
 
@@ -128,6 +129,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                         if (response.getStatus().equals("200")) {
                             finish();
                         } else {
+                            binder.swipeView.swipeLeft();
                             ResponseDialog.showErrorDialog(AcceptOrderActivity.this, response.getMessage());
                         }
                     }

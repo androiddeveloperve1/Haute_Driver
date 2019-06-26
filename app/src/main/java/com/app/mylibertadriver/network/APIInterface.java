@@ -3,6 +3,7 @@ package com.app.mylibertadriver.network;
 
 import com.app.mylibertadriver.constants.UrlConstants;
 import com.app.mylibertadriver.model.ApiResponseModel;
+import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
@@ -96,5 +97,8 @@ public interface APIInterface {
     @GET(UrlConstants.ORDER_DELIVERED+ "{id}")
     Observable<ApiResponseModel> deliverOrderNow(@Path("id") String orderId);
 
+
+    @GET(UrlConstants.DOCS_STATUS)
+    Observable<ApiResponseModel<DocsStatusModel>> getDocStatus();
 
 }

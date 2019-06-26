@@ -63,8 +63,7 @@ public class FragmentTasks extends Fragment {
     private TaskResponse bindableModel;
     private boolean isTaskAvailable = false;
     private MainActivity mainActivity;
-    private long expireTime = 0;
-    private Thread timerThread;
+    private CountDownTimer expiryTimer;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_tasks, container, false);
@@ -98,9 +97,7 @@ public class FragmentTasks extends Fragment {
                     @Override
                     public void onNext(ApiResponseModel<TaskResponse> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@", new Gson().toJson(response.getData()));
                         if (response.getStatus().equals("200")) {
-
                             if (response.getData() != null && response.getData().get_id() != null) {
                                 isTaskAvailable = true;
                                 binder.rlTask.setVisibility(View.VISIBLE);
@@ -108,11 +105,10 @@ public class FragmentTasks extends Fragment {
                                 bindableModel = response.getData();
                                 if (bindableModel.getStatus().equals("0")) {
                                     //0 (new task)
-                                    Log.e("@@@@@", "New Task");
                                     binder.llCurrentTask.setIsVisible(View.GONE);
                                     binder.llNewTask.setIsVisible(View.VISIBLE);
                                     binder.llNewTask.setData(bindableModel.getOrderInfo());
-                                    //updateTimeToExpire();
+                                    updateTimeToExpire();
                                 } else {
                                     // current task is running
                                     binder.llCurrentTask.setIsVisible(View.VISIBLE);
@@ -150,20 +146,45 @@ public class FragmentTasks extends Fragment {
     }
 
     void updateTimeToExpire() {
-        // if (bindableModel != null) {
-        Date date = AppUtils.getUTCDateObjectFromUTCTime("2019-06-25T02:30:27.082Z");
+        Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
-        Log.e("@@@@@", "Different:" + mills);
-        if (mills >= 120) {
-            isTaskAvailable = false;
-            binder.rlTask.setVisibility(View.GONE);
-            binder.tvNoTask.setVisibility(View.VISIBLE);
-        } else {
-            expireTime = mills;
-        }
-        //}
+        Log.e("@@@@@", "Different in sec :" + mills / (1000));
+        //startTimer(mills / (1000));
+    }
 
+    private void startTimer(int i) {
+        if (expiryTimer != null) {
+            expiryTimer.cancel();
+        }
+        expiryTimer = new CountDownTimer(i * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                showSecondInView(millisUntilFinished);
+            }
+
+            public void onFinish() {
+                Log.e("@@@@@", "done");
+            }
+
+        }.start();
+    }
+
+
+    void showSecondInView(long millisUntilFinished) {
+        int totalSecond = (int) (millisUntilFinished / 1000);
+        if (totalSecond <= 60) {
+            bindableModel.getOrderInfo().setExpiryTime("00:" + totalSecond);
+
+        } else {
+            String mins = "" + (totalSecond / 60);
+            String sec = "" + (totalSecond % 60);
+
+            if (sec.length() == 2) {
+                bindableModel.getOrderInfo().setExpiryTime(mins + ":" + sec);
+            } else {
+                bindableModel.getOrderInfo().setExpiryTime(mins + ":0" + sec);
+            }
+        }
     }
 
     public void onTaskDone(String distance) {

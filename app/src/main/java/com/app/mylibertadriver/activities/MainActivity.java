@@ -30,6 +30,7 @@ import com.app.mylibertadriver.fragments.GoogleServiceActivationActivityForHandl
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.interfaces.ToolbarItemsClick;
 import com.app.mylibertadriver.model.ApiResponseModel;
+import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
@@ -50,9 +51,9 @@ import rx.schedulers.Schedulers;
  * Project Haute Delivery
  */
 public class MainActivity extends GoogleServiceActivationActivityForHandleFragment implements TaskLoadedCallback {
+    public LocationResult mLocationResult;
     @Inject
     APIInterface apiInterface;
-
     private TextView tv_tasks;
     private TextView tv_earnings;
     private TextView tv_profile;
@@ -85,9 +86,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
     private FragmentSupport fragmentSupport = new FragmentSupport();
     private ActivityMainBinding binder;
     private Presenter p = new Presenter();
-
-    public LocationResult mLocationResult;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -257,6 +255,8 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         fragmentTasks.onTaskDone(values[1].toString());
     }
 
+
+
     public class Presenter {
         public void onLogout(View view) {
             logOut();
@@ -309,6 +309,4 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
             }
         }
     }
-
-
 }

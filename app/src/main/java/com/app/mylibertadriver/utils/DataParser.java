@@ -36,7 +36,7 @@ public class DataParser {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
 
                     googlePathDisatnceTimeModel.setDistance(jLegs.getJSONObject(j).getJSONObject("distance").getString("text"));
-                    googlePathDisatnceTimeModel.setTime(jLegs.getJSONObject(j).getJSONObject("duration").getString("value"));
+                    googlePathDisatnceTimeModel.setTime(jLegs.getJSONObject(j).getJSONObject("duration").getString("text"));
 
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {

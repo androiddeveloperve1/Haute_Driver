@@ -96,7 +96,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
         mapFragment.getMapAsync(AcceptRestaurantActivity.this);
-        addGeofences();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -156,7 +155,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     }
 
     void onRestaurantSelected() {
-        removeGeofences();
         WorkUtils.stopBackgroundService();
         Intent intent = new Intent(AcceptRestaurantActivity.this, ReachedRestaurantActivty.class);
         intent.putExtra("order_id", restaurantDetails.getOrder_id());

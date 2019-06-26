@@ -33,6 +33,16 @@ public class TaskOrderInfo extends BaseObservable {
 
     private String distance="Getting distance.....";
     private String travelTime="0.0";
+    private String expiryTime;
+    @Bindable
+    public String getExpiryTime() {
+        return expiryTime;
+    }
+
+    public void setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
+        this.notifyPropertyChanged(BR.expiryTime);
+    }
 
 
     @Bindable

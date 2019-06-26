@@ -37,11 +37,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tv_expiry_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontStyleName="@{`Roboto_Bold.ttf`}"
                 android:padding="@dimen/_5_px"
-                android:text="1:00"
+
+                android:text="@{data.expiryTime}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14_px" />
 

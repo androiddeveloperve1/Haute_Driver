@@ -62,8 +62,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Geofence> mGeofenceList;
-    private GeofencingClient mGeofencingClient;
-    private PendingIntent mGeofencePendingIntent;
     protected static boolean isRationalPermissionDEtect = false;
     protected boolean isSelectNoThanks = false;
 
@@ -256,63 +254,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
     };
 
 
-    @SuppressWarnings("MissingPermission")
-    protected void addGeofences() {
-        if (!MySharedPreference.getInstance(GoogleServicesActivationActivity.this).getIsGeoFencingAdded()) {
-            Log.e("@@@@@@@@@@@@", "GeoFence  added");
-            mGeofencingClient = LocationServices.getGeofencingClient(this);
-            mGeofenceList = new ArrayList<>();
-            mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId("reachable location")
-                    .setCircularRegion(
-                            28.541397,
-                            77.397034,
-                            4000
-                    )
-                    .setExpirationDuration(Geofence.GEOFENCE_TRANSITION_ENTER)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-                    // Create the geofence.
-                    .build());
-
-            GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-            builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-            builder.addGeofences(mGeofenceList);
-
-            mGeofencingClient.addGeofences(builder.build(), getGeofencePendingIntent())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            MySharedPreference.getInstance(GoogleServicesActivationActivity.this).setGeoFencingAdded(true);
-                        }
-                    });
-        } else {
-            Log.e("@@@@@@@@@@@@", "GeoFence ALready aded");
-        }
-
-    }
-
-
-    @SuppressWarnings("MissingPermission")
-    protected void removeGeofences() {
-        if (mGeofencingClient != null)
-            mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    MySharedPreference.getInstance(GoogleServicesActivationActivity.this).setGeoFencingAdded(false);
-                }
-            });
-    }
-
-
-    private PendingIntent getGeofencePendingIntent() {
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
-        mGeofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return mGeofencePendingIntent;
-    }
 
     private void firePerimisionActivity(final Activity mActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
