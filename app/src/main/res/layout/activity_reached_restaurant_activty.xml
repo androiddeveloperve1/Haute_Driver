@@ -70,7 +70,7 @@
                 android:layout_width="@dimen/_30_px"
                 android:layout_height="@dimen/_30_px"
                 android:layout_marginRight="@dimen/_5_px"
-                android:onClick="@{(v)->click.onBack(v)}"
+                android:onClick="@{(v)->click.onHelp(v)}"
                 android:src="@drawable/ic_help_support_white"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
                 app:layout_constraintRight_toRightOf="parent"

@@ -83,7 +83,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
             }
         });
         binder.swipeView.setText("REACHED RESTAURANT");
-        enableButton();
 
     }
 
@@ -134,8 +133,11 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         restaurantDetails.getOrderInfo().setDistance(values[1].toString());
         restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
-
-
+        if (Integer.parseInt(values[3].toString()) <= 700) {
+            enableButton();
+        } else {
+            disableButton();
+        }
     }
 
 
@@ -151,7 +153,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     void disableButton() {
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
-        binder.ivNavigation.setVisibility(View.VISIBLE);
+        binder.ivNavigation.setVisibility(View.GONE);
     }
 
     void onRestaurantSelected() {
@@ -179,6 +181,11 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
         public void onCall(View v) {
             AppUtils.requestCall(AcceptRestaurantActivity.this, "" + restaurantDetails.getOrderInfo().getRestaurantInfo().getContact_no());
+        }
+
+        public void onHelp(View v) {
+            startActivity(new Intent(AcceptRestaurantActivity.this, HelpActivity.class));
+
         }
     }
 }

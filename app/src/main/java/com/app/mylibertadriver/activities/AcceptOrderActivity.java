@@ -2,6 +2,7 @@ package com.app.mylibertadriver.activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -130,7 +131,8 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                             finish();
                         } else {
                             binder.swipeView.swipeLeft();
-                            ResponseDialog.showErrorDialog(AcceptOrderActivity.this, response.getMessage());
+                            Toast.makeText(AcceptOrderActivity.this, "" + response.getMessage(), Toast.LENGTH_LONG).show();
+                            //ResponseDialog.showErrorDialog(AcceptOrderActivity.this, response.getMessage());
                         }
                     }
                 });
@@ -182,6 +184,12 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
         public void onCall(View v) {
             AppUtils.requestCall(AcceptOrderActivity.this, orderData.getOrderInfo().getRestaurantInfo().getContact_no());
+        }
+
+
+        public void onHelp(View v) {
+            startActivity(new Intent(AcceptOrderActivity.this, HelpActivity.class));
+
         }
     }
 }

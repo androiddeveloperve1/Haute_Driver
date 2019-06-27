@@ -150,10 +150,10 @@ public class FragmentTasks extends Fragment {
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
-        //startTimer(mills / (1000));
+        startTimer(mills / (1000));
     }
 
-    private void startTimer(int i) {
+    private void startTimer(long i) {
         if (expiryTimer != null) {
             expiryTimer.cancel();
         }

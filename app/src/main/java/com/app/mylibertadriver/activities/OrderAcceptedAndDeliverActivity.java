@@ -178,6 +178,12 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         orderDetails.setDistance(values[1].toString());
         orderDetails.setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+
+        if (Integer.parseInt(values[3].toString()) <= 700) {
+            enableButton();
+        } else {
+            disableButton();
+        }
     }
 
     void startSwipeDialog() {
@@ -196,7 +202,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     void disableButton() {
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
-        binder.ivNavigation.setVisibility(View.VISIBLE);
+        binder.ivNavigation.setVisibility(View.GONE);
     }
 
     @Override
@@ -246,6 +252,11 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         public void onNavifationStart(View v) {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + myCurrentLatLong.latitude + "," + myCurrentLatLong.longitude + "+&daddr=" + delivarableLatLongUser.latitude + "," + delivarableLatLongUser.longitude));
             startActivity(intent);
+        }
+
+        public void onHelp(View v) {
+            startActivity(new Intent(OrderAcceptedAndDeliverActivity.this, HelpActivity.class));
+
         }
 
     }

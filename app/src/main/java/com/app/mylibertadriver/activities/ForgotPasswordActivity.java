@@ -83,7 +83,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public class Listener {
 
         public void onSend(View e) {
-
             if (binder.etMobile.getText().toString().trim().length() <= 0) {
                 Toast.makeText(ForgotPasswordActivity.this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
                 return;
@@ -94,6 +93,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", binder.etMobile.getText().toString().trim());
+            param.put("country_code", binder.spnrCountry.getSelectedItem().toString().replace("+", ""));
             sendOtp(param);
 
         }

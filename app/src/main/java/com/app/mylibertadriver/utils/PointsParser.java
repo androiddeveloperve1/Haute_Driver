@@ -77,7 +77,7 @@ public class PointsParser extends AsyncTask<String, Integer, GooglePathDisatnceT
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
             //mMap.addPolyline(lineOptions);
-            taskCallback.onTaskDone(lineOptions, result.getDistance(), result.getTime());
+            taskCallback.onTaskDone(lineOptions, result.getDistance(), result.getTime(), result.getDitanceLat());
         } else {
             Log.d("mylog", "without Polylines drawn");
         }

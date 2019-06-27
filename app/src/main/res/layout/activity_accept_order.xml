@@ -46,6 +46,7 @@
         <ImageView
             android:id="@+id/help"
             android:layout_width="@dimen/_40_px"
+            android:onClick="@{(v)->click.onHelp(v)}"
             android:layout_height="@dimen/_40_px"
             android:layout_marginRight="@dimen/_10_px"
             android:background="@drawable/ic_help_support_white"

@@ -148,6 +148,7 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
 
 
         public void onHelp(View v) {
+            startActivity(new Intent(ReachedRestaurantActivty.this, HelpActivity.class));
 
         }
     }

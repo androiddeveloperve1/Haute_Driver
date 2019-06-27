@@ -26,8 +26,5 @@ public class FragmentSupport extends Fragment {
         return view;
     }
 
-    public class Presenter {
-        public void onHomeClicked(View view) {
-        }
-    }
+
 }

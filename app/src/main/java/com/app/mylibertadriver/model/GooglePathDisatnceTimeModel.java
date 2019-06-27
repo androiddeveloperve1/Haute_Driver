@@ -8,6 +8,15 @@ public class GooglePathDisatnceTimeModel {
     private List<List<HashMap<String, String>>> routes;
     private String distance;
     private String time;
+    private int ditanceLat;
+
+    public int getDitanceLat() {
+        return ditanceLat;
+    }
+
+    public void setDitanceLat(int ditanceLat) {
+        this.ditanceLat = ditanceLat;
+    }
 
     public List<List<HashMap<String, String>>> getRoutes() {
         return routes;
