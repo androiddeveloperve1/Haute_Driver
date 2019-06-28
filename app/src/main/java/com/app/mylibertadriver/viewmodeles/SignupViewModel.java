@@ -1,5 +1,6 @@
 package com.app.mylibertadriver.viewmodeles;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
@@ -76,6 +77,7 @@ public class SignupViewModel extends AndroidViewModel {
                             modelData.postValue(response.getData());
                             MySharedPreference.getInstance(mContext).setUser(response.getData());
                             mContext.startActivity(new Intent(mContext, EnterOTPActivity.class));
+                            ((Activity) mContext).finish();
                         } else {
                             modelData = null;
                             ResponseDialog.showErrorDialog(mContext, response.getMessage());

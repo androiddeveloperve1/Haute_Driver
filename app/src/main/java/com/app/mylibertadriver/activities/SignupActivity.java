@@ -149,10 +149,10 @@ public class SignupActivity extends AppCompatActivity {
             if (!isPasswordShow) {
                 binder.etPass.setInputType(InputType.TYPE_CLASS_TEXT);
                 binder.etPass.setTransformationMethod(null);
-                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_off);
+                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_on);
                 isPasswordShow = true;
             } else {
-                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_on);
+                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_off);
                 binder.etPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 binder.etPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 isPasswordShow = false;
@@ -185,10 +185,10 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this, "Please enter the valid email id", Toast.LENGTH_SHORT).show();
                 return;
             }
-            /*if (binder.etServiceArea.getText().toString().trim().length() <= 0) {
+            if (binder.etServiceArea.getText().toString().trim().length() <= 0) {
                 Toast.makeText(SignupActivity.this, "Please enter the address", Toast.LENGTH_SHORT).show();
                 return;
-            }*/
+            }
             if (!isCBSelected) {
                 Toast.makeText(SignupActivity.this, "Please check the check box to agree terms and service", Toast.LENGTH_SHORT).show();
                 return;

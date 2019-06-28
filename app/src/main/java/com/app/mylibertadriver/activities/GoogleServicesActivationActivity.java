@@ -3,7 +3,6 @@ package com.app.mylibertadriver.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,13 +23,11 @@ import androidx.fragment.app.FragmentActivity;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.constants.PermissionConstants;
-import com.app.mylibertadriver.geofencing.GeofenceBroadcastReceiver;
 import com.app.mylibertadriver.interfaces.CommanTaskListener;
+import com.app.mylibertadriver.interfaces.GoogleConnectionCallBackAdapter;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
-import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
-import com.app.mylibertadriver.interfaces.GoogleConnectionCallBackAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,8 +35,6 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -49,22 +43,27 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
  */
 public abstract class GoogleServicesActivationActivity extends FragmentActivity implements CommanTaskListener, GoogleConnectionCallBackAdapter {
     public static final int LocationTag = 13001;
+    protected static boolean isRationalPermissionDEtect = false;
+    protected boolean isSelectNoThanks = false;
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            onUpdatedLocation(locationResult);
+        }
+    };
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Geofence> mGeofenceList;
-    protected static boolean isRationalPermissionDEtect = false;
-    protected boolean isSelectNoThanks = false;
-
 
     @Override
     protected void onResume() {
@@ -99,7 +98,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
 
     }
 
-
     public boolean checkGooglePlayServiceAvailability(Context context) {
         int statusCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
         if ((statusCode == ConnectionResult.SUCCESS)) {
@@ -118,7 +116,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         }
     }
 
-
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(GoogleServicesActivationActivity.this)
                 .addConnectionCallbacks(this)
@@ -128,7 +125,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         mGoogleApiClient.connect();
 
     }
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -179,7 +175,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         });
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -195,7 +190,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
             }
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
@@ -244,16 +238,6 @@ public abstract class GoogleServicesActivationActivity extends FragmentActivity 
         LocationServices.getFusedLocationProviderClient(GoogleServicesActivationActivity.this).removeLocationUpdates(mLocationCallback);
 
     }
-
-    LocationCallback mLocationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            onUpdatedLocation(locationResult);
-        }
-    };
-
-
 
     private void firePerimisionActivity(final Activity mActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);

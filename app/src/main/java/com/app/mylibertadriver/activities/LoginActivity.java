@@ -89,10 +89,10 @@ public class LoginActivity extends AppCompatActivity {
             if (!isPasswordShow) {
                 binder.etPass.setInputType(InputType.TYPE_CLASS_TEXT);
                 binder.etPass.setTransformationMethod(null);
-                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_off);
+                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_on);
                 isPasswordShow = true;
             } else {
-                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_on);
+                binder.imgPass.setBackgroundResource(R.drawable.ic_eye_off);
                 binder.etPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 binder.etPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 isPasswordShow = false;

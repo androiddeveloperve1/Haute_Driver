@@ -34,7 +34,7 @@
                 android:layout_marginTop="@dimen/_30_px"
                 android:layout_marginRight="@dimen/_20_px"
                 android:fontStyleName="@{`Roboto_Bold.ttf`}"
-                android:text="99887766554412"
+                android:text="+1888-246-7125"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15_px"
                 app:layout_constraintLeft_toLeftOf="parent"

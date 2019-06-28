@@ -150,6 +150,7 @@ public class EnterOTPActivity extends AppCompatActivity {
             binder.otp4.setText("");
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", userData.getMobile_no());
+            param.put("country_code", userData.getCountry_code());
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
         }
 

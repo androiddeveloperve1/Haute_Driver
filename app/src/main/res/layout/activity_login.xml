@@ -95,7 +95,7 @@
                     android:layout_width="@dimen/_20_px"
                     android:layout_height="@dimen/_20_px"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/ic_eye_on"
+                    android:background="@drawable/ic_eye_off"
                     android:onClick="@{(v)->handler.onPassView(v)}"
                     app:layout_constraintBottom_toBottomOf="@+id/et_pass"
                     app:layout_constraintRight_toRightOf="parent"
