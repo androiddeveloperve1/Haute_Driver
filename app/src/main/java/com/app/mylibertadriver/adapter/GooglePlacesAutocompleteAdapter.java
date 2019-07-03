@@ -26,8 +26,8 @@ import java.util.ArrayList;
 public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
 
 
-    private ArrayList resultList;
     ArrayList placeIdList = null;
+    private ArrayList resultList;
 
     public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -69,12 +69,17 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Fil
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
+                try {
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
 
-                if (results != null && results.count > 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyDataSetInvalidated();
+                } catch (Exception e) {
+
                 }
+
             }
         };
         return filter;

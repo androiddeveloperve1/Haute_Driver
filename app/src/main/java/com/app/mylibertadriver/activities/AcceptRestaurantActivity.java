@@ -115,7 +115,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(restaurantLatlong, 8));
         new FetchURL(AcceptRestaurantActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
-        WorkUtils.startBackgroundService();
+        //WorkUtils.startBackgroundService();
 
     }
 
@@ -136,7 +136,8 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         if (Integer.parseInt(values[3].toString()) <= 700) {
             enableButton();
         } else {
-            disableButton();
+            //disableButton();
+            enableButton();
         }
     }
 
@@ -153,11 +154,11 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     void disableButton() {
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
-        binder.ivNavigation.setVisibility(View.GONE);
+        binder.ivNavigation.setVisibility(View.VISIBLE);
     }
 
     void onRestaurantSelected() {
-        WorkUtils.stopBackgroundService();
+        //WorkUtils.stopBackgroundService();
         Intent intent = new Intent(AcceptRestaurantActivity.this, ReachedRestaurantActivty.class);
         intent.putExtra("order_id", restaurantDetails.getOrder_id());
         startActivity(intent);

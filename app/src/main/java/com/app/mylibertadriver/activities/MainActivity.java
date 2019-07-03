@@ -36,6 +36,7 @@ import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.FragmentTransactionUtils;
 import com.app.mylibertadriver.utils.Statusbar;
+import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -119,6 +120,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
         changeTheToolbarTitle("Tasks");
         getDocsInfo();
+        WorkUtils.startBackgroundService();
 
     }
 
@@ -197,6 +199,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     public void onNext(ApiResponseModel response) {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
+                            WorkUtils.stopBackgroundService();
                             MySharedPreference.getInstance(MainActivity.this).clearMyPreference();
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             finishAffinity();

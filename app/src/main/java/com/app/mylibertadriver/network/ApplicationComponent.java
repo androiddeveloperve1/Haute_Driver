@@ -7,7 +7,6 @@ import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
 import com.app.mylibertadriver.activities.SplashActivity;
-import com.app.mylibertadriver.activities.TrackingActivity;
 import com.app.mylibertadriver.fragments.FragmentEarning;
 import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentTasks;
@@ -38,7 +37,6 @@ public interface ApplicationComponent {
     void inject(FragmentProfile model);
     void inject(MainActivity model);
     void inject(FragmentTasks model);
-    void inject(TrackingActivity model);
     void inject(DriverLocationUpdateService model);
     void inject(AcceptOrderActivity model);
     void inject(ReachedRestaurantActivty model);

@@ -13,13 +13,15 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/_20_px"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white"
+            android:layout_marginBottom="@dimen/_20_px"
             android:paddingLeft="@dimen/_15_px"
             android:paddingRight="@dimen/_15_px"
             tools:context=".activities.SignupActivity">
@@ -206,7 +208,6 @@
                 android:id="@+id/tv_verify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10_px"
                 android:background="@drawable/rounded_bg_with_black"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:gravity="center"
@@ -215,7 +216,9 @@
                 android:text='UPLOAD'
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16_px"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_20_px"
+                android:layout_marginTop="@dimen/_20_px"
+                app:layout_constraintTop_toBottomOf="@+id/rl_insurence"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 

@@ -124,7 +124,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
             @Override
             public void Swiped(int flag) {
                 if (flag == SwipeView.SWIPED_RIGHT) {
-                    WorkUtils.stopBackgroundService();
+                    //WorkUtils.stopBackgroundService();
                     startSwipeDialog();
                 }
             }
@@ -161,7 +161,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
         new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
-        WorkUtils.startBackgroundService();
+        //WorkUtils.startBackgroundService();
 
     }
 
@@ -182,7 +182,8 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         if (Integer.parseInt(values[3].toString()) <= 700) {
             enableButton();
         } else {
-            disableButton();
+            //disableButton();
+            enableButton();
         }
     }
 
@@ -202,7 +203,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     void disableButton() {
         binder.swipeView.disableSwipe();
         binder.disableView.setVisibility(View.VISIBLE);
-        binder.ivNavigation.setVisibility(View.GONE);
+        binder.ivNavigation.setVisibility(View.VISIBLE);
     }
 
     @Override

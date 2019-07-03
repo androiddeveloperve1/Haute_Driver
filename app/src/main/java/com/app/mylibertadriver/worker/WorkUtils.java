@@ -1,5 +1,7 @@
 package com.app.mylibertadriver.worker;
 
+import android.util.Log;
+
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class WorkUtils {
-    private static  OneTimeWorkRequest.Builder driverLocationRequest;
+    private static OneTimeWorkRequest.Builder driverLocationRequest;
 
 
     public static void startBackgroundService() {
@@ -31,9 +33,12 @@ public class WorkUtils {
                     buildWorkManager();
                     OneTimeWorkRequest req = driverLocationRequest.build();
                     WorkManager.getInstance().enqueue(req);
-
+                    Log.e("--------------------", "Already Service but restarted");
+                } else {
+                    Log.e("--------------------", "Already Service running");
                 }
             } else {
+                Log.e("-------------------", "new Service");
                 buildWorkManager();
                 OneTimeWorkRequest req = driverLocationRequest.build();
                 WorkManager.getInstance().enqueue(req);
@@ -50,8 +55,9 @@ public class WorkUtils {
         driverLocationRequest.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.SECONDS);
         driverLocationRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
     }
-    public static void stopBackgroundService()
-    {
+
+    public static void stopBackgroundService() {
+        Log.e("@@@@@@", "Stoped");
         WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
     }
 }

@@ -97,8 +97,6 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
             currentPolyline.remove();
-
-
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         orderData.getOrderInfo().setDistance(values[1].toString());
         Log.e("@@@@@@@@", "Task Done" + values[2].toString());

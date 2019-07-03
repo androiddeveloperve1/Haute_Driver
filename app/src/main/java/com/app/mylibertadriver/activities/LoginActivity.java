@@ -8,19 +8,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityLoginBinding;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.viewmodeles.LoginViewModel;
-
 import java.util.HashMap;
 /**
  * Create By Rahul Mangal
@@ -30,8 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binder;
     private boolean isPasswordShow = false;
     private LoginViewModel loginViewModel;
-
-
 
 
     @Override
@@ -73,11 +68,8 @@ public class LoginActivity extends AppCompatActivity {
             loginViewModel.getData(LoginActivity.this, param).observe(LoginActivity.this, new Observer<DriverModel>() {
                 @Override
                 public void onChanged(DriverModel driverModel) {
-
                 }
             });
-
-
         }
 
         public void onSignUp(View e) {

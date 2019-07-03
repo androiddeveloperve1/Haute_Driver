@@ -10,6 +10,7 @@ import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.activities.LoginActivity;
 import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.prefes.MySharedPreference;
+import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -71,16 +72,15 @@ public class NetworkModule {
 
                         if (response.code() == 401) {
                             MySharedPreference.getInstance(applicationContext).clearMyPreference();
+                            WorkUtils.stopBackgroundService();
+                            Toast.makeText(applicationContext, "Session Expired", Toast.LENGTH_SHORT).show();
                             Intent mIntent = new Intent(applicationContext, LoginActivity.class);
                             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             applicationContext.startActivity(mIntent);
-                            Toast.makeText(applicationContext, "Session Expired", Toast.LENGTH_SHORT).show();
                             ((Activity) applicationContext).finishAffinity();
 
                         } else {
                             String newToken = response.header("x-auth");
-
-
                             if (newToken != null) {
                                 Log.e("TOKEN", "" + newToken);
                                 MySharedPreference.getInstance(applicationContext).setSessionToken(newToken);
