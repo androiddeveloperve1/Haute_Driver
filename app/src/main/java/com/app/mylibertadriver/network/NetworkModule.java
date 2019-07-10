@@ -86,7 +86,6 @@ public class NetworkModule {
                                 MySharedPreference.getInstance(applicationContext).setSessionToken(newToken);
                             }
                         }
-
                         response.cacheResponse();
                         response.code();
                         // Customize or return the response

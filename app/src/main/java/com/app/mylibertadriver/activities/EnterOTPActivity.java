@@ -153,11 +153,9 @@ public class EnterOTPActivity extends AppCompatActivity {
             param.put("country_code", userData.getCountry_code());
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
         }
-
         public void onEdit(View e) {
             finish();
         }
-
         public void onVerify(View e) {
             HashMap<String, String> param = new HashMap<>();
             param.put("deviceId", MySharedPreference.getInstance(EnterOTPActivity.this).getFCM());
@@ -183,7 +181,6 @@ public class EnterOTPActivity extends AppCompatActivity {
                     }
                 }
             });
-
         }
     }
 }

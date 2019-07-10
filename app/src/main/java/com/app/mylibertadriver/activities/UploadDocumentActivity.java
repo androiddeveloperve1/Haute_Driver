@@ -311,7 +311,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
         public void onUpload(View e) {
             if (imageCapturedDriveLicence != null && imageCapturedInsurance != null) {
-                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense")};
+                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance","insurance.jpg"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense","drivimglic.jpg")};
                 uploadDocViewModel.uploadImage(UploadDocumentActivity.this, part).observe(UploadDocumentActivity.this, new Observer<DriverModel>() {
                     @Override
                     public void onChanged(DriverModel driverModel) {

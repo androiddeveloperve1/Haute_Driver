@@ -152,7 +152,7 @@ public class FragmentProfile extends Fragment {
         capturedImage = mBitmap;
         if (mBitmap != null) {
             binder.imgProfile.setImageBitmap(capturedImage);
-            uploadImage(MultipartUtils.createFile(getActivity(), capturedImage, "driver_avtar"));
+            uploadImage(MultipartUtils.createFile(getActivity(), capturedImage, "driver_avtar","profile.jpg"));
 
         } else {
             Toast.makeText(getActivity(), "Picture not taken!", Toast.LENGTH_SHORT).show();

@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "196161718343",
-    "firebase_url": "https://myliberta-244206.firebaseio.com",
-    "project_id": "myliberta-244206",
-    "storage_bucket": "myliberta-244206.appspot.com"
+    "project_number": "854809609046",
+    "firebase_url": "https://myliberta-c660f.firebaseio.com",
+    "project_id": "myliberta-c660f",
+    "storage_bucket": "myliberta-c660f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196161718343:android:39817652a98e62c0",
+        "mobilesdk_app_id": "1:854809609046:android:39817652a98e62c0",
         "android_client_info": {
           "package_name": "com.app.myliberta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "196161718343-59gfs3a76vu84cdhd5jhri0u08nok77j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.myliberta",
-            "certificate_hash": "46ca964f589e828d283bdcd81361f65fada0d93a"
-          }
-        },
-        {
-          "client_id": "196161718343-2makfkc8cp32a2rhsuuup5at5tf5a1oq.apps.googleusercontent.com",
+          "client_id": "854809609046-8h4nsspniq99cdlpuocjgfvnmqica6i0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCrgok5whFmP-aHAAsLB99d2m3BNL-hTKM"
+          "current_key": "AIzaSyAJW2TL6mlGK4xfxpyjFoDW7y6MUxNepuA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "196161718343-2makfkc8cp32a2rhsuuup5at5tf5a1oq.apps.googleusercontent.com",
+              "client_id": "854809609046-8h4nsspniq99cdlpuocjgfvnmqica6i0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -45,35 +37,27 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196161718343:android:b14497e78c2a8011",
+        "mobilesdk_app_id": "1:854809609046:android:b14497e78c2a8011",
         "android_client_info": {
           "package_name": "com.app.mylibertadriver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "196161718343-mpbi3jpvkup2cdo0t67thck273fc5705.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.mylibertadriver",
-            "certificate_hash": "46ca964f589e828d283bdcd81361f65fada0d93a"
-          }
-        },
-        {
-          "client_id": "196161718343-2makfkc8cp32a2rhsuuup5at5tf5a1oq.apps.googleusercontent.com",
+          "client_id": "854809609046-8h4nsspniq99cdlpuocjgfvnmqica6i0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCrgok5whFmP-aHAAsLB99d2m3BNL-hTKM"
+          "current_key": "AIzaSyAJW2TL6mlGK4xfxpyjFoDW7y6MUxNepuA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "196161718343-2makfkc8cp32a2rhsuuup5at5tf5a1oq.apps.googleusercontent.com",
+              "client_id": "854809609046-8h4nsspniq99cdlpuocjgfvnmqica6i0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

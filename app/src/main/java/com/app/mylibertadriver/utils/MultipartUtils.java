@@ -19,9 +19,9 @@ import okhttp3.RequestBody;
 
 public class MultipartUtils {
 
-    public static MultipartBody.Part createFile(Context mContext, Bitmap mBitmap,String key) {
+    public static MultipartBody.Part createFile(Context mContext, Bitmap mBitmap,String key,String filename) {
         //create a file to write bitmap data
-        File f = new File(mContext.getCacheDir(), "Demo.jpg");
+        File f = new File(mContext.getCacheDir(), filename);
         try {
             f.createNewFile();
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -158,15 +158,12 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
         mMap.addMarker(delivarableLatLongMarker);
-
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(myCurrentLatLong).include(delivarableLatLong);
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 60);
         mMap.animateCamera(cameraUpdate);
-
         new FetchURL(AcceptOrderActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
-
     }
 
     @Override
