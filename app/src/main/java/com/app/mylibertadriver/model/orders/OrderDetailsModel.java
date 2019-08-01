@@ -2,11 +2,8 @@ package com.app.mylibertadriver.model.orders;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-
 import com.app.mylibertadriver.BR;
-import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.model.UserModel;
-
 import java.util.ArrayList;
 
 /**
@@ -30,10 +27,10 @@ public class OrderDetailsModel extends BaseObservable {
     private String updatedAt;
     private String address_type;
     private String delivery_status;
-    private String distance="Getting distance.....";
+    private String distance = "Getting distance.....";
     private String order_no;
 
-    private String travelTime="0.0";
+    private String travelTime = "0.0";
 
 
     @Bindable
@@ -52,14 +49,29 @@ public class OrderDetailsModel extends BaseObservable {
         return user_id;
     }
 
+    public void setUser_id(UserModel user_id) {
+        this.user_id = user_id;
+        this.notifyPropertyChanged(BR.user_id);
+    }
+
     @Bindable
     public RestaurantInfoModel getRestaurant_id() {
         return restaurant_id;
     }
 
+    public void setRestaurant_id(RestaurantInfoModel restaurant_id) {
+        this.restaurant_id = restaurant_id;
+        this.notifyPropertyChanged(BR.restaurant_id);
+    }
+
     @Bindable
     public String getDistance() {
         return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+        this.notifyPropertyChanged(BR.distance);
     }
 
     @Bindable
@@ -71,7 +83,6 @@ public class OrderDetailsModel extends BaseObservable {
         this.order_no = order_no;
         this.notifyPropertyChanged(BR.order_no);
     }
-
 
     @Bindable
     public RestaurantInfoModel getRestaurantInfo() {
@@ -212,21 +223,6 @@ public class OrderDetailsModel extends BaseObservable {
     public void setDelivery_status(String delivery_status) {
         this.delivery_status = delivery_status;
         this.notifyPropertyChanged(BR.delivery_status);
-    }
-
-    public void setUser_id(UserModel user_id) {
-        this.user_id = user_id;
-        this.notifyPropertyChanged(BR.user_id);
-    }
-
-    public void setRestaurant_id(RestaurantInfoModel restaurant_id) {
-        this.restaurant_id = restaurant_id;
-        this.notifyPropertyChanged(BR.restaurant_id);
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
-        this.notifyPropertyChanged(BR.distance);
     }
 }
 

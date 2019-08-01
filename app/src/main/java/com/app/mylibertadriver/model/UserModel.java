@@ -5,6 +5,8 @@ import androidx.databinding.Bindable;
 
 import com.app.mylibertadriver.BR;
 
+import java.util.ArrayList;
+
 /**
  * Create By Rahul Mangal
  * Project SignupLibrary Screen
@@ -19,7 +21,7 @@ public class UserModel extends BaseObservable {
     private String avatar;
     private String mobile_no;
     private String country_code;
-    private DeliveryAddress delivery_address;
+    private ArrayList<DeliveryAddress> delivery_address;
 
     @Bindable
     public String getName() {
@@ -102,11 +104,11 @@ public class UserModel extends BaseObservable {
     }
 
     @Bindable
-    public DeliveryAddress getDelivery_address() {
+    public ArrayList<DeliveryAddress> getDelivery_address() {
         return delivery_address;
     }
 
-    public void setDelivery_address(DeliveryAddress delivery_address) {
+    public void setDelivery_address(ArrayList<DeliveryAddress> delivery_address) {
         this.delivery_address = delivery_address;
         this.notifyPropertyChanged(BR.delivery_address);
     }

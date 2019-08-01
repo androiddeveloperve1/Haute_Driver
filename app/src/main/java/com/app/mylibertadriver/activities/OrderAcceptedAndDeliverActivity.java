@@ -112,7 +112,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         binder.setClick(new MyClick());
 
         orderDetails = new Gson().fromJson(getIntent().getStringExtra("data"), OrderDetailsModel.class);
-        delivarableLatLongUser = new LatLng(orderDetails.getUser_id().getDelivery_address().getLoc().getCoordinates().get(0), orderDetails.getUser_id().getDelivery_address().getLoc().getCoordinates().get(1
+        delivarableLatLongUser = new LatLng(orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(0), orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(1
         ));
 
         binder.setData(orderDetails);

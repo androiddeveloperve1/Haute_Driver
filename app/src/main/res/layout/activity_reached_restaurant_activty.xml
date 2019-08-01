@@ -152,6 +152,7 @@
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:text="Amount to be collect in cash"
                 android:textSize="@dimen/_14_px"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
