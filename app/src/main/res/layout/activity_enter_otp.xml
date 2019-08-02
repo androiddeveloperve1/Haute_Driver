@@ -89,13 +89,13 @@
                 android:id="@+id/text_mobile_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5_px"
+                android:layout_marginLeft="@dimen/_10_px"
                 android:layout_marginTop="@dimen/_5_px"
                 android:fontStyleName="@{`Roboto_Bold.ttf`}"
                 android:onClick="@{(v)->handler.onEdit(v)}"
-                android:text='EDIT'
+                android:text="@string/edit"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14_px"
+                android:textSize="@dimen/_12_px"
                 app:layout_constraintLeft_toRightOf="@+id/text_mobile"
                 app:layout_constraintTop_toBottomOf="@+id/tv_signup_text_heading" />
 

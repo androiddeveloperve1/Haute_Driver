@@ -229,6 +229,7 @@
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:hint="Service area"
                 android:padding="@dimen/_8_px"
+                android:onClick="@{(v)->handler.onCurrentLocation(v)}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/img_my_loc"
                 app:layout_constraintTop_toBottomOf="@+id/view5" />
@@ -293,7 +294,7 @@
                     android:layout_height="wrap_content"
                     android:fontStyleName="@{`Roboto_Regular.ttf`}"
                     android:onClick="@{(v)->handler.onTermClick(v)}"
-                    android:text='terms and services'
+                    android:text='Terms and Services'
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12_px"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_terms_text"

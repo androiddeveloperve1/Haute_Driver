@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.app.mylibertadriver.constants.Constants;
 
 import org.json.JSONArray;
@@ -71,6 +73,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Fil
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 try {
                     if (results != null && results.count > 0) {
+
                         notifyDataSetChanged();
                     } else {
                         notifyDataSetInvalidated();

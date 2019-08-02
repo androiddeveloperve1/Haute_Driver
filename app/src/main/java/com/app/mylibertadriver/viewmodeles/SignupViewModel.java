@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.mylibertadriver.activities.EnterOTPActivity;
 import com.app.mylibertadriver.activities.MyApplication;
+import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
@@ -37,6 +38,7 @@ public class SignupViewModel extends AndroidViewModel {
     @Inject
     APIInterface apiInterface;
     MutableLiveData<DriverModel> modelData;
+
 
 
     public SignupViewModel(@NonNull Application application) {
@@ -76,7 +78,9 @@ public class SignupViewModel extends AndroidViewModel {
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
                             MySharedPreference.getInstance(mContext).setUser(response.getData());
-                            mContext.startActivity(new Intent(mContext, EnterOTPActivity.class));
+                            Intent mIntent = new Intent(mContext, EnterOTPActivity.class);
+                            mIntent.putExtra("flag", Constants.FROM_SIGNUP);
+                            mContext.startActivity(mIntent);
                             ((Activity) mContext).finish();
                         } else {
                             modelData = null;

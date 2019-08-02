@@ -29,6 +29,7 @@ import com.app.mylibertadriver.databinding.ActivitySignupBinding;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
+import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.viewmodeles.SignupViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -61,6 +62,22 @@ public class SignupActivity extends AppCompatActivity {
         binder = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         mSignupViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         binder.setHandler(new Listener());
+
+        if (getIntent().getIntExtra("edit", 0) == 1) {
+            //edit
+            DriverModel userData = MySharedPreference.getInstance(this).getUser();
+            binder.etFname.setText(userData.getFname());
+            binder.etLname.setText(userData.getLname());
+            binder.etEmail.setText(userData.getEmail());
+            binder.etMob.setText(userData.getMobile_no());
+            if (userData.getMobile_no().contains("91")) {
+                binder.spnrCountry.setSelection(1);
+            }
+            binder.etServiceArea.setText(userData.getService_area());
+            mlaLatLng = new LatLng(userData.getLocation().getCoordinates().get(0), userData.getLocation().getCoordinates().get(1));
+        }
+
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -183,6 +200,10 @@ public class SignupActivity extends AppCompatActivity {
             }
             if (!AppUtils.eMailValidation(binder.etEmail.getText().toString().trim())) {
                 Toast.makeText(SignupActivity.this, "Please enter the valid email id", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (binder.etPass.getText().toString().trim().length() <= 0) {
+                Toast.makeText(SignupActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (binder.etServiceArea.getText().toString().trim().length() <= 0) {

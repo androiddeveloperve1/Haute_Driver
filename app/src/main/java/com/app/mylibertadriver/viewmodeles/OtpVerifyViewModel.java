@@ -33,16 +33,16 @@ import rx.schedulers.Schedulers;
 public class OtpVerifyViewModel extends AndroidViewModel {
     @Inject
     APIInterface apiInterface;
-    MutableLiveData<DriverModel> modelData;
+    MutableLiveData<ApiResponseModel<DriverModel>> modelData;
 
 
     public OtpVerifyViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public MutableLiveData<DriverModel> getData(Context mContext, final HashMap param) {
+    public MutableLiveData<ApiResponseModel<DriverModel>> getData(Context mContext, final HashMap param) {
         if (modelData == null) {
-            modelData = new MutableLiveData<DriverModel>();
+            modelData = new MutableLiveData<ApiResponseModel<DriverModel>>();
             getDataFromServer(mContext, param);
         }
         return modelData;
@@ -75,13 +75,8 @@ public class OtpVerifyViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(ApiResponseModel<DriverModel> response) {
                         progressDialog.dismiss();
-                        if (response.getStatus().equals("200")) {
-                            modelData.postValue(response.getData());
+                        modelData.postValue(response);
 
-                        } else {
-                            modelData = null;
-                            ResponseDialog.showErrorDialog(mContext, response.getMessage());
-                        }
                     }
                 });
     }

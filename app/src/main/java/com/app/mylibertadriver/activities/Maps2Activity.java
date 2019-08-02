@@ -156,8 +156,15 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                googlePlacesAutocompleteAdapter.getFilter().filter(s.toString());
+            public void onTextChanged(final CharSequence s, int start, int before, int count) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        googlePlacesAutocompleteAdapter.getFilter().filter(s.toString());
+                    }
+                });
+
             }
         });
 

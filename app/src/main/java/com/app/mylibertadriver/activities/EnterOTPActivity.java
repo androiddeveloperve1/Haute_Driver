@@ -12,10 +12,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityEnterOtpBinding;
+import com.app.mylibertadriver.dialogs.ResponseDialog;
+import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.viewmodeles.OtpVerifyViewModel;
@@ -42,9 +45,10 @@ public class EnterOTPActivity extends AppCompatActivity {
         binder.setHandler(new Listener());
         userData = MySharedPreference.getInstance(this).getUser();
         binder.textMobile.setText("We have send an OTP to " + userData.getMobile_no());
+        binder.textMobile.setEnabled(true);
         isFromForgotPassScreen = getIntent().getIntExtra("flag", 0);
-
-        if (isFromForgotPassScreen != Constants.FROM_SIGNUP) {
+        binder.otp1.requestFocus();
+        if (isFromForgotPassScreen == Constants.FROM_FORGOT_PASS) {
             binder.textMobileEdit.setVisibility(View.GONE);
         }
         setOtpEditTextListener();
@@ -143,6 +147,7 @@ public class EnterOTPActivity extends AppCompatActivity {
         }
 
         public void onResend(View e) {
+            userData.setMobile_no(binder.textMobile.getText().toString().trim());
             binder.otp1.requestFocus();
             binder.otp1.setText("");
             binder.otp2.setText("");
@@ -153,32 +158,58 @@ public class EnterOTPActivity extends AppCompatActivity {
             param.put("country_code", userData.getCountry_code());
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
         }
+
         public void onEdit(View e) {
-            finish();
+            Intent mIntent = new Intent(EnterOTPActivity.this, SignupActivity.class);
+            mIntent.putExtra("edit", 1);
+            startActivity(mIntent);
+            finishAffinity();
         }
+
+
         public void onVerify(View e) {
+
+            String otp = "";
+            otp = binder.otp1.getText().toString() + binder.otp2.getText().toString() + binder.otp3.getText().toString() + binder.otp4.getText().toString();
+            if (otp.length() < 4) {
+                Toast.makeText(EnterOTPActivity.this, "Please enter 4 digit otp", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
             HashMap<String, String> param = new HashMap<>();
             param.put("deviceId", MySharedPreference.getInstance(EnterOTPActivity.this).getFCM());
             param.put("deviceType", Constants.ANDROID_KEY);
             param.put("otp", binder.otp1.getText().toString() + binder.otp2.getText().toString() + binder.otp3.getText().toString() + binder.otp4.getText().toString());
-            otpVerifyViewModel.getData(EnterOTPActivity.this, param).observe(EnterOTPActivity.this, new Observer<DriverModel>() {
+            otpVerifyViewModel.getData(EnterOTPActivity.this, param).observe(EnterOTPActivity.this, new Observer<ApiResponseModel<DriverModel>>() {
                 @Override
-                public void onChanged(DriverModel driverModel) {
-                    MySharedPreference.getInstance(EnterOTPActivity.this).setUser(driverModel);
-                    if (isFromForgotPassScreen == Constants.FROM_FORGOT_PASS) {
-                        startActivity(new Intent(EnterOTPActivity.this, ResetPasswordActivity.class));
-                        finishAffinity();
-                    } else if (isFromForgotPassScreen == Constants.FROM_SIGNUP) {
-                        startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
-                        finishAffinity();
-                    } else {
-                        if (driverModel.getIs_document_upload().equals("1")) {
-                            startActivity(new Intent(EnterOTPActivity.this, MainActivity.class));
-                        } else {
+                public void onChanged(ApiResponseModel<DriverModel> driverModel) {
+                    if (driverModel.getStatus().equals("200")) {
+                        MySharedPreference.getInstance(EnterOTPActivity.this).setUser(driverModel.getData());
+                        if (isFromForgotPassScreen == Constants.FROM_FORGOT_PASS) {
+                            startActivity(new Intent(EnterOTPActivity.this, ResetPasswordActivity.class));
+                            finishAffinity();
+                        } else if (isFromForgotPassScreen == Constants.FROM_SIGNUP) {
                             startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
+                            finishAffinity();
+                        } else {
+                            if (driverModel.getData().getIs_document_upload().equals("1")) {
+                                startActivity(new Intent(EnterOTPActivity.this, MainActivity.class));
+                            } else {
+                                startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
+                            }
+                            finishAffinity();
                         }
-                        finishAffinity();
+                    } else {
+                        binder.otp1.setText("");
+                        binder.otp2.setText("");
+                        binder.otp3.setText("");
+                        binder.otp4.setText("");
+                        binder.otp1.requestFocus();
+                        ResponseDialog.showErrorDialog(EnterOTPActivity.this, driverModel.getMessage());
                     }
+
+
                 }
             });
         }
