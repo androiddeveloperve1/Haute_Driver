@@ -190,8 +190,8 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this, "Please enter the mobile number", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (binder.etMob.getText().toString().trim().length() < 10) {
-                Toast.makeText(SignupActivity.this, "Please enter the valid mobile number", Toast.LENGTH_SHORT).show();
+            if (binder.etMob.getText().toString().trim().length() < 8) {
+                Toast.makeText(SignupActivity.this, "Please enter the mobile no. between 8 to 15", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (binder.etEmail.getText().toString().trim().length() <= 0) {
