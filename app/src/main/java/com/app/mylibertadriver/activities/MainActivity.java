@@ -82,9 +82,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
             //startActivity(new Intent(MainActivity.this, TrackingActivity.class));
         }
     };
-    private FragmentEarning fragmentEarning = new FragmentEarning();
-    private FragmentProfile fragmentProfile = new FragmentProfile();
-    private FragmentSupport fragmentSupport = new FragmentSupport();
+
     private ActivityMainBinding binder;
     private Presenter p = new Presenter();
 
@@ -332,7 +330,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
                     changeTheToolbarTitle("Order History");
                     toolbar_refresh.setVisibility(View.GONE);
-                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentEarning);
+                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentEarning());
                     break;
                 case R.id.tv_profile:
                     tv_tasks.setTextColor(getResources().getColor(R.color.gray_text));
@@ -341,7 +339,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
                     changeTheToolbarTitle("Profile");
                     toolbar_refresh.setVisibility(View.GONE);
-                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentProfile);
+                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentProfile());
                     break;
                 case R.id.tv_help:
                     tv_tasks.setTextColor(getResources().getColor(R.color.gray_text));
@@ -350,7 +348,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_help.setTextColor(getResources().getColor(R.color.black));
                     changeTheToolbarTitle("Help and support");
                     toolbar_refresh.setVisibility(View.GONE);
-                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentSupport);
+                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentSupport());
                     break;
 
             }

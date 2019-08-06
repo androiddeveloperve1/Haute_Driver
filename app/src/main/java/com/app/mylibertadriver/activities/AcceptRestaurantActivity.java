@@ -133,11 +133,12 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
         restaurantDetails.getOrderInfo().setDistance(values[1].toString());
         restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
-        if (Integer.parseInt(values[3].toString()) <= 700) {
+        if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
             enableButton();
         } else {
-            //disableButton();
-            enableButton();
+
+            disableButton();
+
         }
     }
 

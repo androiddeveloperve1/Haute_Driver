@@ -116,7 +116,6 @@ public class FragmentTasks extends Fragment {
                                     binder.llNewTask.setIsVisible(View.GONE);
                                 }
                                 if (mainActivity.mLocationResult != null) {
-
                                     onUpdatedLocation(mainActivity.mLocationResult);
                                 }
 
@@ -164,6 +163,9 @@ public class FragmentTasks extends Fragment {
 
             public void onFinish() {
                 Log.e("@@@@@", "done");
+                isTaskAvailable = false;
+                binder.rlTask.setVisibility(View.GONE);
+                binder.tvNoTask.setVisibility(View.VISIBLE);
 
 
             }
@@ -190,8 +192,7 @@ public class FragmentTasks extends Fragment {
     }
 
     public void onTaskDone(String distance) {
-        bindableModel.getOrderInfo().
-                setDistance(distance);
+        bindableModel.getOrderInfo(). setDistance(distance);
     }
 
     private void getOrderDetails(String orderId) {

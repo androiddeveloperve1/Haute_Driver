@@ -130,8 +130,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
             }
         });
         binder.swipeView.setText("REACHED DELIVERY POINT");
-        enableButton();
-
 
     }
 
@@ -179,11 +177,11 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         orderDetails.setDistance(values[1].toString());
         orderDetails.setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
 
-        if (Integer.parseInt(values[3].toString()) <= 700) {
+        if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
             enableButton();
         } else {
-            //disableButton();
-            enableButton();
+            disableButton();
+
         }
     }
 
