@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +23,7 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.viewmodeles.OtpVerifyViewModel;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -147,7 +149,7 @@ public class EnterOTPActivity extends AppCompatActivity {
         }
 
         public void onResend(View e) {
-            userData.setMobile_no(binder.textMobile.getText().toString().trim());
+            //userData.setMobile_no(binder.textMobile.getText().toString().trim().replace("We have send an OTP to ", ""));
             binder.otp1.requestFocus();
             binder.otp1.setText("");
             binder.otp2.setText("");
@@ -156,6 +158,7 @@ public class EnterOTPActivity extends AppCompatActivity {
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", userData.getMobile_no());
             param.put("country_code", userData.getCountry_code());
+            Log.e("@@@@@@@@",""+new Gson().toJson(param));
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
         }
 
