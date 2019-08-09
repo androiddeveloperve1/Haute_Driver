@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -44,6 +45,7 @@ import com.app.mylibertadriver.utils.MultipartUtils;
 import com.app.mylibertadriver.viewmodeles.UploadDocViewModel;
 import com.mindorks.paracamera.Camera;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -218,7 +220,10 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusDriver.setBackgroundResource(R.drawable.reject_bg);
             binder.statusDriver.setText("Reject");
         }
-        new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
+        Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(),LICENCE));
+
+
+        //new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
         if (driverModel.getInsurance().getStatus().equals("0")) {
             binder.statusInsurance.setBackgroundResource(R.drawable.pending_bg);
             binder.statusInsurance.setText("Pending");
@@ -229,9 +234,57 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusInsurance.setBackgroundResource(R.drawable.reject_bg);
             binder.statusInsurance.setText("Reject");
         }
-        new DownloadImage().execute(driverModel.getInsurance().getPath(), INSURANCE);
+
+        Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(),INSURANCE));
+
+        //new DownloadImage().execute(driverModel.getInsurance().getPath(), INSURANCE);
     }
 
+    private Target getTarget(final String url,final String status) {
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap result, Picasso.LoadedFrom from) {
+
+                Log.e("@@@@@@", "Image loded");
+                if (status.equals(INSURANCE)) {
+                    imageCapturedInsurance = result;
+
+                    binder.imgInsurancePreview.setImageBitmap(imageCapturedInsurance);
+                    if (!driverModel.getInsurance().getStatus().equals("1")) {
+                        binder.rlInsurance.setClickable(true);
+                        binder.imgInsuranceDel.setVisibility(View.VISIBLE);
+                    } else {
+                        binder.rlInsurance.setClickable(false);
+                        binder.imgInsuranceDel.setVisibility(View.GONE);
+                    }
+
+                } else if (status.equals(LICENCE)) {
+                    imageCapturedDriveLicence = result;
+                    binder.imgLicencePreview.setImageBitmap(imageCapturedDriveLicence);
+                    if (!driverModel.getDriverlicense().getStatus().equals("1")) {
+                        binder.rlDriver.setClickable(true);
+                        binder.imgLicenceDel.setVisibility(View.VISIBLE);
+                    } else {
+                        binder.rlDriver.setClickable(false);
+                        binder.imgLicenceDel.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.e("@@@@@@", "Image failed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                Log.e("@@@@@@", "prepare Image loded");
+
+            }
+        };
+        return target;
+    }
 
     public class Listener {
 
@@ -311,7 +364,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
         public void onUpload(View e) {
             if (imageCapturedDriveLicence != null && imageCapturedInsurance != null) {
-                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance","insurance.jpg"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense","drivimglic.jpg")};
+                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance", "insurance.jpg"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense", "drivimglic.jpg")};
                 uploadDocViewModel.uploadImage(UploadDocumentActivity.this, part).observe(UploadDocumentActivity.this, new Observer<DriverModel>() {
                     @Override
                     public void onChanged(DriverModel driverModel) {
@@ -326,7 +379,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
         }
     }
 
-    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+    /*private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
         private String TAG = "___________";
         private String status;
 
@@ -378,6 +431,5 @@ public class UploadDocumentActivity extends AppCompatActivity {
             }
 
         }
-    }
-
+    }*/
 }
