@@ -24,6 +24,7 @@ public class TaskResponse extends BaseObservable {
     private String driver_id;
     private String createdAt;
     private String updatedAt;
+    private String otp;
 
     private TaskOrderInfo orderInfo;
 
@@ -117,5 +118,14 @@ public class TaskResponse extends BaseObservable {
     public void setDriver_id(String driver_id) {
         this.driver_id = driver_id;
         this.notifyPropertyChanged(com.app.mylibertadriver.BR.driver_id);
+    }
+@Bindable
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+        this.notifyPropertyChanged(com.app.mylibertadriver.BR.otp);
     }
 }

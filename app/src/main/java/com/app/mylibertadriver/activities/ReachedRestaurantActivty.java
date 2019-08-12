@@ -134,6 +134,7 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                             startActivity(mIntent);
                             finish();
                         } else {
+                            binder.swipeView.swipeLeft();
                             ResponseDialog.showErrorDialog(ReachedRestaurantActivty.this, response.getMessage());
                         }
                     }

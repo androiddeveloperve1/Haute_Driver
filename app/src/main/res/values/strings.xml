@@ -46,4 +46,5 @@ can start using app via email/Phone call</string>
     </string-array>
 
     <string name="edit"><u>EDIT</u></string>
+    <string name="blank"></string>
 </resources>

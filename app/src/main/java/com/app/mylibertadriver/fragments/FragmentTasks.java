@@ -114,6 +114,7 @@ public class FragmentTasks extends Fragment {
                                     binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llCurrentTask.setData(bindableModel.getOrderInfo());
                                     binder.llNewTask.setIsVisible(View.GONE);
+                                    binder.llCurrentTask.otp.setText("OTP : "+response.getData().getOtp());
                                 }
                                 if (mainActivity.mLocationResult != null) {
                                     onUpdatedLocation(mainActivity.mLocationResult);

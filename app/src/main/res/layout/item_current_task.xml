@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5_px"
         android:background="@color/white"
-        android:paddingBottom="@dimen/_5_px"
         android:onClick="@{(v)->click.onCurrentTaskClicked(v)}"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/_5_px"
         android:visibility="@{isVisible}">
 
         <LinearLayout
@@ -59,6 +59,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:padding="@dimen/_5_px"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/_17_px"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_order"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ll_order" />
+
         <ImageView
             android:id="@+id/img_order"
             android:layout_width="@dimen/_50_px"
@@ -84,30 +97,35 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_order" />
 
-
-        <TextView
-            android:id="@+id/tv_address"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_10_px"
-            android:fontStyleName="@{`Roboto_Regular.ttf`}"
-            android:padding="@dimen/_5_px"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="@{data.restaurantInfo.address}"
-            android:textColor="@color/gray_text"
-            android:textSize="@dimen/_10_px"
-            app:layout_constraintBottom_toBottomOf="@+id/img_loc"
-            app:layout_constraintLeft_toRightOf="@+id/img_loc"
-            app:layout_constraintTop_toTopOf="@+id/img_loc" />
-
-        <ImageView
-            android:id="@+id/img_loc"
-            android:layout_width="@dimen/_20_px"
-            android:layout_height="@dimen/_20_px"
-            android:layout_marginLeft="@dimen/_10_px"
-            android:background="@drawable/ic_address_orders"
+            android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_restaurant" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_restaurant">
+
+
+            <ImageView
+                android:id="@+id/img_loc"
+                android:layout_width="@dimen/_20_px"
+                android:layout_height="@dimen/_20_px"
+                android:layout_marginLeft="@dimen/_10_px"
+                android:background="@drawable/ic_address_orders" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10_px"
+                android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                android:padding="@dimen/_5_px"
+                android:text="@{data.restaurantInfo.address}"
+                android:textColor="@color/gray_text"
+                android:textSize="@dimen/_10_px" />
+
+
+        </LinearLayout>
 
 
         <TextView
