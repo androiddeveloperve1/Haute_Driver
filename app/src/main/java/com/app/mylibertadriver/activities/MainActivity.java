@@ -287,7 +287,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                             model.setDriverlicense(response.getData().getDriverlicense());
                             model.setInsurance(response.getData().getInsurance());
                             MySharedPreference.getInstance(MainActivity.this).setUser(model);
-
                             if (response.getData().getIs_document_upload().equals("1") && response.getData().getIs_document_verify().equals("1")) {
 
                             } else {

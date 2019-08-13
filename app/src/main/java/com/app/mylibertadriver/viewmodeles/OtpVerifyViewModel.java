@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.mylibertadriver.activities.EnterOTPActivity;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
@@ -75,7 +76,13 @@ public class OtpVerifyViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(ApiResponseModel<DriverModel> response) {
                         progressDialog.dismiss();
-                        modelData.postValue(response);
+                        if (response.getStatus().equals("200")) {
+                            modelData.postValue(response);
+                        } else {
+                            modelData = null;
+                            ResponseDialog.showErrorDialog(mContext, response.getMessage());
+                        }
+
 
                     }
                 });
