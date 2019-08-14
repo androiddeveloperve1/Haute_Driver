@@ -233,7 +233,7 @@ public class FragmentTasks extends Fragment {
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
-            if (bindableModel.getStatus().equals("3")) {
+            if (bindableModel.getStatus().equals("4")) {
                 getOrderDetails(bindableModel.getOrder_id());
             } else {
                 Intent intent = new Intent(getActivity(), AcceptRestaurantActivity.class);
