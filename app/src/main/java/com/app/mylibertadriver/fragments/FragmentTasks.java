@@ -217,7 +217,6 @@ public class FragmentTasks extends Fragment {
                     public void onNext(ApiResponseModel<OrderDetailsModel> response) {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
-
                             Log.e("@@@@@@@@", "Delivery info" + new Gson().toJson(response.getData()));
                             Intent mIntent = new Intent(getActivity(), OrderAcceptedAndDeliverActivity.class);
                             mIntent.putExtra("data", new Gson().toJson(response.getData()));
@@ -233,7 +232,7 @@ public class FragmentTasks extends Fragment {
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
-            if (bindableModel.getStatus().equals("4")) {
+            if (bindableModel.getOrderInfo().getDelivery_status().equals("4")) {
                 getOrderDetails(bindableModel.getOrder_id());
             } else {
                 Intent intent = new Intent(getActivity(), AcceptRestaurantActivity.class);
