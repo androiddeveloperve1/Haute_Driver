@@ -36,6 +36,7 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.databinding.ActivityUploadDocumentBinding;
 import com.app.mylibertadriver.dialogs.ImageCaptureDialog;
+import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.ImageOrGalarySelector;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
@@ -220,7 +221,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusDriver.setBackgroundResource(R.drawable.reject_bg);
             binder.statusDriver.setText("Reject");
         }
-        Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(),LICENCE));
+        Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(), LICENCE));
 
 
         //new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
@@ -235,12 +236,12 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusInsurance.setText("Reject");
         }
 
-        Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(),INSURANCE));
+        Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(), INSURANCE));
 
         //new DownloadImage().execute(driverModel.getInsurance().getPath(), INSURANCE);
     }
 
-    private Target getTarget(final String url,final String status) {
+    private Target getTarget(final String url, final String status) {
         Target target = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap result, Picasso.LoadedFrom from) {
@@ -348,7 +349,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
             });
 
         }
-
 
         public void delInsurance(View e) {
             binder.imgInsurancePreview.setImageResource(R.drawable.ic_upload_placeholder);
