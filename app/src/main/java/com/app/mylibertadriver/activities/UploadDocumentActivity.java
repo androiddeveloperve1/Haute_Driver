@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -38,12 +37,8 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.databinding.ActivityUploadDocumentBinding;
 import com.app.mylibertadriver.dialogs.ImageCaptureDialog;
-import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.ImageOrGalarySelector;
-import com.app.mylibertadriver.model.ApiResponseModel;
-import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
-import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
@@ -58,12 +53,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 import okhttp3.MultipartBody;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Create By Rahul Mangal
@@ -122,6 +112,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
         editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         editDialog.setContentView(R.layout.dialog_upload_success);
         TextView tv_ref_number = editDialog.findViewById(R.id.tv_ref_number);
+        TextView tv_terms_click = editDialog.findViewById(R.id.tv_terms_click);
         tv_ref_number.setText(refNumber);
 
         editDialog.findViewById(R.id.tv_okay).setOnClickListener(new View.OnClickListener() {
@@ -130,6 +121,13 @@ public class UploadDocumentActivity extends AppCompatActivity {
                 editDialog.dismiss();
 
 
+            }
+        });
+        tv_terms_click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editDialog.dismiss();
+                startActivity(new Intent(UploadDocumentActivity.this, TermsActivity.class));
             }
         });
 
@@ -271,7 +269,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
             del.setVisibility(View.GONE);
         }
 
-
     }
 
     private Target getTarget(final String url, final String status) {
@@ -320,6 +317,21 @@ public class UploadDocumentActivity extends AppCompatActivity {
         } else {
             Toast.makeText(UploadDocumentActivity.this, "Please select the document to upload", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    void alert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert");
+        builder.setMessage("Your Documents verification is pending.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+
+        builder.show();
     }
 
     private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
@@ -449,20 +461,5 @@ public class UploadDocumentActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    void alert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Alert");
-        builder.setMessage("Your Documents verification is pending.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-
-        builder.show();
     }
 }

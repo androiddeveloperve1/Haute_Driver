@@ -159,6 +159,9 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         public void onTermClick(View e) {
+
+
+            startActivity(new Intent(SignupActivity.this, TermsActivity.class));
         }
 
 
