@@ -28,7 +28,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +40,10 @@ import com.app.mylibertadriver.databinding.ActivityUploadDocumentBinding;
 import com.app.mylibertadriver.dialogs.ImageCaptureDialog;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.ImageOrGalarySelector;
+import com.app.mylibertadriver.model.ApiResponseModel;
+import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
+import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
@@ -53,7 +58,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import okhttp3.MultipartBody;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Create By Rahul Mangal
@@ -106,6 +116,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
 
     }
 
+
     void uploadSuccess() {
         final Dialog editDialog = new Dialog(this);
         editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -117,8 +128,8 @@ public class UploadDocumentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 editDialog.dismiss();
-                startActivity(new Intent(UploadDocumentActivity.this, MainActivity.class));
-                finishAffinity();
+
+
             }
         });
 
@@ -211,6 +222,18 @@ public class UploadDocumentActivity extends AppCompatActivity {
     }
 
     void handleLayout() {
+        if (driverModel.getInsurance().getStatus().equals("2")) {
+            setClickable(true, binder.rlInsurance, binder.imgInsuranceDel);
+        } else {
+            setClickable(false, binder.rlInsurance, binder.imgInsuranceDel);
+        }
+
+        if (driverModel.getDriverlicense().getStatus().equals("2")) {
+            setClickable(true, binder.rlDriver, binder.imgLicenceDel);
+        } else {
+            setClickable(false, binder.rlDriver, binder.imgLicenceDel);
+        }
+
         if (driverModel.getDriverlicense().getStatus().equals("0")) {
             binder.statusDriver.setBackgroundResource(R.drawable.pending_bg);
             binder.statusDriver.setText("Pending");
@@ -221,10 +244,8 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusDriver.setBackgroundResource(R.drawable.reject_bg);
             binder.statusDriver.setText("Reject");
         }
-        Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(), LICENCE));
-
-
-        //new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
+        // Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(), LICENCE));
+        new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
         if (driverModel.getInsurance().getStatus().equals("0")) {
             binder.statusInsurance.setBackgroundResource(R.drawable.pending_bg);
             binder.statusInsurance.setText("Pending");
@@ -236,9 +257,21 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusInsurance.setText("Reject");
         }
 
-        Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(), INSURANCE));
+        //Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(), INSURANCE));
 
-        //new DownloadImage().execute(driverModel.getInsurance().getPath(), INSURANCE);
+        new DownloadImage().execute(driverModel.getInsurance().getPath(), INSURANCE);
+    }
+
+    void setClickable(boolean flag, RelativeLayout layout, ImageView del) {
+        if (flag) {
+            layout.setEnabled(true);
+            del.setVisibility(View.VISIBLE);
+        } else {
+            layout.setEnabled(false);
+            del.setVisibility(View.GONE);
+        }
+
+
     }
 
     private Target getTarget(final String url, final String status) {
@@ -249,27 +282,10 @@ public class UploadDocumentActivity extends AppCompatActivity {
                 Log.e("@@@@@@", "Image loded");
                 if (status.equals(INSURANCE)) {
                     imageCapturedInsurance = result;
-
                     binder.imgInsurancePreview.setImageBitmap(imageCapturedInsurance);
-                    if (!driverModel.getInsurance().getStatus().equals("1")) {
-                        binder.rlInsurance.setClickable(true);
-                        binder.imgInsuranceDel.setVisibility(View.VISIBLE);
-                    } else {
-                        binder.rlInsurance.setClickable(false);
-                        binder.imgInsuranceDel.setVisibility(View.GONE);
-                    }
-
                 } else if (status.equals(LICENCE)) {
                     imageCapturedDriveLicence = result;
                     binder.imgLicencePreview.setImageBitmap(imageCapturedDriveLicence);
-                    if (!driverModel.getDriverlicense().getStatus().equals("1")) {
-                        binder.rlDriver.setClickable(true);
-                        binder.imgLicenceDel.setVisibility(View.VISIBLE);
-                    } else {
-                        binder.rlDriver.setClickable(false);
-                        binder.imgLicenceDel.setVisibility(View.GONE);
-                    }
-
                 }
             }
 
@@ -285,6 +301,64 @@ public class UploadDocumentActivity extends AppCompatActivity {
             }
         };
         return target;
+    }
+
+    void uploadNow() {
+        if (imageCapturedDriveLicence != null && imageCapturedInsurance != null) {
+            MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance", "insurance.jpg"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense", "drivimglic.jpg")};
+            uploadDocViewModel.uploadImage(UploadDocumentActivity.this, part).observe(UploadDocumentActivity.this, new Observer<DriverModel>() {
+                @Override
+                public void onChanged(DriverModel driverModel) {
+                    refNumber = driverModel.getEmployee_id();
+                    UploadDocumentActivity.this.driverModel = MySharedPreference.getInstance(UploadDocumentActivity.this).getUser();
+                    binder.statusInsurance.setVisibility(View.VISIBLE);
+                    binder.statusDriver.setVisibility(View.VISIBLE);
+                    handleLayout();
+                    uploadSuccess();
+                }
+            });
+        } else {
+            Toast.makeText(UploadDocumentActivity.this, "Please select the document to upload", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+        private String TAG = "___________";
+        private String status;
+
+        private Bitmap downloadImageBitmap(String sUrl) {
+            Bitmap bitmap = null;
+            try {
+                InputStream inputStream = new URL(sUrl).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+            } catch (Exception e) {
+                Log.e(TAG, "Exception 1, Something went wrong!");
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            status = params[1];
+            return downloadImageBitmap(params[0]);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            if (result != null) {
+                if (status.equals(INSURANCE)) {
+                    imageCapturedInsurance = result;
+                    binder.imgInsurancePreview.setImageBitmap(imageCapturedInsurance);
+
+                } else if (status.equals(LICENCE)) {
+                    imageCapturedDriveLicence = result;
+                    binder.imgLicencePreview.setImageBitmap(imageCapturedDriveLicence);
+
+                }
+            }
+
+        }
     }
 
     public class Listener {
@@ -363,73 +437,32 @@ public class UploadDocumentActivity extends AppCompatActivity {
         }
 
         public void onUpload(View e) {
-            if (imageCapturedDriveLicence != null && imageCapturedInsurance != null) {
-                MultipartBody.Part[] part = new MultipartBody.Part[]{MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedInsurance, "insurance", "insurance.jpg"), MultipartUtils.createFile(UploadDocumentActivity.this, imageCapturedDriveLicence, "driverlicense", "drivimglic.jpg")};
-                uploadDocViewModel.uploadImage(UploadDocumentActivity.this, part).observe(UploadDocumentActivity.this, new Observer<DriverModel>() {
-                    @Override
-                    public void onChanged(DriverModel driverModel) {
-                        refNumber = driverModel.getEmployee_id();
-                        uploadSuccess();
-                    }
-                });
-            } else {
-                Toast.makeText(UploadDocumentActivity.this, "Please select the document to upload", Toast.LENGTH_SHORT).show();
+            if (driverModel.getIs_document_upload().equals("0")) {
+                uploadNow();
+            } else if (driverModel.getIs_document_verify().equals("0")) {
+                if (driverModel.getDriverlicense().getStatus().equals("2") || driverModel.getInsurance().getStatus().equals("2")) {
+                    uploadNow();
+                } else {
+                    alert();
+                }
+
             }
 
         }
     }
 
-    /*private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-        private String TAG = "___________";
-        private String status;
-
-        private Bitmap downloadImageBitmap(String sUrl) {
-            Bitmap bitmap = null;
-            try {
-                InputStream inputStream = new URL(sUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                inputStream.close();
-            } catch (Exception e) {
-                Log.e(TAG, "Exception 1, Something went wrong!");
-                e.printStackTrace();
+    void alert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert");
+        builder.setMessage("Your Documents verification is pending.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
             }
-            return bitmap;
-        }
+        });
 
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            status = params[1];
-            return downloadImageBitmap(params[0]);
-        }
 
-        protected void onPostExecute(Bitmap result) {
-            if (result != null) {
-                if (status.equals(INSURANCE)) {
-                    imageCapturedInsurance = result;
-
-                    binder.imgInsurancePreview.setImageBitmap(imageCapturedInsurance);
-                    if (!driverModel.getInsurance().getStatus().equals("1")) {
-                        binder.rlInsurance.setClickable(true);
-                        binder.imgInsuranceDel.setVisibility(View.VISIBLE);
-                    } else {
-                        binder.rlInsurance.setClickable(false);
-                        binder.imgInsuranceDel.setVisibility(View.GONE);
-                    }
-
-                } else if (status.equals(LICENCE)) {
-                    imageCapturedDriveLicence = result;
-                    binder.imgLicencePreview.setImageBitmap(imageCapturedDriveLicence);
-                    if (!driverModel.getDriverlicense().getStatus().equals("1")) {
-                        binder.rlDriver.setClickable(true);
-                        binder.imgLicenceDel.setVisibility(View.VISIBLE);
-                    } else {
-                        binder.rlDriver.setClickable(false);
-                        binder.imgLicenceDel.setVisibility(View.GONE);
-                    }
-
-                }
-            }
-
-        }
-    }*/
+        builder.show();
+    }
 }

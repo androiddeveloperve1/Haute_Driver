@@ -3,6 +3,7 @@ package com.app.mylibertadriver.viewmodeles;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -66,6 +67,7 @@ public class UploadDocViewModel extends AndroidViewModel {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             modelData.postValue(response.getData());
+                            Toast.makeText(mContext,response.getMessage(),Toast.LENGTH_LONG).show();
                             MySharedPreference.getInstance(mContext).setUser(response.getData());
                         } else {
                             modelData = null;

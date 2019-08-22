@@ -117,7 +117,6 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         NavHeaderMainBinding.bind(navView).setClickHandler(p);
         FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
         changeTheToolbarTitle("Tasks");
-        getDocsInfo();
         WorkUtils.startBackgroundService();
 
     }
@@ -260,46 +259,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         fragmentTasks.onTaskDone(values[1].toString());
     }
 
-    private void getDocsInfo() {
-        final Dialog progressDialog = ResponseDialog.showProgressDialog(MainActivity.this);
-        ((MyApplication) getApplication()).getConfiguration().inject(this);
-        apiInterface.getDocStatus()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ApiResponseModel<DocsStatusModel>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        progressDialog.dismiss();
-                        ResponseDialog.showErrorDialog(MainActivity.this, throwable.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onNext(ApiResponseModel<DocsStatusModel> response) {
-                        progressDialog.dismiss();
-                        if (response.getStatus().equals("200")) {
-                            DriverModel model = MySharedPreference.getInstance(MainActivity.this).getUser();
-                            model.setIs_document_upload(response.getData().getIs_document_upload());
-                            model.setIs_document_verify(response.getData().getIs_document_verify());
-                            model.setDriverlicense(response.getData().getDriverlicense());
-                            model.setInsurance(response.getData().getInsurance());
-                            MySharedPreference.getInstance(MainActivity.this).setUser(model);
-                            if (response.getData().getIs_document_upload().equals("1") && response.getData().getIs_document_verify().equals("1")) {
-
-                            } else {
-                                startActivity(new Intent(MainActivity.this, UploadDocumentActivity.class));
-                                finish();
-                            }
-
-                        } else {
-                            ResponseDialog.showErrorDialog(MainActivity.this, response.getMessage());
-                        }
-                    }
-                });
-    }
 
     public class Presenter {
         public void onLogout(View view) {

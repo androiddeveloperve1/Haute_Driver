@@ -7,6 +7,7 @@ import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
 import com.app.mylibertadriver.activities.SplashActivity;
+import com.app.mylibertadriver.activities.UploadDocumentActivity;
 import com.app.mylibertadriver.fragments.FragmentEarning;
 import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentTasks;

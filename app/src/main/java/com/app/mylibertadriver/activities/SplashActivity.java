@@ -85,20 +85,59 @@ public class SplashActivity extends AppCompatActivity {
                 });
     }
 
+    private void getDocsInfo() {
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(SplashActivity.this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.getDocStatus()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel<DocsStatusModel>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(SplashActivity.this, throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel<DocsStatusModel> response) {
+                        progressDialog.dismiss();
+                        if (response.getStatus().equals("200")) {
+                            DriverModel model = MySharedPreference.getInstance(SplashActivity.this).getUser();
+                            model.setIs_document_upload(response.getData().getIs_document_upload());
+                            model.setIs_document_verify(response.getData().getIs_document_verify());
+                            model.setDriverlicense(response.getData().getDriverlicense());
+                            model.setInsurance(response.getData().getInsurance());
+                            MySharedPreference.getInstance(SplashActivity.this).setUser(model);
+                            if (response.getData().getIs_document_upload().equals("1") && response.getData().getIs_document_verify().equals("1")) {
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                startActivity(new Intent(SplashActivity.this, UploadDocumentActivity.class));
+                                finish();
+                            }
+
+                        } else {
+                            ResponseDialog.showErrorDialog(SplashActivity.this, response.getMessage());
+                        }
+                    }
+                });
+    }
 
     private class ActivityRunnable implements Runnable {
         @Override
         public void run() {
             model = MySharedPreference.getInstance(SplashActivity.this).getUser();
-            if (model != null && model.get_id()!=null ) {
-                if (model.getIs_mobile_verify().equals("1") && model.getIs_mobile_verify()!=null ) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+            if (model != null && model.get_id() != null) {
+                if (model.getIs_mobile_verify() != null && model.getIs_mobile_verify().equals("1") ) {
+                    getDocsInfo();
                 } else {
                     HashMap<String, String> param = new HashMap<>();
                     param.put("mobile_no", model.getMobile_no());
-                    param.put("country_code",model.getCountry_code());
+                    param.put("country_code", model.getCountry_code());
                     sendOtp(param);
                 }
             } else {

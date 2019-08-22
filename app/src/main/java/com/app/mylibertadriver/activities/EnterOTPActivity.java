@@ -196,7 +196,7 @@ public class EnterOTPActivity extends AppCompatActivity {
                             startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
                             finishAffinity();
                         } else {
-                            if (driverModel.getData().getIs_document_upload().equals("1")) {
+                            if (driverModel.getData().getIs_document_upload().equals("1") && driverModel.getData().getIs_document_verify().equals("1")) {
                                 startActivity(new Intent(EnterOTPActivity.this, MainActivity.class));
                             } else {
                                 startActivity(new Intent(EnterOTPActivity.this, UploadDocumentActivity.class));
