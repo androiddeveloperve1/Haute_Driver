@@ -184,7 +184,7 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
         onServicesReady();
-        if (ContextCompat.checkSelfPermission(GoogleServiceActivationActivityForHandleFragment.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(GoogleServiceActivationActivityForHandleFragment.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(GoogleServiceActivationActivityForHandleFragment.this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).removeLocationUpdates(mLocationCallback);
