@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
@@ -183,7 +184,7 @@ public abstract class GoogleServiceActivationActivityForHandleFragment extends A
     @RequiresApi(api = Build.VERSION_CODES.M)
     void requestLocatipnUpdate() {
         onServicesReady();
-        if (GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(GoogleServiceActivationActivityForHandleFragment.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && GoogleServiceActivationActivityForHandleFragment.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         LocationServices.getFusedLocationProviderClient(GoogleServiceActivationActivityForHandleFragment.this).removeLocationUpdates(mLocationCallback);

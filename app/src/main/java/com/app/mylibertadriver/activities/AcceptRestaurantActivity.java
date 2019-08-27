@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
@@ -89,7 +90,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onServicesReady() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
