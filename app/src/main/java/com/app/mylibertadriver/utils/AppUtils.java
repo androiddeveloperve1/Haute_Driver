@@ -6,12 +6,20 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
+import androidx.core.content.FileProvider;
+
+import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.R;
+import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.constants.Constants;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -116,9 +124,9 @@ public class AppUtils {
             flag = Constants.DELIVERY_STATUS_3;
         } else if (status.equals("4")) {
             flag = Constants.DELIVERY_STATUS_4;
-        }else if (status.equals("5")) {
+        } else if (status.equals("5")) {
             flag = Constants.DELIVERY_STATUS_5;
-        }else if (status.equals("6")) {
+        } else if (status.equals("6")) {
             flag = Constants.DELIVERY_STATUS_6;
         }
         return flag;
@@ -134,5 +142,30 @@ public class AppUtils {
             return null;
         }
 
+    }
+
+
+    public static Uri saveImage(Context context, Bitmap mBitmap) {
+        File file = null;
+        try {
+            String path = Environment.getExternalStorageDirectory().toString();
+            file = new File(path, "demo.png");
+            OutputStream stream = null;
+            stream = new FileOutputStream(file);
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.flush();
+            stream.close();
+            Log.e("@@@@@@@@", "Image saved" + file.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (file != null) {
+            Uri u = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+            Log.e("@@@@@@@@", "URi"+u.getPath());
+            return u;
+        } else {
+            return
+                    null;
+        }
     }
 }

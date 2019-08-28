@@ -42,11 +42,14 @@ import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.permission.PermissionHandlerListener;
 import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
+import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.MultipartUtils;
 import com.app.mylibertadriver.viewmodeles.UploadDocViewModel;
 import com.mindorks.paracamera.Camera;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +63,7 @@ import okhttp3.MultipartBody;
  * Project Haute Delivery
  */
 public class UploadDocumentActivity extends AppCompatActivity {
+
     private static final String LICENCE = "1";
     private static final String INSURANCE = "0";
     ActivityUploadDocumentBinding binder;
@@ -170,20 +174,35 @@ public class UploadDocumentActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PermissionConstants.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            setImageToView(camera.getCameraBitmap());
+            startCroppingNow(AppUtils.saveImage(UploadDocumentActivity.this, camera.getCameraBitmap()));
         } else if (requestCode == PermissionConstants.GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            try {
-                Bitmap mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                if (mBitmap != null) {
+            startCroppingNow(data.getData());
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                     setImageToView(mBitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this.getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this.getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, result.getError().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
-
         }
+    }
+
+    void startCroppingNow(Uri mBitmap) {
+        try {
+            CropImage.activity(mBitmap)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(UploadDocumentActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -215,8 +234,6 @@ public class UploadDocumentActivity extends AppCompatActivity {
             }
             Toast.makeText(this.getApplicationContext(), "Picture not taken!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     void handleLayout() {

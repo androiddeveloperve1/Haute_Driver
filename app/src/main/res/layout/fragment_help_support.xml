@@ -34,9 +34,10 @@
                 android:layout_marginTop="@dimen/_30_px"
                 android:layout_marginRight="@dimen/_20_px"
                 android:fontStyleName="@{`Roboto_Bold.ttf`}"
-                android:text="+1888-246-7125"
+                android:text="@string/support_no"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15_px"
+                android:call='@{@string/support_no}'
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_call_us" />
@@ -48,6 +49,7 @@
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:text="support@mail.com"
                 android:textColor="@color/black"
+                android:visibility="gone"
                 android:textSize="@dimen/_14_px"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

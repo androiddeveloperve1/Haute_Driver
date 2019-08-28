@@ -3,6 +3,7 @@ package com.app.mylibertadriver.utils;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import androidx.databinding.BindingAdapter;
 
 import com.app.mylibertadriver.R;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * Create By Rahul Mangal
@@ -32,5 +35,17 @@ public class BindingAdapters {
         Picasso.with(view.getContext()).load(image).placeholder(R.drawable.placeholder_squre).into(view);
     }
 
+    @BindingAdapter("android:call")
+    public static void callNow(@Nullable TextView view, final String number) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("@@@@@@",""+number);
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null));
+                view.getContext().startActivity(intent);
+            }
+        });
 
+
+    }
 }
