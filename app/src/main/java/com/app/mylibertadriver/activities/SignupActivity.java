@@ -63,7 +63,7 @@ public class SignupActivity extends AppCompatActivity {
         mSignupViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         binder.setHandler(new Listener());
 
-        if (getIntent().getIntExtra("edit", 0) == 1) {
+        /*if (getIntent().getIntExtra("edit", 0) == 1) {
             //edit
             DriverModel userData = MySharedPreference.getInstance(this).getUser();
             binder.etFname.setText(userData.getFname());
@@ -75,7 +75,7 @@ public class SignupActivity extends AppCompatActivity {
             }
             binder.etServiceArea.setText(userData.getService_area());
             mlaLatLng = new LatLng(userData.getLocation().getCoordinates().get(0), userData.getLocation().getCoordinates().get(1));
-        }
+        }*/
 
 
     }

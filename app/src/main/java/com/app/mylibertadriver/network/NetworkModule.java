@@ -67,9 +67,7 @@ public class NetworkModule {
                         if (MySharedPreference.getInstance(applicationContext).getSessionToken() != null)
                             request.header("x-auth", MySharedPreference.getInstance(applicationContext).getSessionToken());
                         Request d = request.build();
-
                         Response response = chain.proceed(d);
-
                         if (response.code() == 401) {
                             MySharedPreference.getInstance(applicationContext).clearMyPreference();
                             WorkUtils.stopBackgroundService();
@@ -87,7 +85,6 @@ public class NetworkModule {
                         }
                         response.cacheResponse();
                         response.code();
-                        // Customize or return the response
                         return response;
                     }
                 })

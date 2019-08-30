@@ -101,4 +101,10 @@ public interface APIInterface {
     @GET(UrlConstants.DOCS_STATUS)
     Observable<ApiResponseModel<DocsStatusModel>> getDocStatus();
 
+
+    @Headers("Content-Type: application/json")
+    @POST(UrlConstants.CHANGE_MOBILE)
+    Observable<ApiResponseModel<DriverModel>> changeMobileNumber(@Body HashMap<String, String> body);
+
+
 }

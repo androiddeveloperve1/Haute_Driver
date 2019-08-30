@@ -2,6 +2,7 @@ package com.app.mylibertadriver.network;
 
 
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
+import com.app.mylibertadriver.activities.EnterOTPActivity;
 import com.app.mylibertadriver.activities.ForgotPasswordActivity;
 import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
@@ -43,5 +44,6 @@ public interface ApplicationComponent {
     void inject(ReachedRestaurantActivty model);
     void inject(FragmentEarning model);
     void inject(OrderAcceptedAndDeliverActivity model);
+    void inject(EnterOTPActivity model);
 
 }

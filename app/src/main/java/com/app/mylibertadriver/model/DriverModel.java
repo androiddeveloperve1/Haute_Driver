@@ -2,8 +2,8 @@ package com.app.mylibertadriver.model;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
-import com.app.mylibertadriver.BR;
 
 /**
  * Create By Rahul Mangal

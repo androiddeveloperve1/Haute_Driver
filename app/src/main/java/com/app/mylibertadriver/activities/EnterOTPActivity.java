@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,21 +20,31 @@ import android.widget.Toast;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityEnterOtpBinding;
+import com.app.mylibertadriver.dialogs.EditNumberDialog;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
+import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.viewmodeles.OtpVerifyViewModel;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
  */
-public class EnterOTPActivity extends AppCompatActivity {
+public class EnterOTPActivity extends AppCompatActivity implements EditNumberDialog.OnSelect {
     ActivityEnterOtpBinding binder;
+    @Inject
+    APIInterface apiInterface;
     private DriverModel userData;
     private OtpVerifyViewModel otpVerifyViewModel;
     private int isFromForgotPassScreen = 0;
@@ -142,6 +154,45 @@ public class EnterOTPActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onOk(String msg) {
+        editMobile(msg);
+    }
+
+
+    private void editMobile(final String mobile) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("mobile_no", mobile);
+        param.put("country_code", userData.getCountry_code());
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(EnterOTPActivity.this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.changeMobileNumber(param)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResponseModel<DriverModel>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        progressDialog.dismiss();
+                        ResponseDialog.showErrorDialog(EnterOTPActivity.this, throwable.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(ApiResponseModel<DriverModel> response) {
+                        progressDialog.dismiss();
+                        if (response.getStatus().equals("200")) {
+                            binder.textMobile.setText("We have send an OTP to " + mobile);
+                            MySharedPreference.getInstance(EnterOTPActivity.this).setUser(response.getData());
+                            Toast.makeText(EnterOTPActivity.this, "Mobile no. changed successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            ResponseDialog.showErrorDialog(EnterOTPActivity.this, response.getMessage());
+                        }
+                    }
+                });
+    }
+
     public class Listener {
 
         public void onBack(View e) {
@@ -158,17 +209,13 @@ public class EnterOTPActivity extends AppCompatActivity {
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", userData.getMobile_no());
             param.put("country_code", userData.getCountry_code());
-            Log.e("@@@@@@@@",""+new Gson().toJson(param));
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
         }
 
         public void onEdit(View e) {
-            Intent mIntent = new Intent(EnterOTPActivity.this, SignupActivity.class);
-            mIntent.putExtra("edit", 1);
-            startActivity(mIntent);
-            finishAffinity();
+            userData = MySharedPreference.getInstance(EnterOTPActivity.this).getUser();
+            new EditNumberDialog().showProgressDialog(EnterOTPActivity.this, userData.getMobile_no());
         }
-
 
         public void onVerify(View e) {
 
