@@ -102,7 +102,7 @@ public class SignupActivity extends AppCompatActivity {
         param.put("lname", binder.etLname.getText().toString().trim());
         param.put("email", binder.etEmail.getText().toString().trim());
         param.put("password", binder.etPass.getText().toString().trim());
-        param.put("country_code", binder.spnrCountry.getSelectedItem().toString().replace("+", ""));
+        param.put("country_code", "1");
         param.put("mobile_no", binder.etMob.getText().toString().trim());
         HashMap<String, String> location = new HashMap<>();
         location.put("type", "Point");

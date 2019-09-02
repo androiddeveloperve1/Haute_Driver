@@ -53,6 +53,9 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
         binder.rvItem.setLayoutManager(new LinearLayoutManager(this));
         orderId = getIntent().getStringExtra("order_id");
 
+        orderDetails=new OrderDetailsModel();
+        binder.setData(orderDetails);
+
         binder.swipeView.setEventListener(new SwipeListener() {
             @Override
             public void swipeStarted() {
@@ -93,7 +96,7 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                         Toast.makeText(ReachedRestaurantActivty.this, response.getMessage(), Toast.LENGTH_SHORT).show();
                         if (response.getStatus().equals("200")) {
                             orderDetails = response.getData();
-                            binder.setData(orderDetails);
+                            //binder.setData(orderDetails);
                             binder.setMAdapter(new OrderItemAdapter(orderDetails.getOrder(), new RecycleItemClickListener() {
                                 @Override
                                 public void onItemClicked(int position, Object data) {
