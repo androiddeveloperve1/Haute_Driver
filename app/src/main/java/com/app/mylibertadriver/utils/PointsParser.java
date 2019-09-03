@@ -86,6 +86,7 @@ public class PointsParser extends AsyncTask<String, Integer, GooglePathDisatnceT
 
         } catch (Exception e) {
             e.printStackTrace();
+            taskCallback.onTaskDone(null, null, null);
         }
 
     }

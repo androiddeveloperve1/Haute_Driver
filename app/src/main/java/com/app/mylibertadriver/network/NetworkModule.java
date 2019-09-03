@@ -75,7 +75,6 @@ public class NetworkModule {
                             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             applicationContext.startActivity(mIntent);
                             ((Activity) applicationContext).finishAffinity();
-
                         } else {
                             String newToken = response.header("x-auth");
                             if (newToken != null) {

@@ -95,7 +95,7 @@
                 android:layout_marginTop="@dimen/_5_px"
                 android:background="@null"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:hint="Passsword"
+                android:hint="Password"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:padding="@dimen/_8_px"

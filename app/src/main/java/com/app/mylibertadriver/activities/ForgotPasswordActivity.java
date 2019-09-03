@@ -73,6 +73,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             Intent mIntent = new Intent(ForgotPasswordActivity.this, EnterOTPActivity.class);
                             mIntent.putExtra("flag", Constants.FROM_FORGOT_PASS);
                             startActivity(mIntent);
+                            finish();
                         } else {
                             ResponseDialog.showErrorDialog(ForgotPasswordActivity.this, response.getMessage());
                         }
@@ -93,7 +94,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
             HashMap<String, String> param = new HashMap<>();
             param.put("mobile_no", binder.etMobile.getText().toString().trim());
-            param.put("country_code", binder.spnrCountry.getSelectedItem().toString().replace("+", ""));
+            param.put("country_code", "1");
             sendOtp(param);
 
         }

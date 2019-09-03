@@ -68,6 +68,7 @@
                 android:id="@+id/iv_pay_image"
                 android:layout_width="@dimen/_20_px"
                 android:layout_height="@dimen/_20_px"
+                android:visibility="gone"
                 android:background="@drawable/ic_account_info"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_pay_setting_text"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_name"
@@ -77,6 +78,7 @@
                 android:id="@+id/tv_pay_setting_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginLeft="@dimen/_10_px"
                 android:layout_marginTop="@dimen/_10_px"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
@@ -91,6 +93,7 @@
                 android:id="@+id/iv_expand"
                 android:layout_width="@dimen/_20_px"
                 android:layout_height="@dimen/_20_px"
+
                 android:layout_marginRight="@dimen/_20_px"
                 android:background="@drawable/ic_expand"
                 android:onClick="@{(v)->clickHandler.onExpand(v)}"
@@ -102,6 +105,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_account_info"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_pay_setting_text"
                 app:layout_constraintRight_toRightOf="parent"

@@ -137,7 +137,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onServicesReady() {
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
@@ -161,7 +161,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         mMap.animateCamera(cameraUpdate);
         new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         //WorkUtils.startBackgroundService();
-
     }
 
     @Override
@@ -172,18 +171,24 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
     @Override
     public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
-            currentPolyline.remove();
-        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-        orderDetails.setDistance(values[1].toString());
-        orderDetails.setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+        if (values[0] != null) {
+            Log.e("@@@@@@@@@@", "" + values[3].toString());
+            if (currentPolyline != null)
+                currentPolyline.remove();
+            currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+            orderDetails.setDistance(values[1].toString());
+            orderDetails.setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
 
-        if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
-            enableButton();
-        } else {
+            if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
+                enableButton();
+            } else {
+                disableButton();
+
+            }
+        }else {
             disableButton();
-
         }
+
     }
 
     void startSwipeDialog() {

@@ -53,7 +53,7 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
         binder.rvItem.setLayoutManager(new LinearLayoutManager(this));
         orderId = getIntent().getStringExtra("order_id");
 
-        orderDetails=new OrderDetailsModel();
+        orderDetails = new OrderDetailsModel();
         binder.setData(orderDetails);
 
         binder.swipeView.setEventListener(new SwipeListener() {
@@ -137,8 +137,15 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                             startActivity(mIntent);
                             finish();
                         } else {
-                            binder.swipeView.swipeLeft();
-                            ResponseDialog.showErrorDialog(ReachedRestaurantActivty.this, response.getMessage());
+                            if (response.getMessage().equals("Order already Pickedup")) {
+                                Intent mIntent = new Intent(ReachedRestaurantActivty.this, OrderAcceptedAndDeliverActivity.class);
+                                mIntent.putExtra("data", new Gson().toJson(orderDetails));
+                                startActivity(mIntent);
+                                finish();
+                            } else {
+                                binder.swipeView.swipeLeft();
+                                ResponseDialog.showErrorDialog(ReachedRestaurantActivty.this, response.getMessage());
+                            }
                         }
                     }
                 });

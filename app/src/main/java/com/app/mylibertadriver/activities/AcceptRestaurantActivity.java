@@ -90,7 +90,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onServicesReady() {
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
@@ -129,18 +129,23 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
     @Override
     public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
-            currentPolyline.remove();
-        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-        restaurantDetails.getOrderInfo().setDistance(values[1].toString());
-        restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
-        if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
-            enableButton();
+        if (values[0] != null) {
+            Log.e("@@@@@@@@@@", "" + values[3].toString());
+            if (currentPolyline != null)
+                currentPolyline.remove();
+            currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+            restaurantDetails.getOrderInfo().setDistance(values[1].toString());
+            restaurantDetails.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+            if (Integer.parseInt(values[3].toString()) <= Constants.ENABLE_DISTANCE) {
+                enableButton();
+            } else {
+                disableButton();
+            }
         } else {
-
             disableButton();
-
         }
+
+
     }
 
 
