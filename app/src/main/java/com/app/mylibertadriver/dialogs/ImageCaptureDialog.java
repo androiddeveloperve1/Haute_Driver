@@ -7,9 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.widget.LinearLayout;
-
 import androidx.databinding.DataBindingUtil;
-
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.databinding.DialogCaptureImageBinding;
 import com.app.mylibertadriver.interfaces.ImageOrGalarySelector;
@@ -33,14 +31,10 @@ public class ImageCaptureDialog extends Dialog {
         getWindow().setGravity(Gravity.CENTER);
         setCancelable(true);
     }
-
     public void showDoalog() {
         this.show();
     }
-
     public void dismissDoalog() {
         this.dismiss();
     }
-
-
 }

@@ -112,7 +112,6 @@ public class AppUtils {
 
 
     public static String getTextFromStatus(String status) {
-
         String flag = null;
         if (status.equals("0")) {
             flag = Constants.DELIVERY_STATUS_0;

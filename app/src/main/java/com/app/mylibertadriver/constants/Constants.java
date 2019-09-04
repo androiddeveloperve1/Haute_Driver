@@ -31,8 +31,8 @@ public class Constants {
     public static String  DELIVERY_STATUS_1 = "Accepted";
     public static String  DELIVERY_STATUS_2 = "Rejected";
     public static String  DELIVERY_STATUS_3 = "Cancelled";
-    public static String  DELIVERY_STATUS_4 = "Pickedup";
-    public static String  DELIVERY_STATUS_5 = "Delivered ";
+    public static String  DELIVERY_STATUS_4 = "Delivered";
+    public static String  DELIVERY_STATUS_5 = "Delivered";
     public static String  DELIVERY_STATUS_6 = "Ready for Pickup ";
 
 
