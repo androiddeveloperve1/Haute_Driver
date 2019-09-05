@@ -48,4 +48,28 @@ public class BindingAdapters {
 
 
     }
+
+    @BindingAdapter("android:setText")
+    public static void setText(@Nullable TextView view, final String amount) {
+
+        if (amount != null && amount.trim().length() > 0) {
+            view.setText("$ " + amount);
+        } else {
+            view.setText("");
+        }
+
+
+    }
+
+    @BindingAdapter("android:setTextWithoutDoller")
+    public static void setText2(@Nullable TextView view, final String amount) {
+
+        if (amount != null && amount.trim().length() > 0) {
+            view.setText(amount);
+        } else {
+            view.setText("");
+        }
+
+
+    }
 }
