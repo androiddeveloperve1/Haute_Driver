@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="itemClickListener"
+            type="com.app.mylibertadriver.interfaces.RecycleItemClickListener" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5_px"
+        android:onClick="@{itemClickListener.onItemClicked(0,null)}"
+        android:paddingTop="@dimen/_5_px"
+        android:paddingBottom="@dimen/_5_px">
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Medium.ttf`}"
+            android:text="$50.00"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_date" />
+
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="10 - 17 may 2019"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="Status"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="19 may 2019"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_status_text"
+            app:layout_constraintLeft_toRightOf="@+id/tv_status_text"
+            app:layout_constraintTop_toTopOf="@id/tv_status_text" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2px"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@color/gray_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_status_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

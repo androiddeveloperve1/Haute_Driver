@@ -10,21 +10,216 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_earn_list"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_5_px"
-            android:adapter="@{adapt}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_chart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5_px"
+                android:background="@drawable/rounded_black"
+                android:paddingLeft="@dimen/_10_px"
+                android:paddingTop="@dimen/_15_px"
+                android:paddingRight="@dimen/_10_px"
+                android:paddingBottom="@dimen/_15_px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/tv_text_earning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:padding="@dimen/_2_px"
+                    android:text='This weeks earning'
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Medium.ttf`}"
+                    android:padding="@dimen/_2_px"
+                    android:text='$ 100.00'
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18_px"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_text_earning"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_earning" />
+
+
+                <TextView
+                    android:id="@+id/tv_text_paid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:padding="@dimen/_2_px"
+                    android:text='Will be paid on'
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Medium.ttf`}"
+                    android:text='20-05-19'
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_amount"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_text_paid"
+                    app:layout_constraintRight_toRightOf="@id/tv_text_paid"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_paid" />
+
+                <View
+                    android:id="@+id/devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginTop="@dimen/_7_px"
+                    android:background="@color/gray_text"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_amount" />
+
+                <TextView
+                    android:id="@+id/tv_text_delivery_earning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Medium.ttf`}"
+                    android:text='$ 80.00'
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12_px"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_delivery_earning"
+                    app:layout_constraintRight_toRightOf="@+id/tv_delivery_earning"
+                    app:layout_constraintTop_toBottomOf="@+id/devider" />
+
+                <TextView
+                    android:id="@+id/tv_delivery_earning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text='Delivery earning'
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_delivery_earning" />
+
+
+                <TextView
+                    android:id="@+id/tv_text_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Medium.ttf`}"
+                    android:text='$ 20.00'
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12_px"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_tip"
+                    app:layout_constraintRight_toRightOf="@+id/tv_tip"
+                    app:layout_constraintTop_toBottomOf="@+id/devider" />
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text='Tip earned'
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_text_delivery_earning"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_text_total_delivery"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_delivery_earning" />
+
+
+                <TextView
+                    android:id="@+id/tv_text_total_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Medium.ttf`}"
+                    android:text='10'
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12_px"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_total_delivery"
+                    app:layout_constraintRight_toRightOf="@+id/tv_total_delivery"
+                    app:layout_constraintTop_toBottomOf="@+id/devider" />
+
+                <TextView
+                    android:id="@+id/tv_total_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text='Total Deliveries'
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_9_px"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_delivery_earning" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5_px"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="@+id/cl_chart"
+                app:layout_constraintTop_toBottomOf="@+id/cl_chart">
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:padding="@dimen/_2_px"
+                    android:text='VIEW ALL'
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10_px" />
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:id="@+id/devider2"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginTop="@dimen/_7_px"
+                android:background="@color/gray_text"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_all" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_earn_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:layout_marginTop="@dimen/_5_px"
+                android:adapter="@{adapt}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/devider2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

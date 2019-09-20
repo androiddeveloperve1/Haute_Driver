@@ -287,7 +287,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_earnings.setTextColor(getResources().getColor(R.color.black));
                     tv_profile.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
-                    changeTheToolbarTitle("Order History");
+                    changeTheToolbarTitle("Earning And History");
                     toolbar_refresh.setVisibility(View.GONE);
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentEarning());
                     break;

@@ -67,6 +67,8 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                 .subscribe(new Subscriber<ApiResponseModel<TaskModelResponse>>() {
                     @Override
                     public void onCompleted() {
+
+
                     }
 
                     @Override

@@ -38,7 +38,7 @@ import java.util.TimeZone;
 
 public class AppUtils {
     static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-    static DateFormat humanFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    static DateFormat humanFormat = new SimpleDateFormat("dd MMM, yyyy'.' HH:mm");
 
     public static boolean eMailValidation(CharSequence target) {
         if (target == null) {
