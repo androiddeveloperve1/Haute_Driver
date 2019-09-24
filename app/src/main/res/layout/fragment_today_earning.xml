@@ -8,6 +8,10 @@
             name="adapt"
             type="com.app.mylibertadriver.adapter.TodayEarningAdapter" />
 
+        <variable
+            name="click"
+            type="com.app.mylibertadriver.fragments.FragmentEarning.Presenter" />
+
     </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -182,6 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5_px"
+                android:onClick="@{(v)->click.viewAll(v)}"
                 android:visibility="gone"
                 app:layout_constraintRight_toRightOf="@+id/cl_chart"
                 app:layout_constraintTop_toBottomOf="@+id/cl_chart">

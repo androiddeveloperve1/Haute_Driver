@@ -1,6 +1,7 @@
 package com.app.mylibertadriver.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.AcceptOrderActivity;
 import com.app.mylibertadriver.activities.MyApplication;
+import com.app.mylibertadriver.activities.WeeklyDetailActivity;
 import com.app.mylibertadriver.adapter.TodayEarningAdapter;
 import com.app.mylibertadriver.databinding.FragmentTodayEarningBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
@@ -90,7 +92,9 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
     }
 
     public class Presenter {
-        public void onHomeClicked(View view) {
+        public void viewAll(View view) {
+
+            //startActivity(new Intent(getActivity(), WeeklyDetailActivity.class));
         }
     }
 }

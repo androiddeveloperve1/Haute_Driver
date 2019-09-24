@@ -256,15 +256,18 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
 
     @Override
     public void onTaskDone(Object... values) {
-        fragmentTasks.onTaskDone(values[1].toString());
-    }
+        String distance="";
+        if (values[1] != null)
+            distance=values[1].toString();
 
+
+            fragmentTasks.onTaskDone(distance);
+    }
 
 
     public class Presenter {
         public void onLogout(View view) {
             logOut();
-
         }
 
         public void onNavigationClick(View view) {

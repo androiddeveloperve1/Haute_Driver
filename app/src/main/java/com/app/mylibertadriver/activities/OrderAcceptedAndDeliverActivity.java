@@ -16,30 +16,22 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.work.BackoffPolicy;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityOrderAcceptedAndDeliverBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.dialogs.SwipeViewDialog;
+import com.app.mylibertadriver.interfaces.OnAddressListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.network.APIInterface;
-import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
+import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
-import com.app.mylibertadriver.worker.DriverLocationUpdateService;
-import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,11 +44,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -80,6 +68,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     private Polyline currentPolyline;
     private OrderDetailsModel orderDetails;
     private SwipeViewDialog orderDeliveredDialog;
+
     SwipeListener orderDeliver = new SwipeListener() {
         @Override
         public void swipeStarted() {
@@ -111,10 +100,13 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_order_accepted_and_deliver);
         binder.setClick(new MyClick());
-
+        disableButton();
         orderDetails = new Gson().fromJson(getIntent().getStringExtra("data"), OrderDetailsModel.class);
         delivarableLatLongUser = new LatLng(orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(0), orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(1
         ));
+
+
+
 
         binder.setData(orderDetails);
         binder.swipeView.setEventListener(new SwipeListener() {
@@ -151,9 +143,9 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         stopLocationUpdate();
 
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(OrderAcceptedAndDeliverActivity.this)));
-        MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLongUser);
+        final MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLongUser);
         mMap.addMarker(myCurrentLatLongMarker);
-        mMap.addMarker(delivarableLatLongMarker);
+
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(delivarableLatLongUser).include(myCurrentLatLong);
         LatLngBounds bounds = boundsBuilder.build();
@@ -161,6 +153,35 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         mMap.animateCamera(cameraUpdate);
         new FetchURL(OrderAcceptedAndDeliverActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         //WorkUtils.startBackgroundService();
+
+
+        GoogleApiUtils.getAddressFromLatLong(delivarableLatLongUser, new OnAddressListener() {
+            @Override
+            public void onAddressFound(final Object address) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        delivarableLatLongMarker.title("User: " + orderDetails.getUser_id().getName()).snippet("Address: " + (String) address);
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onAddressError(String error) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+
+            }
+        });
+
+
     }
 
     @Override

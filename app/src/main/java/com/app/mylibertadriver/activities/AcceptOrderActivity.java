@@ -18,14 +18,17 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityAcceptOrderBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
+import com.app.mylibertadriver.interfaces.OnAddressListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
 import com.app.mylibertadriver.model.ApiResponseModel;
+import com.app.mylibertadriver.model.orders.RestaurantInfoModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.model.orders.TaskResponse;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
+import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
@@ -60,6 +63,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     private LatLng delivarableLatLong = null;
     private TaskResponse orderData;
     private ActivityAcceptOrderBinding binder;
+    private RestaurantInfoModel restaurantInfoModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,12 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_order);
         orderData = new Gson().fromJson(getIntent().getStringExtra("data"), TaskResponse.class);
 
-        delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
+        restaurantInfoModel = orderData.getOrderInfo().getRestaurantInfo();
+
+
+
+
+        delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), restaurantInfoModel.getLocation().getCoordinates().get(1));
         Log.e("@@@@", new Gson().toJson(delivarableLatLong));
         binder.setData(orderData);
         binder.setClick(new MyClick());
@@ -140,7 +149,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onServicesReady() {
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_track);
@@ -155,16 +164,43 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         mMap.clear();
         stopLocationUpdate();
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(AcceptOrderActivity.this)));
-        MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
+        final MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLong);
+
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
-        mMap.addMarker(delivarableLatLongMarker);
+
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(myCurrentLatLong).include(delivarableLatLong);
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 60);
         mMap.animateCamera(cameraUpdate);
         new FetchURL(AcceptOrderActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
+
+        GoogleApiUtils.getAddressFromLatLong(new LatLng(restaurantInfoModel.getLocation().getCoordinates().get(0), restaurantInfoModel.getLocation().getCoordinates().get(1)), new OnAddressListener() {
+            @Override
+            public void onAddressFound(final Object address) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        delivarableLatLongMarker.title("Restaurant: " + restaurantInfoModel.getName()).snippet("Address: " + (String) address);
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+            }
+
+            @Override
+            public void onAddressError(String error) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+            }
+        });
+
+
     }
 
     @Override

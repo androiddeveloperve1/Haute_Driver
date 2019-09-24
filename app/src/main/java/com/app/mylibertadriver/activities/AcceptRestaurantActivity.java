@@ -24,11 +24,14 @@ import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityAcceptRestaurantBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
+import com.app.mylibertadriver.interfaces.OnAddressListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
+import com.app.mylibertadriver.model.orders.RestaurantInfoModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
+import com.app.mylibertadriver.utils.GoogleApiUtils;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.app.mylibertadriver.worker.DriverLocationUpdateService;
 import com.app.mylibertadriver.worker.WorkUtils;
@@ -62,13 +65,19 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     private ActivityAcceptRestaurantBinding binder;
     private TaskModel restaurantDetails;
 
+    MarkerOptions delivarableLatLongMarker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_restaurant);
-
+        disableButton();
         restaurantDetails = new Gson().fromJson(getIntent().getStringExtra("data"), TaskModel.class);
         restaurantLatlong = new LatLng(restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
+
+
+
+
         binder.setData(restaurantDetails);
         binder.setClick(new MyClick());
         binder.swipeView.setEventListener(new SwipeListener() {
@@ -103,21 +112,45 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
     public void onUpdatedLocation(LocationResult locationResult) {
         myCurrentLatLong = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
         stopLocationUpdate();
+
+
+
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(AcceptRestaurantActivity.this)));
-        MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(restaurantLatlong);
+        delivarableLatLongMarker = new MarkerOptions().position(restaurantLatlong);
+
         mMap.clear();
         mMap.addMarker(myCurrentLatLongMarker);
-        mMap.addMarker(delivarableLatLongMarker);
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(myCurrentLatLong).include(restaurantLatlong);
         LatLngBounds bounds = boundsBuilder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cameraUpdate);
-
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(restaurantLatlong, 8));
         new FetchURL(AcceptRestaurantActivity.this).execute(AppUtils.getUrlForDrawRoute(myCurrentLatLongMarker.getPosition(), delivarableLatLongMarker.getPosition(), "driving"));
         //WorkUtils.startBackgroundService();
+        GoogleApiUtils.getAddressFromLatLong(restaurantLatlong, new OnAddressListener() {
+            @Override
+            public void onAddressFound(Object address) {
+                delivarableLatLongMarker.title("Restaurant: " + restaurantDetails.getOrderInfo().getRestaurantInfo().getName()).snippet("Address: " + (String) address);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+            }
 
+            @Override
+            public void onAddressError(String error) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.addMarker(delivarableLatLongMarker);
+                    }
+                });
+
+            }
+        });
     }
 
     @Override

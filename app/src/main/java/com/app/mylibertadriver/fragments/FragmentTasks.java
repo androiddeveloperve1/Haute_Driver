@@ -142,7 +142,8 @@ public class FragmentTasks extends Fragment {
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
-        startTimer(mills / (1000));
+        startTimer(mills / (1000));// sec
+
     }
 
     private void startTimer(long i) {
