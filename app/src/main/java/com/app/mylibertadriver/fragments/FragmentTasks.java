@@ -48,6 +48,7 @@ import rx.schedulers.Schedulers;
  */
 public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
+    private final  int EXPIRE_TIME=60*10; //seconds
     @Inject
     APIInterface apiInterface;
 
@@ -142,7 +143,13 @@ public class FragmentTasks extends Fragment {
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
-        startTimer(mills / (1000));// sec
+        if((mills/1000)>EXPIRE_TIME)
+        {
+            binder.rlTask.setVisibility(View.GONE);
+            binder.tvNoTask.setVisibility(View.VISIBLE);
+        }else {
+            startTimer(mills / (1000));// sec
+        }
 
     }
 

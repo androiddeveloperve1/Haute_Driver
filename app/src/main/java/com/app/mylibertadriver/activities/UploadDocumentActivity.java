@@ -257,7 +257,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusDriver.setText("Approved");
         } else if (driverModel.getDriverlicense().getStatus().equals("2")) {
             binder.statusDriver.setBackgroundResource(R.drawable.reject_bg);
-            binder.statusDriver.setText("Reject");
+            binder.statusDriver.setText("Rejected");
         }
         // Picasso.with(UploadDocumentActivity.this).load(driverModel.getDriverlicense().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getDriverlicense().getPath(), LICENCE));
         new DownloadImage().execute(driverModel.getDriverlicense().getPath(), LICENCE);
@@ -269,7 +269,7 @@ public class UploadDocumentActivity extends AppCompatActivity {
             binder.statusInsurance.setText("Approved");
         } else if (driverModel.getInsurance().getStatus().equals("2")) {
             binder.statusInsurance.setBackgroundResource(R.drawable.reject_bg);
-            binder.statusInsurance.setText("Reject");
+            binder.statusInsurance.setText("Rejected");
         }
 
         //Picasso.with(UploadDocumentActivity.this).load(driverModel.getInsurance().getPath()).resize(200, 200).onlyScaleDown().placeholder(R.drawable.placeholder_squre).into(getTarget(driverModel.getInsurance().getPath(), INSURANCE));
