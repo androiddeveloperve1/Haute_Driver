@@ -143,7 +143,7 @@ public class FragmentTasks extends Fragment {
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
-        if((mills/1000)>EXPIRE_TIME)
+        if((mills/1000)>=EXPIRE_TIME)
         {
             binder.rlTask.setVisibility(View.GONE);
             binder.tvNoTask.setVisibility(View.VISIBLE);
