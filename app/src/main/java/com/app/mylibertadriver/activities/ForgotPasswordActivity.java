@@ -88,8 +88,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 Toast.makeText(ForgotPasswordActivity.this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (binder.etMobile.getText().toString().trim().length() < 10) {
-                Toast.makeText(ForgotPasswordActivity.this, "Please enter the valid mobile number", Toast.LENGTH_SHORT).show();
+            if (binder.etMobile.getText().toString().trim().length() < 8) {
+                Toast.makeText(ForgotPasswordActivity.this, "Please enter the mobile no. between 8 to 15", Toast.LENGTH_SHORT).show();
                 return;
             }
             HashMap<String, String> param = new HashMap<>();

@@ -16,9 +16,11 @@ import android.widget.Toast;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.databinding.ActivityResetPasswordBinding;
 import com.app.mylibertadriver.model.DriverModel;
+import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.viewmodeles.ResetPassViewModel;
 
 import java.util.HashMap;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -40,16 +42,23 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void onDestroy() {
+        MySharedPreference.getInstance(ResetPasswordActivity.this).clearMyPreference();
+        super.onDestroy();
+    }
+
     public class Listener {
 
         public void onSend(View e) {
 
             if (binder.etPass.getText().toString().trim().length() <= 0) {
-                Toast.makeText(ResetPasswordActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, "Please enter the Password", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (binder.etPassConfirm.getText().toString().trim().length() <= 0) {
-                Toast.makeText(ResetPasswordActivity.this, "Please enter the confirm password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, "Please enter the confirm Password", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (!binder.etPassConfirm.getText().toString().trim().equals(binder.etPass.getText().toString().trim())) {
@@ -66,11 +75,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
             });
 
         }
-
-
         public void onBack(View e) {
-            finish();
+            onBackPressed();
         }
+
 
         public void onPassClick(View e) {
             if (!isPasswordShow) {
