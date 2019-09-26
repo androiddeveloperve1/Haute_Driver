@@ -23,11 +23,9 @@ import java.util.ArrayList;
  */
 
 public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapter.MyViewHolder> {
-    RecycleItemClickListener listenr;
     ArrayList<TaskResponse> list;
 
-    public TodayEarningAdapter(ArrayList<TaskResponse> list, RecycleItemClickListener listenr) {
-        this.listenr = listenr;
+    public TodayEarningAdapter(ArrayList<TaskResponse> list) {
         this.list = list;
     }
 
@@ -36,7 +34,6 @@ public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapte
     public TodayEarningAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         ItemTodayEarningBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_today_earning, viewGroup, false);
-        binding.setItemClickListener(listenr);
         return new TodayEarningAdapter.MyViewHolder(binding);
     }
 

@@ -4,10 +4,6 @@
     <data>
 
         <variable
-            name="itemClickListener"
-            type="com.app.mylibertadriver.interfaces.RecycleItemClickListener" />
-
-        <variable
             name="data"
             type="com.app.mylibertadriver.model.orders.TaskResponse" />
 

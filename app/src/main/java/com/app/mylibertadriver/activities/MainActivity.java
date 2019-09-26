@@ -23,6 +23,7 @@ import com.app.mylibertadriver.databinding.ActivityMainBinding;
 import com.app.mylibertadriver.databinding.NavHeaderMainBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.fragments.FragmentEarning;
+import com.app.mylibertadriver.fragments.FragmentHistory;
 import com.app.mylibertadriver.fragments.FragmentProfile;
 import com.app.mylibertadriver.fragments.FragmentSupport;
 import com.app.mylibertadriver.fragments.FragmentTasks;
@@ -61,6 +62,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
     private TextView tv_help;
     private TextView tv_name;
     private TextView tv_mob;
+    private TextView tv_orderhistory;
     private TextView tv_app_version;
     private ImageView toolbar_refresh;
     private ImageView img_user;
@@ -109,9 +111,11 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         tv_app_version.setText("App ver " + BuildConfig.VERSION_NAME);
         tv_name = navView.findViewById(R.id.tv_name);
         tv_mob = navView.findViewById(R.id.tv_mob);
+
         img_user = navView.findViewById(R.id.img_user);
 
         tv_earnings = navView.findViewById(R.id.tv_earnings);
+        tv_orderhistory = navView.findViewById(R.id.tv_orderhistory);
         tv_profile = navView.findViewById(R.id.tv_profile);
         tv_help = navView.findViewById(R.id.tv_help);
         NavHeaderMainBinding.bind(navView).setClickHandler(p);
@@ -280,6 +284,7 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_earnings.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_profile.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
+                    tv_orderhistory.setTextColor(getResources().getColor(R.color.gray_text));
                     changeTheToolbarTitle("Tasks");
                     toolbar_refresh.setVisibility(View.VISIBLE);
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
@@ -290,15 +295,27 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_earnings.setTextColor(getResources().getColor(R.color.black));
                     tv_profile.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
-                    changeTheToolbarTitle("Earning And History");
+                    tv_orderhistory.setTextColor(getResources().getColor(R.color.gray_text));
+                    changeTheToolbarTitle("Earning");
                     toolbar_refresh.setVisibility(View.GONE);
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentEarning());
+                    break;
+                case R.id.tv_orderhistory:
+                    tv_orderhistory.setTextColor(getResources().getColor(R.color.black));
+                    tv_tasks.setTextColor(getResources().getColor(R.color.gray_text));
+                    tv_earnings.setTextColor(getResources().getColor(R.color.gray_text));
+                    tv_profile.setTextColor(getResources().getColor(R.color.gray_text));
+                    tv_help.setTextColor(getResources().getColor(R.color.gray_text));
+                    changeTheToolbarTitle("Order History");
+                    toolbar_refresh.setVisibility(View.GONE);
+                    FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentHistory());
                     break;
                 case R.id.tv_profile:
                     tv_tasks.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_earnings.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_profile.setTextColor(getResources().getColor(R.color.black));
                     tv_help.setTextColor(getResources().getColor(R.color.gray_text));
+                    tv_orderhistory.setTextColor(getResources().getColor(R.color.gray_text));
                     changeTheToolbarTitle("Profile");
                     toolbar_refresh.setVisibility(View.GONE);
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentProfile());
@@ -308,8 +325,10 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                     tv_earnings.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_profile.setTextColor(getResources().getColor(R.color.gray_text));
                     tv_help.setTextColor(getResources().getColor(R.color.black));
+                    tv_orderhistory.setTextColor(getResources().getColor(R.color.gray_text));
                     changeTheToolbarTitle("Help and support");
                     toolbar_refresh.setVisibility(View.GONE);
+
                     FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, new FragmentSupport());
                     break;
 

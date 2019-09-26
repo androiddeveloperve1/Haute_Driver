@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:text="support@mail.com"
+                android:text="giorgio@myliberta.com"
                 android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14_px"
