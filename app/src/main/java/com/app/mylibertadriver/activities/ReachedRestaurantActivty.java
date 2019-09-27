@@ -52,9 +52,6 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
         binder.setClick(new ClickHandler());
         binder.rvItem.setLayoutManager(new LinearLayoutManager(this));
         orderId = getIntent().getStringExtra("order_id");
-
-
-
         binder.swipeView.setEventListener(new SwipeListener() {
             @Override
             public void swipeStarted() {

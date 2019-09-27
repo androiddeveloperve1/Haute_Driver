@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:text="giorgio@myliberta.com"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14_px"
                 app:layout_constraintLeft_toLeftOf="parent"
