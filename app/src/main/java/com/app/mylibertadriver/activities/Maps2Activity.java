@@ -147,7 +147,7 @@ public class Maps2Activity extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_maps2);
         toolbar_address = findViewById(R.id.toolbar_address);
         enter_new_address = findViewById(R.id.enter_new_address);
-        googlePlacesAutocompleteAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.item_places);
+        googlePlacesAutocompleteAdapter = new GooglePlacesAutocompleteAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item);
         enter_new_address.setAdapter(googlePlacesAutocompleteAdapter);
 
         enter_new_address.addTextChangedListener(new TextWatcher() {
