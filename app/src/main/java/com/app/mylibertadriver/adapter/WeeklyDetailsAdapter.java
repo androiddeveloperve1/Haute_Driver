@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.mylibertadriver.BR;
 import com.app.mylibertadriver.R;
-import com.app.mylibertadriver.databinding.ItemTodayEarningBinding;
 import com.app.mylibertadriver.databinding.ItemWeeklyPaymentBinding;
 import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
+import com.app.mylibertadriver.model.WeeklyEarningModel;
 import com.app.mylibertadriver.model.orders.TaskResponse;
 
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 public class WeeklyDetailsAdapter extends RecyclerView.Adapter<WeeklyDetailsAdapter.MyViewHolder> {
     RecycleItemClickListener listenr;
-    ArrayList<TaskResponse> list;
+    ArrayList<WeeklyEarningModel> list;
 
-    public WeeklyDetailsAdapter(ArrayList<TaskResponse> list, RecycleItemClickListener listenr) {
+    public WeeklyDetailsAdapter(ArrayList<WeeklyEarningModel> list, RecycleItemClickListener listenr) {
         this.listenr = listenr;
         this.list = list;
     }
@@ -59,7 +59,7 @@ public class WeeklyDetailsAdapter extends RecyclerView.Adapter<WeeklyDetailsAdap
             this.binding = databinding;
         }
 
-        public void bind(TaskResponse data) {
+        public void bind(WeeklyEarningModel data) {
             this.binding.setVariable(com.app.mylibertadriver.BR.data, data);
             this.binding.setVariable(BR.position, getAdapterPosition());
             this.binding.executePendingBindings();

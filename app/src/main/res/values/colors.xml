@@ -8,6 +8,7 @@
     <color name="gray_text">#9b9b9b</color>
     <color name="gray">#e2e2e2</color>
     <color name="colorBlackTransparent">#80000000</color>
+    <color name="lightBlack">#4E4C4C</color>
     <color name="greencolor">#58a62b</color>
     <color name="yellow">#eb872b</color>
     <color name="green_order_color">#40801e</color>

@@ -5,6 +5,8 @@ import com.app.mylibertadriver.constants.UrlConstants;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
+import com.app.mylibertadriver.model.EarningModelResponse;
+import com.app.mylibertadriver.model.WeeklyEarningModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskModel;
 import com.app.mylibertadriver.model.orders.TaskModelResponse;
@@ -92,7 +94,7 @@ public interface APIInterface {
     Observable<ApiResponseModel> orderPicked(@Path("id") String orderId);
 
     @GET(UrlConstants.GET_ALL_TASK)
-    Observable<ApiResponseModel<TaskModelResponse>> getTaskList();
+    Observable<ApiResponseModel<TaskModelResponse>> getHIstory();
 
     @GET(UrlConstants.ORDER_DELIVERED+ "{id}")
     Observable<ApiResponseModel> deliverOrderNow(@Path("id") String orderId);
@@ -107,4 +109,9 @@ public interface APIInterface {
     Observable<ApiResponseModel<DriverModel>> changeMobileNumber(@Body HashMap<String, String> body);
 
 
+    @GET(UrlConstants.GET_EARNING)
+    Observable<ApiResponseModel<ArrayList<EarningModelResponse>>> getEarning();
+
+    @GET(UrlConstants.WALLET_LIST)
+    Observable<ApiResponseModel<ArrayList<WeeklyEarningModel>>> getWalletList();
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,12 @@ import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.app.mylibertadriver.activities.GoogleServicesActivationActivity;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,14 +59,14 @@ public class DriverLocationUpdateService extends Worker {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public Result startProgressNow() {
-
-
         if (ContextCompat.checkSelfPermission(mContext,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mContext,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         LocationServices.getFusedLocationProviderClient(mContext).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 sendDriverCurrentLocationToServer(new LatLng(location.getLatitude(), location.getLongitude()));
+
+
             }
         });
         return Result.retry();

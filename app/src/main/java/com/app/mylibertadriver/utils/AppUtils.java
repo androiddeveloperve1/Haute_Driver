@@ -39,6 +39,7 @@ import java.util.TimeZone;
 public class AppUtils {
     static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     static DateFormat humanFormat = new SimpleDateFormat("dd MMM, yyyy'.' HH:mm");
+    static DateFormat humanFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 
     public static boolean eMailValidation(CharSequence target) {
         if (target == null) {
@@ -166,5 +167,41 @@ public class AppUtils {
             return
                     null;
         }
+    }
+
+    public static String getDecimalFormat(String value)
+    {
+        return String.format("%.02f", Float.parseFloat(value));
+    }
+
+    public static String getPaidUnpaidStatus(String value)
+    {
+        return Integer.parseInt(value)==0?"UnPaid":"Paid";
+    }
+
+
+    public static String showDateSlot(String from,String to)
+
+    {
+
+        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            return getHumanReadableTimeFromUTCString2(from)+" To "+getHumanReadableTimeFromUTCString2(to);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static String getHumanReadableTimeFromUTCString2(String status) {
+        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            return humanFormat2.format(utcFormat.parse(status));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

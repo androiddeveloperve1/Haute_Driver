@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -14,9 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.activities.MyApplication;
-import com.app.mylibertadriver.adapter.TodayEarningAdapter;
+import com.app.mylibertadriver.adapter.OrderHistoryAdapter;
 import com.app.mylibertadriver.databinding.FragmentOrderHistoryBinding;
-import com.app.mylibertadriver.databinding.FragmentTodayEarningBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
@@ -55,7 +53,7 @@ public class FragmentHistory extends Fragment implements RecycleItemClickListene
     private void getDetails() {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
         ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
-        apiInterface.getTaskList()
+        apiInterface.getHIstory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResponseModel<TaskModelResponse>>() {
@@ -78,7 +76,7 @@ public class FragmentHistory extends Fragment implements RecycleItemClickListene
                             {
                                 binder.rvEarnList.setVisibility(View.VISIBLE);
                                 binder.noHistory.setVisibility(View.GONE);
-                                binder.setAdapt(new TodayEarningAdapter(response.getData().getList()));
+                                binder.setAdapt(new OrderHistoryAdapter(response.getData().getList()));
                             }else {
                                 binder.rvEarnList.setVisibility(View.GONE);
                                 binder.noHistory.setVisibility(View.VISIBLE);
@@ -90,10 +88,5 @@ public class FragmentHistory extends Fragment implements RecycleItemClickListene
                 });
     }
 
-    public class Presenter {
-        public void viewAll(View view) {
 
-            //startActivity(new Intent(getActivity(), WeeklyDetailActivity.class));
-        }
-    }
 }

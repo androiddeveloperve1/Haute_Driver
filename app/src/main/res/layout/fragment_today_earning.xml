@@ -6,7 +6,10 @@
 
         <variable
             name="adapt"
-            type="com.app.mylibertadriver.adapter.TodayEarningAdapter" />
+            type="com.app.mylibertadriver.adapter.EarningAdapter" />
+        <variable
+            name="data"
+            type="com.app.mylibertadriver.model.EarningModelResponse" />
 
         <variable
             name="click"
@@ -47,6 +50,7 @@
                     android:fontStyleName="@{`Roboto_Regular.ttf`}"
                     android:padding="@dimen/_2_px"
                     android:text='This weeks earning'
+
                     android:textColor="@color/gray_text"
                     android:textSize="@dimen/_9_px"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -59,7 +63,6 @@
                     android:layout_marginTop="@dimen/_5_px"
                     android:fontStyleName="@{`Roboto_Medium.ttf`}"
                     android:padding="@dimen/_2_px"
-                    android:text='$ 100.00'
                     android:textColor="@color/white"
                     android:textSize="@dimen/_18_px"
                     app:layout_constraintLeft_toLeftOf="@id/tv_text_earning"
@@ -107,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5_px"
                     android:fontStyleName="@{`Roboto_Medium.ttf`}"
-                    android:text='$ 80.00'
+                    android:text='@{"$ "+data.totalDeliveryFeeEarning}'
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12_px"
                     app:layout_constraintLeft_toLeftOf="@id/tv_delivery_earning"
@@ -133,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5_px"
                     android:fontStyleName="@{`Roboto_Medium.ttf`}"
-                    android:text='$ 20.00'
+                    android:text='@{"$ "+data.totalGratitudeEarning}'
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12_px"
                     app:layout_constraintLeft_toLeftOf="@id/tv_tip"
@@ -160,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5_px"
                     android:fontStyleName="@{`Roboto_Medium.ttf`}"
-                    android:text='10'
+                    android:text='@{""+data.earningDetails.size()}'
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12_px"
                     app:layout_constraintLeft_toLeftOf="@id/tv_total_delivery"
@@ -187,7 +190,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5_px"
                 android:onClick="@{(v)->click.viewAll(v)}"
-                android:visibility="gone"
                 app:layout_constraintRight_toRightOf="@+id/cl_chart"
                 app:layout_constraintTop_toBottomOf="@+id/cl_chart">
 
@@ -196,7 +198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                    android:padding="@dimen/_2_px"
+                    android:padding="@dimen/_5_px"
                     android:text='VIEW ALL'
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10_px" />

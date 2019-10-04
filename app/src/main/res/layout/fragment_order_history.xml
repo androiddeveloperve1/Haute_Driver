@@ -6,7 +6,7 @@
 
         <variable
             name="adapt"
-            type="com.app.mylibertadriver.adapter.TodayEarningAdapter" />
+            type="com.app.mylibertadriver.adapter.OrderHistoryAdapter" />
 
         <variable
             name="click"

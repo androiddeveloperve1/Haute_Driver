@@ -9,6 +9,7 @@ import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.activities.ReachedRestaurantActivty;
 import com.app.mylibertadriver.activities.SplashActivity;
 import com.app.mylibertadriver.activities.UploadDocumentActivity;
+import com.app.mylibertadriver.activities.WeeklyDetailActivity;
 import com.app.mylibertadriver.fragments.FragmentEarning;
 import com.app.mylibertadriver.fragments.FragmentHistory;
 import com.app.mylibertadriver.fragments.FragmentProfile;
@@ -47,5 +48,6 @@ public interface ApplicationComponent {
     void inject(OrderAcceptedAndDeliverActivity model);
     void inject(EnterOTPActivity model);
     void inject(FragmentHistory model);
+    void inject(WeeklyDetailActivity model);
 
 }

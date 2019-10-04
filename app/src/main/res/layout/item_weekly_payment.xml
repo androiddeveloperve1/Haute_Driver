@@ -3,9 +3,19 @@
 
     <data>
 
+        <import type="com.app.mylibertadriver.utils.AppUtils" />
+
         <variable
             name="itemClickListener"
             type="com.app.mylibertadriver.interfaces.RecycleItemClickListener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="data"
+            type="com.app.mylibertadriver.model.WeeklyEarningModel" />
 
 
     </data>
@@ -15,9 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5_px"
-
-        android:paddingTop="@dimen/_5_px"
-        android:paddingBottom="@dimen/_5_px">
+        android:onClick="@{(v)->itemClickListener.onItemClicked(position,data)}"
+        android:padding="@dimen/_5_px">
 
 
         <TextView
@@ -25,10 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_10_px"
-            android:fontStyleName="@{`Roboto_Medium.ttf`}"
-            android:text="$50.00"
+            android:fontStyleName="@{`Roboto_Bold.ttf`}"
+            android:text='@{"$"+AppUtils.getDecimalFormat(data.wallet)}'
             android:textColor="@color/black"
-            android:textSize="@dimen/_12_px"
+            android:textSize="@dimen/_13_px"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_date" />
 
@@ -38,9 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
-            android:text="10 - 17 may 2019"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12_px"
+            android:text='@{AppUtils.showDateSlot(data.startDate,data.endDate)}'
+            android:textColor="@color/lightBlack"
+            android:textSize="@dimen/_13_px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,9 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5_px"
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
-            android:text="Status"
+            android:text='@{AppUtils.getPaidUnpaidStatus(data.is_tranfered)}'
             android:textColor="@color/gray_text"
-            android:textSize="@dimen/_12_px"
+            android:textSize="@dimen/_13_px"
             app:layout_constraintLeft_toLeftOf="@id/tv_date"
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -63,17 +72,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10_px"
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
-            android:text="19 may 2019"
+            android:text="@{AppUtils.getHumanReadableTimeFromUTCString2(data.transfered_date)}"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12_px"
+            android:textSize="@dimen/_13_px"
             app:layout_constraintBottom_toBottomOf="@+id/tv_status_text"
             app:layout_constraintLeft_toRightOf="@+id/tv_status_text"
             app:layout_constraintTop_toTopOf="@id/tv_status_text" />
 
+        <ImageView
+            android:layout_width="@dimen/_20_px"
+            android:layout_height="@dimen/_20_px"
+            android:src="@drawable/ic_next_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_status_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_time"
+            app:layout_constraintRight_toRightOf="@id/tv_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_status_text" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="2px"
-            android:layout_marginTop="@dimen/_5_px"
+            android:layout_marginTop="@dimen/_10_px"
             android:background="@color/gray_text"
             app:layout_constraintLeft_toLeftOf="@+id/tv_status_text"
             app:layout_constraintRight_toRightOf="parent"

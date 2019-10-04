@@ -25,6 +25,8 @@ public class UrlConstants {
     public static final String ORDER_DELIVERED = DRIVER + "/deliver-order/";
     public static final String DOCS_STATUS = DRIVER + "/get-document-status";
     public static final String CHANGE_MOBILE = DRIVER + "/changeMobileNumber";
+    public static final String GET_EARNING = DRIVER + "/getMyWallet";
+    public static final String WALLET_LIST = DRIVER + "/get-my-weekly-wallet-list?count=1";
 
 
 }

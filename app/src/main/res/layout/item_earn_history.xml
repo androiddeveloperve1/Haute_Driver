@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.app.mylibertadriver.utils.AppUtils"/>
+        <variable
+            name="data"
+            type="com.app.mylibertadriver.model.EarningModel" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5_px"
+
+        android:paddingTop="@dimen/_5_px"
+        android:paddingBottom="@dimen/_5_px">
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10_px"
+            android:fontStyleName="@{`Roboto_Medium.ttf`}"
+            android:text="@{AppUtils.getHumanReadableTimeFromUTCString(data.delivery_date)}"
+            android:textSize="@dimen/_11_px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_earning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="Earning"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_earning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="@{data.delivery_fees}"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_earning_text"
+            app:layout_constraintLeft_toRightOf="@+id/tv_earning_text"
+            app:layout_constraintTop_toTopOf="@id/tv_earning_text" />
+
+        <TextView
+            android:id="@+id/tv_order_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="Order ID"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_earning_text" />
+
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="@{data.order_no}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_order_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_earning"
+            app:layout_constraintTop_toTopOf="@id/tv_order_text" />
+
+
+        <TextView
+            android:id="@+id/tv_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5_px"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text="Status"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_text" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12_px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_status_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_earning"
+            app:layout_constraintTop_toTopOf="@id/tv_status_text" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2px"
+            android:layout_marginTop="@dimen/_5_px"
+            android:background="@color/gray_text"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_status_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

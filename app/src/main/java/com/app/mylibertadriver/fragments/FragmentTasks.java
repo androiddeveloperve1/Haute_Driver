@@ -48,7 +48,7 @@ import rx.schedulers.Schedulers;
  */
 public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
-    private final  int EXPIRE_TIME=60*10; //seconds
+    private final  int EXPIRE_TIME=60*2; //seconds
     @Inject
     APIInterface apiInterface;
 

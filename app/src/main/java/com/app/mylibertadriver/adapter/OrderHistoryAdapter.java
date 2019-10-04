@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.mylibertadriver.BR;
 import com.app.mylibertadriver.R;
-import com.app.mylibertadriver.databinding.ItemTodayEarningBinding;
-import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
-import com.app.mylibertadriver.model.orders.OrderItemModel;
+import com.app.mylibertadriver.databinding.ItemOrderHistoryBinding;
 import com.app.mylibertadriver.model.orders.TaskResponse;
 
 import java.util.ArrayList;
@@ -22,23 +20,23 @@ import java.util.ArrayList;
  * Project Haute Delivery
  */
 
-public class TodayEarningAdapter extends RecyclerView.Adapter<TodayEarningAdapter.MyViewHolder> {
+public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.MyViewHolder> {
     ArrayList<TaskResponse> list;
 
-    public TodayEarningAdapter(ArrayList<TaskResponse> list) {
+    public OrderHistoryAdapter(ArrayList<TaskResponse> list) {
         this.list = list;
     }
 
     @NonNull
     @Override
-    public TodayEarningAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public OrderHistoryAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        ItemTodayEarningBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_today_earning, viewGroup, false);
-        return new TodayEarningAdapter.MyViewHolder(binding);
+        ItemOrderHistoryBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_order_history, viewGroup, false);
+        return new OrderHistoryAdapter.MyViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TodayEarningAdapter.MyViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull OrderHistoryAdapter.MyViewHolder holder, int i) {
         holder.bind(list.get(i));
     }
 
