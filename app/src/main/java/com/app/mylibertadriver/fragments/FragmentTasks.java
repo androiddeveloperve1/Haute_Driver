@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -47,8 +48,8 @@ import rx.schedulers.Schedulers;
  * Project Haute Delivery
  */
 public class FragmentTasks extends Fragment {
+    private final int EXPIRE_TIME = 60 * 2; //seconds
     Presenter p = new Presenter();
-    private final  int EXPIRE_TIME=60*2; //seconds
     @Inject
     APIInterface apiInterface;
 
@@ -65,7 +66,6 @@ public class FragmentTasks extends Fragment {
         mainActivity = (MainActivity) getActivity();
         binder.llNewTask.setClick(p);
         View view = binder.getRoot();
-
         return view;
     }
 
@@ -107,7 +107,7 @@ public class FragmentTasks extends Fragment {
                                     binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llCurrentTask.setData(bindableModel.getOrderInfo());
                                     binder.llNewTask.setIsVisible(View.GONE);
-                                    binder.llCurrentTask.otp.setText("OTP : "+response.getData().getOtp());
+                                    binder.llCurrentTask.otp.setText("OTP : " + response.getData().getOtp());
                                 }
                                 if (mainActivity.mLocationResult != null) {
                                     onUpdatedLocation(mainActivity.mLocationResult);
@@ -139,25 +139,24 @@ public class FragmentTasks extends Fragment {
     }
 
     void updateTimeToExpire() {
-        Date date = AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt());
+        Date date =getIncrementedTime(AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt()));
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
-        if((mills/1000)>=EXPIRE_TIME)
-        {
+        if (mills <= 0) {
+            startTimer(mills / (1000));// sec
+        } else {
+
             binder.rlTask.setVisibility(View.GONE);
             binder.tvNoTask.setVisibility(View.VISIBLE);
-        }else {
-            startTimer(mills / (1000));// sec
         }
 
     }
-
     private void startTimer(long i) {
         if (expiryTimer != null) {
             expiryTimer.cancel();
         }
-        expiryTimer = new CountDownTimer(i * 1000, 1000) {
+        expiryTimer = new CountDownTimer(Math.abs(i) * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 showSecondInView(millisUntilFinished);
             }
@@ -193,7 +192,7 @@ public class FragmentTasks extends Fragment {
     }
 
     public void onTaskDone(String distance) {
-        bindableModel.getOrderInfo(). setDistance(distance);
+        bindableModel.getOrderInfo().setDistance(distance);
     }
 
     private void getOrderDetails(String orderId) {
@@ -229,6 +228,14 @@ public class FragmentTasks extends Fragment {
                 });
     }
 
+    Date getIncrementedTime(Date myTime) {
+        Log.e("Current Time", myTime.toString());
+        Calendar incrementTime = Calendar.getInstance();
+        incrementTime.setTime(myTime);
+        incrementTime.add(incrementTime.SECOND, EXPIRE_TIME);
+        Log.e("InCrement Time", incrementTime.getTime().toString());
+        return incrementTime.getTime();
+    }
 
     public class Presenter {
         public void onCurrentTaskClicked(View view) {
