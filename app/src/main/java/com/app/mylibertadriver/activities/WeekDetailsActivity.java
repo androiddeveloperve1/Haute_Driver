@@ -1,33 +1,27 @@
-package com.app.mylibertadriver.fragments;
+package com.app.mylibertadriver.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.app.mylibertadriver.R;
-import com.app.mylibertadriver.activities.MyApplication;
-import com.app.mylibertadriver.activities.WeeklyDetailActivity;
 import com.app.mylibertadriver.adapter.EarningAdapter;
-import com.app.mylibertadriver.adapter.OrderHistoryAdapter;
-import com.app.mylibertadriver.databinding.FragmentTodayEarningBinding;
+import com.app.mylibertadriver.databinding.ActivityWeekDetailsBinding;
+import com.app.mylibertadriver.databinding.ActivityWeeklyDetailBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
-import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.EarningModel;
 import com.app.mylibertadriver.model.EarningModelResponse;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
-import com.app.mylibertadriver.utils.SimpleDividerItemDecoration;
+import com.google.gson.Gson;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -36,35 +30,35 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Create By Rahul Mangal
- * Project Haute Delivery
- */
-
-public class FragmentEarning extends Fragment implements RecycleItemClickListener {
+public class WeekDetailsActivity extends AppCompatActivity {
+    private ActivityWeekDetailsBinding binder;
     @Inject
     APIInterface apiInterface;
-    private FragmentTodayEarningBinding binder;
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binder = DataBindingUtil.inflate(inflater, R.layout.fragment_today_earning, container, false);
-        binder.rvEarnList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binder.rvEarnList.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
-        View view = binder.getRoot();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        binder = DataBindingUtil.setContentView(this, R.layout.activity_week_details);
         binder.setClick(new Presenter());
         getDetails();
 
-        return view;
+
     }
 
-    @Override
-    public void onItemClicked(int position, Object data) {
+    public class Presenter {
+        public void onBack(View v) {
+            finish();
+        }
+
     }
+
 
     private void getDetails() {
-        final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
-        ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
-        apiInterface.getEarning()
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(this);
+        ((MyApplication) getApplication()).getConfiguration().inject(this);
+        apiInterface.walletDetail()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResponseModel<ArrayList<EarningModelResponse>>>() {
@@ -75,11 +69,12 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                     @Override
                     public void onError(Throwable throwable) {
                         progressDialog.dismiss();
-                        ResponseDialog.showErrorDialog(getActivity(), throwable.getLocalizedMessage());
+                        ResponseDialog.showErrorDialog(WeekDetailsActivity.this, throwable.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(ApiResponseModel<ArrayList<EarningModelResponse>> response) {
+                        Log.e("@@@@@@@@@@",""+new Gson().toJson(response));
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             EarningModelResponse data = response.getData().get(0);
@@ -92,15 +87,9 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                             }
                             binder.tvAmount.setText("$" + totalAmt);
                         } else {
-                            ResponseDialog.showErrorDialog(getActivity(), response.getMessage());
+                            ResponseDialog.showErrorDialog(WeekDetailsActivity.this, response.getMessage());
                         }
                     }
                 });
-    }
-
-    public class Presenter {
-        public void viewAll(View view) {
-            startActivity(new Intent(getActivity(), WeeklyDetailActivity.class));
-        }
     }
 }

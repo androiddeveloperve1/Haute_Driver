@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
 
         <variable
@@ -13,7 +11,7 @@
 
         <variable
             name="click"
-            type="com.app.mylibertadriver.fragments.FragmentEarning.Presenter" />
+            type="com.app.mylibertadriver.activities.WeekDetailsActivity.Presenter" />
 
     </data>
 
@@ -28,6 +26,58 @@
             android:orientation="vertical">
 
 
+            <View
+                android:id="@+id/toolbar_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48_px"
+                android:background="@drawable/toolbar_drop_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/black_bg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_5_px"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+
+
+            <ImageView
+                android:id="@+id/toolbar_humburgur"
+                android:layout_width="@dimen/_25_px"
+                android:layout_height="@dimen/_25_px"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_5_px"
+                android:onClick="@{(v)->click.onBack(v)}"
+                android:src="@drawable/ic_back_white"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                android:text='Detail'
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16_px"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+
+
+
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_chart"
                 android:layout_width="0dp"
@@ -40,7 +90,7 @@
                 android:paddingBottom="@dimen/_15_px"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/black_bg">
 
 
                 <TextView
@@ -185,25 +235,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/view_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5_px"
-                android:onClick="@{(v)->click.viewAll(v)}"
-                app:layout_constraintRight_toRightOf="@+id/cl_chart"
-                app:layout_constraintTop_toBottomOf="@+id/cl_chart">
 
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                    android:padding="@dimen/_5_px"
-                    android:text='VIEW ALL'
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10_px" />
-            </androidx.cardview.widget.CardView>
 
             <View
                 android:id="@+id/devider2"
@@ -214,7 +246,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_all" />
+                app:layout_constraintTop_toBottomOf="@+id/cl_chart" />
 
 
             <androidx.recyclerview.widget.RecyclerView

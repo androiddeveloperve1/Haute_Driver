@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +71,7 @@ public class WeeklyDetailActivity extends AppCompatActivity {
                             binder.setAdapter(new WeeklyDetailsAdapter(response.getData(), new RecycleItemClickListener<WeeklyEarningModel>() {
                                 @Override
                                 public void onItemClicked(int position, WeeklyEarningModel data) {
-
+                                    startActivity(new Intent(WeeklyDetailActivity.this, WeekDetailsActivity.class));
                                 }
                             }));
                         } else {

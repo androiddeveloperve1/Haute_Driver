@@ -114,4 +114,9 @@ public interface APIInterface {
 
     @GET(UrlConstants.WALLET_LIST)
     Observable<ApiResponseModel<ArrayList<WeeklyEarningModel>>> getWalletList();
+
+    @GET(UrlConstants.WALLET_DETAIL)
+    Observable<ApiResponseModel<ArrayList<EarningModelResponse>>> walletDetail();
+
+
 }
