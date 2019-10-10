@@ -30,7 +30,7 @@ public class Constants {
     public static String  DELIVERY_STATUS_0 = "New Order";
     public static String  DELIVERY_STATUS_1 = "Order Accepted";
     public static String  DELIVERY_STATUS_2 = "Reject by Owner";
-    public static String  DELIVERY_STATUS_3 = "Order Pickeup";
+    public static String  DELIVERY_STATUS_3 = "Order Pickedup";
     public static String  DELIVERY_STATUS_4 = "Order Delivered";
     public static String  DELIVERY_STATUS_5 = "Delivered";
     public static String  DELIVERY_STATUS_6 = "Order is ready for pickup";

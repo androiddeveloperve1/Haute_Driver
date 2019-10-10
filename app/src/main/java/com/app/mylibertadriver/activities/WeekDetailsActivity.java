@@ -31,9 +31,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class WeekDetailsActivity extends AppCompatActivity {
-    private ActivityWeekDetailsBinding binder;
     @Inject
     APIInterface apiInterface;
+    private ActivityWeekDetailsBinding binder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +46,6 @@ public class WeekDetailsActivity extends AppCompatActivity {
 
 
     }
-
-    public class Presenter {
-        public void onBack(View v) {
-            finish();
-        }
-
-    }
-
 
     private void getDetails() {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(this);
@@ -74,22 +66,37 @@ public class WeekDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(ApiResponseModel<ArrayList<EarningModelResponse>> response) {
-                        Log.e("@@@@@@@@@@",""+new Gson().toJson(response));
+                        Log.e("@@@@@@@@@@", "" + new Gson().toJson(response));
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
-                            EarningModelResponse data = response.getData().get(0);
-                            binder.setAdapt(new EarningAdapter(data));
-                            binder.setData(data);
-                            binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
-                            float totalAmt = 0;
-                            for (EarningModel a : data.getEarningDetails()) {
-                                totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
+
+                            if (response.getData().size() > 0) {
+                                EarningModelResponse data = response.getData().get(0);
+                                binder.setAdapt(new EarningAdapter(data));
+                                binder.setData(data);
+
+                                try{
+                                binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
+                                }catch (Exception e){}
+
+                                float totalAmt = 0;
+                                for (EarningModel a : data.getEarningDetails()) {
+                                    totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
+                                }
+                                binder.tvAmount.setText("$" + totalAmt);
                             }
-                            binder.tvAmount.setText("$" + totalAmt);
+
                         } else {
                             ResponseDialog.showErrorDialog(WeekDetailsActivity.this, response.getMessage());
                         }
                     }
                 });
+    }
+
+    public class Presenter {
+        public void onBack(View v) {
+            finish();
+        }
+
     }
 }

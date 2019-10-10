@@ -82,15 +82,21 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                     public void onNext(ApiResponseModel<ArrayList<EarningModelResponse>> response) {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
-                            EarningModelResponse data = response.getData().get(0);
-                            binder.setAdapt(new EarningAdapter(data));
-                            binder.setData(data);
-                            binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
-                            float totalAmt = 0;
-                            for (EarningModel a : data.getEarningDetails()) {
-                                totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
+
+                            if (response.getData().size() > 0) {
+                                binder.viewAll.setVisibility(View.VISIBLE);
+                                EarningModelResponse data = response.getData().get(0);
+                                binder.setAdapt(new EarningAdapter(data));
+                                binder.setData(data);
+                                binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
+                                float totalAmt = 0;
+                                for (EarningModel a : data.getEarningDetails()) {
+                                    totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
+                                }
+                                binder.tvAmount.setText("$" + totalAmt);
                             }
-                            binder.tvAmount.setText("$" + totalAmt);
+
+
                         } else {
                             ResponseDialog.showErrorDialog(getActivity(), response.getMessage());
                         }
