@@ -88,7 +88,11 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                                 EarningModelResponse data = response.getData().get(0);
                                 binder.setAdapt(new EarningAdapter(data));
                                 binder.setData(data);
-                                binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
+                                try {
+                                    binder.transferDate.setText(AppUtils.getHumanReadableTimeFromUTCString(data.getEarningDetails().get(0).getTransfered_date()));
+                                } catch (Exception e) {
+
+                                }
                                 float totalAmt = 0;
                                 for (EarningModel a : data.getEarningDetails()) {
                                     totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
