@@ -71,7 +71,9 @@ public class WeeklyDetailActivity extends AppCompatActivity {
                             binder.setAdapter(new WeeklyDetailsAdapter(response.getData(), new RecycleItemClickListener<WeeklyEarningModel>() {
                                 @Override
                                 public void onItemClicked(int position, WeeklyEarningModel data) {
-                                    startActivity(new Intent(WeeklyDetailActivity.this, WeekDetailsActivity.class));
+                                    Intent mIntent=new Intent(WeeklyDetailActivity.this, WeekDetailsActivity.class);
+                                    mIntent.putExtra("data",new Gson().toJson(data));
+                                    startActivity(mIntent);
                                 }
                             }));
                         } else {

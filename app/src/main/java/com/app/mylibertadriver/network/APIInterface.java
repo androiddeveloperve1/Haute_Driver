@@ -23,6 +23,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -116,7 +117,7 @@ public interface APIInterface {
     Observable<ApiResponseModel<ArrayList<WeeklyEarningModel>>> getWalletList();
 
     @GET(UrlConstants.WALLET_DETAIL)
-    Observable<ApiResponseModel<ArrayList<EarningModelResponse>>> walletDetail();
+    Observable<ApiResponseModel<ArrayList<EarningModelResponse>>> walletDetail(@Query("type") String type, @Query("start") String start, @Query("end") String end);
 
 
 }

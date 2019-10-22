@@ -2,6 +2,7 @@ package com.app.mylibertadriver.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.EarningModel;
 import com.app.mylibertadriver.model.EarningModelResponse;
+import com.app.mylibertadriver.model.WeeklyEarningModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.google.gson.Gson;
@@ -34,14 +36,18 @@ public class WeekDetailsActivity extends AppCompatActivity {
     @Inject
     APIInterface apiInterface;
     private ActivityWeekDetailsBinding binder;
+    private WeeklyEarningModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         binder = DataBindingUtil.setContentView(this, R.layout.activity_week_details);
         binder.setClick(new Presenter());
+        model=new Gson().fromJson(getIntent().getStringExtra("data"), WeeklyEarningModel.class);
+        binder.rvEarnList.setLayoutManager(new LinearLayoutManager(this));
         getDetails();
 
 
@@ -50,7 +56,7 @@ public class WeekDetailsActivity extends AppCompatActivity {
     private void getDetails() {
         final Dialog progressDialog = ResponseDialog.showProgressDialog(this);
         ((MyApplication) getApplication()).getConfiguration().inject(this);
-        apiInterface.walletDetail()
+        apiInterface.walletDetail("date",AppUtils.getHumanReadableTimeFromUTCString2(model.getStartDate()),AppUtils.getHumanReadableTimeFromUTCString2(model.getEndDate()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResponseModel<ArrayList<EarningModelResponse>>>() {
@@ -83,7 +89,7 @@ public class WeekDetailsActivity extends AppCompatActivity {
                                 for (EarningModel a : data.getEarningDetails()) {
                                     totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
                                 }
-                                binder.tvAmount.setText("$" + totalAmt);
+                                binder.tvAmount.setText("$" + String.format("%.02f", totalAmt));
                             }
 
                         } else {

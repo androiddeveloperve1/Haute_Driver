@@ -97,7 +97,7 @@ public class FragmentEarning extends Fragment implements RecycleItemClickListene
                                 for (EarningModel a : data.getEarningDetails()) {
                                     totalAmt = totalAmt + (Float.parseFloat(a.getDelivery_fees()) + Float.parseFloat(a.getGratitude_fees()));
                                 }
-                                binder.tvAmount.setText("$" + totalAmt);
+                                binder.tvAmount.setText("$" + String.format("%.02f", totalAmt));
                             }
 
 
