@@ -178,7 +178,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
             disableButton();
         }
 
-
+        enableButton();//remove it while live
     }
 
 

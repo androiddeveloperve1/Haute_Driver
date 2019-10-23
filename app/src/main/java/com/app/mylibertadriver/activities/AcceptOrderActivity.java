@@ -105,12 +105,20 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
 
     @Override
     public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
-            currentPolyline.remove();
-        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-        orderData.getOrderInfo().setDistance(values[1].toString());
-        Log.e("@@@@@@@@", "Task Done" + values[2].toString());
-        orderData.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+
+        if (values[0] != null) {
+            if (currentPolyline != null)
+                currentPolyline.remove();
+            currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+            orderData.getOrderInfo().setDistance(values[1].toString());
+            Log.e("@@@@@@@@", "Task Done" + values[2].toString());
+            orderData.getOrderInfo().setTravelTime(AppUtils.getDrivingTimeFromValue(values[2].toString()));
+
+        }else {
+            Toast.makeText(this, "Somthing went wrong", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
     }
 
     private void hitApiToAcceptTask() {

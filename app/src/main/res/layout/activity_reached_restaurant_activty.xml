@@ -164,7 +164,7 @@
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:setText="@{data.totalamount}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_35_px"
+                android:textSize="@dimen/_30_px"
                 app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_collect_amount_text" />

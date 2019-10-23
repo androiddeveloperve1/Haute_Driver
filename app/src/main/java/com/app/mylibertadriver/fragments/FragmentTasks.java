@@ -99,13 +99,13 @@ public class FragmentTasks extends Fragment {
                                 if (bindableModel.getStatus().equals("0")) {
                                     //0 (new task)
                                     binder.llCurrentTask.setIsVisible(View.GONE);
-                                    binder.llNewTask.setIsVisible(View.VISIBLE);
                                     binder.llNewTask.setData(bindableModel.getOrderInfo());
+                                    binder.llNewTask.setIsVisible(View.VISIBLE);
                                     updateTimeToExpire();
                                 } else {
                                     // current task is running
-                                    binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llCurrentTask.setData(bindableModel.getOrderInfo());
+                                    binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llNewTask.setIsVisible(View.GONE);
                                     binder.llCurrentTask.otp.setText("OTP : " + response.getData().getOtp());
                                 }

@@ -89,10 +89,11 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                     @Override
                     public void onNext(ApiResponseModel<OrderDetailsModel> response) {
                         progressDialog.dismiss();
+                        Log.e("@@@@@@@",""+new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             orderDetails = response.getData();
                             binder.setData(orderDetails);
-                            binder.setMAdapter(new OrderItemAdapter(orderDetails.getOrder(), new RecycleItemClickListener() {
+                            binder.setMAdapter(new OrderItemAdapter(ReachedRestaurantActivty.this,orderDetails, new RecycleItemClickListener() {
                                 @Override
                                 public void onItemClicked(int position, Object data) {
                                 }

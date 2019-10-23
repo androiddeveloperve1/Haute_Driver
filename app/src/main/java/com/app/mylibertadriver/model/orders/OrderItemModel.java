@@ -4,6 +4,9 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.app.mylibertadriver.BR;
+import com.app.mylibertadriver.model.AttributeModel;
+
+import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,16 @@ public class OrderItemModel extends BaseObservable {
     private String item_type;
     private String _id;
     private ItemDataModel item_id;
+    private ArrayList<AttributeModel> attribute;
+@Bindable
+    public ArrayList<AttributeModel> getAttribute() {
+        return attribute;
+    }
 
+    public void setAttribute(ArrayList<AttributeModel> attribute) {
+        this.attribute = attribute;
+        this.notifyPropertyChanged(BR.attribute);
+    }
 
     @Bindable
     public String getQuantity() {

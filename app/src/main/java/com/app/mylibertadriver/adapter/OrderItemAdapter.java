@@ -1,17 +1,20 @@
 package com.app.mylibertadriver.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.mylibertadriver.BR;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.databinding.ItemOrderItemsBinding;
 import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
+import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.OrderItemModel;
 
 import java.util.ArrayList;
@@ -22,12 +25,15 @@ import java.util.ArrayList;
  */
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
-    ArrayList<OrderItemModel> lists;
+    OrderDetailsModel lists;
     RecycleItemClickListener listenr;
+    Context mContext;
 
-    public OrderItemAdapter(ArrayList<OrderItemModel> lists, RecycleItemClickListener listenr) {
+    public OrderItemAdapter(Context mContext, OrderDetailsModel lists, RecycleItemClickListener listenr) {
         this.lists = lists;
         this.listenr = listenr;
+        this.mContext = mContext;
+
     }
 
     @NonNull
@@ -41,20 +47,20 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull OrderItemAdapter.MyViewHolder holder, int i) {
-        OrderItemModel item = lists.get(i);
+        OrderItemModel item = lists.getOrder().get(i);
         holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
-        return lists.size();
+        return lists.getOrder().size();
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ViewDataBinding binding;
+        ItemOrderItemsBinding binding;
 
-        public MyViewHolder(ViewDataBinding databinding) {
+        public MyViewHolder(ItemOrderItemsBinding databinding) {
             super(databinding.getRoot());
             this.binding = databinding;
         }
@@ -62,6 +68,8 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
         public void bind(OrderItemModel data) {
             this.binding.setVariable(BR.item, data);
             this.binding.setVariable(BR.position, getAdapterPosition());
+            this.binding.rvAttribute.setLayoutManager(new LinearLayoutManager(mContext));
+            this.binding.setVariable(BR.attribute_adapter, new CartAttributeAdapter(mContext, lists.getOrder().get(getAdapterPosition()).getAttribute()));
             this.binding.executePendingBindings();
         }
     }
