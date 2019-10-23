@@ -28,7 +28,9 @@
             android:layout_width="@dimen/_60_px"
             android:layout_height="@dimen/_60_px"
             android:layout_margin="@dimen/_10_px"
+            app:civ_border_color="@color/gray"
             android:background="@drawable/ic_profile_placeholder"
+            app:civ_border_width="@dimen/_1_px"
             app:layout_constraintBottom_toBottomOf="@+id/black_bg"
             app:layout_constraintLeft_toLeftOf="parent" />
 
