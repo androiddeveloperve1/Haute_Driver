@@ -2,13 +2,12 @@ package com.app.mylibertadriver.model.orders;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
-import com.app.mylibertadriver.BR;
-import com.app.mylibertadriver.model.AttributeModel;
-
-import org.w3c.dom.Attr;
+import com.app.mylibertadriver.model.MainOptionModel;
 
 import java.util.ArrayList;
+
 
 /**
  * Create By Rahul Mangal
@@ -19,18 +18,20 @@ public class OrderItemModel extends BaseObservable {
 
     private String quantity;
     private String price;
-    private String item_type;
     private String _id;
+    private String description;
     private ItemDataModel item_id;
-    private ArrayList<AttributeModel> attribute;
+    private String item_name;
+    private ArrayList<MainOptionModel> options;
+
 @Bindable
-    public ArrayList<AttributeModel> getAttribute() {
-        return attribute;
+    public ArrayList<MainOptionModel> getOptions() {
+        return options;
     }
 
-    public void setAttribute(ArrayList<AttributeModel> attribute) {
-        this.attribute = attribute;
-        this.notifyPropertyChanged(BR.attribute);
+    public void setOptions(ArrayList<MainOptionModel> options) {
+        this.options = options;
+        this.notifyPropertyChanged(BR.options);
     }
 
     @Bindable
@@ -54,16 +55,6 @@ public class OrderItemModel extends BaseObservable {
     }
 
     @Bindable
-    public String getItem_type() {
-        return item_type;
-    }
-
-    public void setItem_type(String item_type) {
-        this.item_type = item_type;
-        this.notifyPropertyChanged(BR.item_type);
-    }
-
-    @Bindable
     public String get_id() {
         return _id;
     }
@@ -71,6 +62,16 @@ public class OrderItemModel extends BaseObservable {
     public void set_id(String _id) {
         this._id = _id;
         this.notifyPropertyChanged(BR._id);
+    }
+
+    @Bindable
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        this.notifyPropertyChanged(BR.description);
     }
 
     @Bindable
@@ -83,5 +84,13 @@ public class OrderItemModel extends BaseObservable {
         this.notifyPropertyChanged(BR.item_id);
     }
 
+    @Bindable
+    public String getItem_name() {
+        return item_name;
+    }
 
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
+        this.notifyPropertyChanged(BR.item_name);
+    }
 }

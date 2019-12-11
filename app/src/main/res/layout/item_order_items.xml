@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.app.mylibertadriver.utils.AppUtils" />
+
         <variable
             name="item"
             type="com.app.mylibertadriver.model.orders.OrderItemModel" />
@@ -16,12 +18,10 @@
             name="itemClickListener"
             type="com.app.mylibertadriver.interfaces.RecycleItemClickListener" />
 
-        <variable
-            name="attribute_adapter"
-            type="com.app.mylibertadriver.adapter.CartAttributeAdapter" />
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{(v)->itemClickListener.onItemClicked(position,item)}"
@@ -32,22 +32,35 @@
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/_10_px"
             android:fontStyleName="@{`Roboto_Regular.ttf`}"
-            android:text="@{item.quantity+' '+'X'+' '+item.item_id.name}"
+            android:text="@{item.quantity+' '+'X'+' '+item.item_name}"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14_px"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/_14_px" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_attribute"
-            android:adapter="@{attribute_adapter}"
+
+        <TextView
+            android:id="@+id/tv_rs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/gray"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header" />
+            android:layout_toLeftOf="@+id/img_next"
+            android:fontStyleName="@{`Roboto_Regular.ttf`}"
+            android:text='@{"$ "+AppUtils.getDecimalFormat(item.price)}'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14_px" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="@dimen/_20_px"
+            android:layout_height="@dimen/_20_px"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_10_px"
+            android:layout_marginRight="@dimen/_10_px"
+            android:src="@drawable/ic_right"
+            android:textColor="@color/colorAccent" />
+
+
+    </RelativeLayout>
 </layout>

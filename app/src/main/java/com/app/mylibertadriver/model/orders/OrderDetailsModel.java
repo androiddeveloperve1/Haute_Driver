@@ -2,7 +2,8 @@ package com.app.mylibertadriver.model.orders;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import com.app.mylibertadriver.BR;
+import androidx.databinding.library.baseAdapters.BR;
+
 import com.app.mylibertadriver.model.UserModel;
 import java.util.ArrayList;
 

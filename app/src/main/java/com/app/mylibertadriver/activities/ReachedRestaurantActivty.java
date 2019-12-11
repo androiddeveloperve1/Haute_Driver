@@ -21,6 +21,7 @@ import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
+import com.app.mylibertadriver.model.orders.OrderItemModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.google.gson.Gson;
@@ -89,13 +90,16 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                     @Override
                     public void onNext(ApiResponseModel<OrderDetailsModel> response) {
                         progressDialog.dismiss();
-                        Log.e("@@@@@@@",""+new Gson().toJson(response));
+                        Log.e("@@@@@@@", "" + new Gson().toJson(response));
                         if (response.getStatus().equals("200")) {
                             orderDetails = response.getData();
                             binder.setData(orderDetails);
-                            binder.setMAdapter(new OrderItemAdapter(ReachedRestaurantActivty.this,orderDetails, new RecycleItemClickListener() {
+                            binder.setMAdapter(new OrderItemAdapter(ReachedRestaurantActivty.this, orderDetails.getOrder(), new RecycleItemClickListener<OrderItemModel>() {
                                 @Override
-                                public void onItemClicked(int position, Object data) {
+                                public void onItemClicked(int position, OrderItemModel data) {
+                                    Intent mIntent = new Intent(ReachedRestaurantActivty.this, OptionDetailActivity.class);
+                                    mIntent.putExtra("data", new Gson().toJson(data));
+                                    startActivity(mIntent);
                                 }
                             }));
 

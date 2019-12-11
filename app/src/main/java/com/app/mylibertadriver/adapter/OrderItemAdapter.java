@@ -25,11 +25,11 @@ import java.util.ArrayList;
  */
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
-    OrderDetailsModel lists;
+   ArrayList< OrderItemModel> lists;
     RecycleItemClickListener listenr;
     Context mContext;
 
-    public OrderItemAdapter(Context mContext, OrderDetailsModel lists, RecycleItemClickListener listenr) {
+    public OrderItemAdapter(Context mContext, ArrayList< OrderItemModel> lists, RecycleItemClickListener listenr) {
         this.lists = lists;
         this.listenr = listenr;
         this.mContext = mContext;
@@ -47,13 +47,13 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull OrderItemAdapter.MyViewHolder holder, int i) {
-        OrderItemModel item = lists.getOrder().get(i);
+        OrderItemModel item = lists.get(i);
         holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
-        return lists.getOrder().size();
+        return lists.size();
     }
 
 
@@ -68,8 +68,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
         public void bind(OrderItemModel data) {
             this.binding.setVariable(BR.item, data);
             this.binding.setVariable(BR.position, getAdapterPosition());
-            this.binding.rvAttribute.setLayoutManager(new LinearLayoutManager(mContext));
-            this.binding.setVariable(BR.attribute_adapter, new CartAttributeAdapter(mContext, lists.getOrder().get(getAdapterPosition()).getAttribute()));
             this.binding.executePendingBindings();
         }
     }

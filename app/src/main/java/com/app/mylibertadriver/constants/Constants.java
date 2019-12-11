@@ -37,6 +37,6 @@ public class Constants {
 
 
 
-    public static int  ENABLE_DISTANCE = 700;
+    public static int  ENABLE_DISTANCE = 10000;
 
 }
