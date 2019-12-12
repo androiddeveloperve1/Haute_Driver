@@ -117,7 +117,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
                     }
                 });
             }
-
             @Override
             public void onAddressError(String error) {
                 runOnUiThread(new Runnable() {
@@ -126,7 +125,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
                         mMap.addMarker(delivarableLatLongMarker);
                     }
                 });
-
             }
         });
     }
@@ -157,7 +155,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         }
 
     }
-
 
     @TargetApi(Build.VERSION_CODES.M)
     void enableButton() {
