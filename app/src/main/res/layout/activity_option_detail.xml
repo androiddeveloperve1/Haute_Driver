@@ -12,63 +12,60 @@
     </data>
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <View
+            android:id="@+id/toolbar_shadow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/_48_px"
+            android:background="@drawable/toolbar_drop_shadow"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/toolbar_shadow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_48_px"
-                android:background="@drawable/toolbar_drop_shadow"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/black_bg"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/_5_px"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+        <View
+            android:id="@+id/black_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_5_px"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
 
 
-            <ImageView
-                android:id="@+id/toolbar_humburgur"
-                android:layout_width="@dimen/_25_px"
-                android:layout_height="@dimen/_25_px"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/_5_px"
-                android:onClick="@{(v)->click.onBack(v)}"
-                android:src="@drawable/ic_back_white"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+        <ImageView
+            android:id="@+id/toolbar_humburgur"
+            android:layout_width="@dimen/_25_px"
+            android:layout_height="@dimen/_25_px"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_5_px"
+            android:onClick="@{(v)->click.onBack(v)}"
+            android:src="@drawable/ic_back_white"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/black_bg">
 
             <LinearLayout
                 android:id="@+id/items"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/black_bg" />
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+        </ScrollView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
 </layout>
