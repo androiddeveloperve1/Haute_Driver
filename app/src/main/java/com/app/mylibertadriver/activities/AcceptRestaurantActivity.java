@@ -9,9 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
 import com.app.mylibertadriver.databinding.ActivityAcceptRestaurantBinding;
@@ -117,6 +120,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
                     }
                 });
             }
+
             @Override
             public void onAddressError(String error) {
                 runOnUiThread(new Runnable() {
@@ -186,8 +190,14 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
     public class MyClick {
         public void onNavifationStart(View v) {
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + myCurrentLatLong.latitude + "," + myCurrentLatLong.longitude + "+&daddr=" + restaurantLatlong.latitude + "," + restaurantLatlong.longitude));
-            startActivity(intent);
+            if (myCurrentLatLong != null) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + myCurrentLatLong.latitude + "," + myCurrentLatLong.longitude + "+&daddr=" + restaurantLatlong.latitude + "," + restaurantLatlong.longitude));
+                startActivity(intent);
+            } else {
+
+                Toast.makeText(AcceptRestaurantActivity.this, "Searching please wait", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         public void onBack(View v) {

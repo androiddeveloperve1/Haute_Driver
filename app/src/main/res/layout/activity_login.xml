@@ -51,7 +51,7 @@
                 android:layout_marginTop="@dimen/_25_px"
                 android:background="@null"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                android:hint="Employee ID"
+                android:hint="Employee ID / Email Address"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:padding="@dimen/_10_px"
