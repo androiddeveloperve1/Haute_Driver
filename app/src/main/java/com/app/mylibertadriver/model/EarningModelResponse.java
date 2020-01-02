@@ -16,6 +16,17 @@ public class EarningModelResponse extends BaseObservable {
     private ArrayList<EarningModel> earningDetails;
     private String totalDeliveryFeeEarning;
     private String totalGratitudeEarning;
+    private String is_tranfered;
+
+@Bindable
+    public String getIs_tranfered() {
+        return is_tranfered;
+    }
+
+    public void setIs_tranfered(String is_tranfered) {
+        this.is_tranfered = is_tranfered;
+        this.notifyPropertyChanged(BR.is_tranfered);
+    }
 
     @Bindable
     public ArrayList<EarningModel> getEarningDetails() {
