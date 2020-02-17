@@ -3,20 +3,17 @@ package com.app.mylibertadriver.viewmodeles;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.app.mylibertadriver.activities.EnterOTPActivity;
 import com.app.mylibertadriver.activities.MyApplication;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.network.APIInterface;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 

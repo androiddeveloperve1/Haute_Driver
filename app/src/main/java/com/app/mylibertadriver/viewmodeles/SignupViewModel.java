@@ -5,7 +5,6 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -19,7 +18,6 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 

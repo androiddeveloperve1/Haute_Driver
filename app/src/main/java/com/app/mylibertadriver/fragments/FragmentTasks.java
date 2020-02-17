@@ -92,10 +92,13 @@ public class FragmentTasks extends Fragment {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             if (response.getData() != null && response.getData().get_id() != null) {
+
+                                bindableModel = response.getData();
+                                Log.e("@@@@@@@@", "" + AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt()));
                                 isTaskAvailable = true;
                                 binder.rlTask.setVisibility(View.VISIBLE);
                                 binder.tvNoTask.setVisibility(View.GONE);
-                                bindableModel = response.getData();
+
                                 if (bindableModel.getStatus().equals("0")) {
                                     //0 (new task)
                                     binder.llCurrentTask.setIsVisible(View.GONE);
@@ -139,7 +142,7 @@ public class FragmentTasks extends Fragment {
     }
 
     void updateTimeToExpire() {
-        Date date =getIncrementedTime(AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt()));
+        Date date = getIncrementedTime(AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt()));
         Date myTime = AppUtils.getCurrentDateINUTC();
         long mills = myTime.getTime() - date.getTime();
         Log.e("@@@@@", "Different in sec :" + mills / (1000));
@@ -152,6 +155,7 @@ public class FragmentTasks extends Fragment {
         }
 
     }
+
     private void startTimer(long i) {
         if (expiryTimer != null) {
             expiryTimer.cancel();

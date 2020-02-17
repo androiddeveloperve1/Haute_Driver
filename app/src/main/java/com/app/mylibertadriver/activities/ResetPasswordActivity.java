@@ -84,10 +84,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
             if (!isPasswordShow) {
                 binder.etPass.setInputType(InputType.TYPE_CLASS_TEXT);
                 binder.etPass.setTransformationMethod(null);
-                binder.imgPass1.setBackgroundResource(R.drawable.ic_eye_off);
+                binder.imgPass1.setBackgroundResource(R.drawable.ic_eye_on);
                 isPasswordShow = true;
             } else {
-                binder.imgPass1.setBackgroundResource(R.drawable.ic_eye_on);
+                binder.imgPass1.setBackgroundResource(R.drawable.ic_eye_off);
                 binder.etPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 binder.etPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 isPasswordShow = false;
@@ -98,12 +98,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         public void onconfirmPassClick(View e) {
             if (!isConfirmPasswordShow) {
-                binder.imgPassConfirm.setBackgroundResource(R.drawable.ic_eye_off);
+                binder.imgPassConfirm.setBackgroundResource(R.drawable.ic_eye_on);
                 binder.etPassConfirm.setInputType(InputType.TYPE_CLASS_TEXT);
                 binder.etPassConfirm.setTransformationMethod(null);
                 isConfirmPasswordShow = true;
             } else {
-                binder.imgPassConfirm.setBackgroundResource(R.drawable.ic_eye_on);
+                binder.imgPassConfirm.setBackgroundResource(R.drawable.ic_eye_off);
                 binder.etPassConfirm.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 binder.etPassConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 isConfirmPasswordShow = false;

@@ -184,6 +184,11 @@ public class EnterOTPActivity extends AppCompatActivity implements EditNumberDia
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             binder.textMobile.setText("We have send an OTP to " + mobile);
+                            binder.otp1.setText("");
+                            binder.otp2.setText("");
+                            binder.otp3.setText("");
+                            binder.otp4.setText("");
+                            binder.otp1.requestFocus();
                             MySharedPreference.getInstance(EnterOTPActivity.this).setUser(response.getData());
                             Toast.makeText(EnterOTPActivity.this, "Mobile no. changed successfully", Toast.LENGTH_SHORT).show();
                         } else {
@@ -201,7 +206,7 @@ public class EnterOTPActivity extends AppCompatActivity implements EditNumberDia
 
         public void onResend(View e) {
             //userData.setMobile_no(binder.textMobile.getText().toString().trim().replace("We have send an OTP to ", ""));
-            binder.otp1.requestFocus();
+
             binder.otp1.setText("");
             binder.otp2.setText("");
             binder.otp3.setText("");
@@ -210,6 +215,7 @@ public class EnterOTPActivity extends AppCompatActivity implements EditNumberDia
             param.put("mobile_no", userData.getMobile_no());
             param.put("country_code", userData.getCountry_code());
             otpVerifyViewModel.getDataResendOtp(EnterOTPActivity.this, param);
+            binder.otp1.requestFocus();
         }
 
         public void onEdit(View e) {
