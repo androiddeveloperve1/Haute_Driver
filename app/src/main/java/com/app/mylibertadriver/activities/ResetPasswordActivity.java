@@ -42,7 +42,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         MySharedPreference.getInstance(ResetPasswordActivity.this).clearMyPreference();
@@ -53,8 +52,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         public void onSend(View e) {
 
-            if (binder.etPass.getText().toString().trim().length() <= 0) {
-                Toast.makeText(ResetPasswordActivity.this, "Please enter the Password", Toast.LENGTH_SHORT).show();
+            if (binder.etPass.getText().toString().trim().length() < 6) {
+                Toast.makeText(ResetPasswordActivity.this, "Password's minimum length should be 6 character long", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (binder.etPassConfirm.getText().toString().trim().length() <= 0) {
@@ -75,6 +74,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             });
 
         }
+
         public void onBack(View e) {
             onBackPressed();
         }

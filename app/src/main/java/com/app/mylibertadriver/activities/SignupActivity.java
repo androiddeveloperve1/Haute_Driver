@@ -205,8 +205,8 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this, "Please enter the valid email id", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (binder.etPass.getText().toString().trim().length() <= 0) {
-                Toast.makeText(SignupActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
+            if (binder.etPass.getText().toString().trim().length() < 6) {
+                Toast.makeText(SignupActivity.this, "Password's minimum length should be 6 character long", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (binder.etServiceArea.getText().toString().trim().length() <= 0) {

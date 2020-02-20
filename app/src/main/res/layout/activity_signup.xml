@@ -96,6 +96,7 @@
                 android:background="@null"
                 android:fontStyleName="@{`Roboto_Regular.ttf`}"
                 android:hint="Password"
+                android:maxLength="10"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:padding="@dimen/_8_px"
