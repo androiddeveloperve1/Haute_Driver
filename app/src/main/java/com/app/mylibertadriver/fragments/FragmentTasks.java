@@ -97,9 +97,7 @@ public class FragmentTasks extends Fragment {
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             if (response.getData() != null && response.getData().get_id() != null) {
-
                                 bindableModel = response.getData();
-                                Log.e("@@@@@@@@", "" + AppUtils.getUTCDateObjectFromUTCTime(bindableModel.getCreatedAt()));
                                 isTaskAvailable = true;
                                 binder.rlTask.setVisibility(View.VISIBLE);
                                 binder.tvNoTask.setVisibility(View.GONE);
@@ -137,13 +135,9 @@ public class FragmentTasks extends Fragment {
     }
 
     public void onUpdatedLocation(LocationResult locationResult) {
-
-        if (isTaskAvailable) {
-            new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
+        if (isTaskAvailable) { new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
                     , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
         }
-
-
     }
 
     void updateTimeToExpire() {
