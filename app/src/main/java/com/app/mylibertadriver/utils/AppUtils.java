@@ -37,6 +37,7 @@ import java.util.TimeZone;
  */
 
 public class AppUtils {
+
     public static DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     static DateFormat humanFormat = new SimpleDateFormat("dd MMM, yyyy'.' HH:mm");
     static DateFormat humanFormat2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -229,4 +230,14 @@ public class AppUtils {
     }
 
 
+
+    public static long getMilliFromDate(String dateFormat) {
+        Date date = new Date();
+        try {
+            date = utcFormat.parse(dateFormat);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
+    }
 }

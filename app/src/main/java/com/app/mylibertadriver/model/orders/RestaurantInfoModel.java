@@ -24,6 +24,16 @@ public class RestaurantInfoModel extends BaseObservable {
     private String contact_no;
     private String rating;
     private String is_approved;
+    private String maxdeliverytime;
+
+
+    public String getMaxdeliverytime() {
+        return maxdeliverytime;
+    }
+
+    public void setMaxdeliverytime(String maxdeliverytime) {
+        this.maxdeliverytime = maxdeliverytime;
+    }
 
     public String get_id() {
         return _id;

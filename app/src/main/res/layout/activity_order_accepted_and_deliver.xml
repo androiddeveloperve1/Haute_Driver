@@ -1,35 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-
-        <variable
-            name="data"
-            type="com.app.mylibertadriver.model.orders.OrderDetailsModel" />
-
-        <variable
-            name="click"
-            type="com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity.MyClick" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
-
-
-        <fragment
-            android:id="@+id/map_track"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:context=".activities.OrderAcceptedAndDeliverActivity" />
 
 
         <ImageView
@@ -48,10 +25,50 @@
             android:layout_width="@dimen/_40_px"
             android:layout_height="@dimen/_40_px"
             android:layout_marginRight="@dimen/_10_px"
-            android:onClick="@{(v)->click.onHelp(v)}"
             android:background="@drawable/ic_help_support_white"
+            android:onClick="@{(v)->click.onHelp(v)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar_back" />
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_back"
+            app:layout_constraintLeft_toRightOf="@+id/toolbar_back"
+            app:layout_constraintRight_toLeftOf="@+id/help"
+            app:layout_constraintTop_toTopOf="@+id/toolbar_back">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_10_px"
+                android:paddingTop="@dimen/_5_px"
+                android:paddingRight="@dimen/_10_px"
+                android:paddingBottom="@dimen/_5_px">
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                    android:text="59:00"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15_px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text="Sec. Left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13_px" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +77,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_navigation"
+                android:layout_width="@dimen/_50_px"
+                android:layout_height="@dimen/_50_px"
+                android:layout_marginRight="@dimen/_10_px"
+                android:background="@drawable/ic_navigation"
+                android:onClick="@{(v)->click.onNavifationStart(v)}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
@@ -82,6 +109,43 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/iv_img_call"
+                    android:layout_width="@dimen/_25_px"
+                    android:layout_height="@dimen/_25_px"
+                    android:layout_marginLeft="@dimen/_10_px"
+                    android:layout_marginRight="@dimen/_5_px"
+                    android:background="@drawable/ic_phone"
+                    android:onClick="@{(v)->click.onCall(v)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_img_restaurant"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_call"
+                    app:layout_constraintTop_toTopOf="@+id/iv_img_restaurant" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_swipe_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50_px"
+                    android:layout_marginTop="@dimen/_10_px"
+                    android:layout_marginRight="@dimen/_10_px"
+                    app:layout_constraintLeft_toLeftOf="@id/iv_img_restaurant"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_est_time"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id">
+
+                    <View
+                        android:id="@+id/disableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha=".5"
+                        android:background="@color/white"
+                        android:visibility="gone" />
+
+                    <com.app.mylibertadriver.utils.SwipeView
+                        android:id="@+id/swipe_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_restaurant_name"
                     android:layout_width="@dimen/_120_px"
@@ -93,31 +157,6 @@
                     android:textSize="@dimen/_15_px"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_img_restaurant"
                     app:layout_constraintLeft_toRightOf="@+id/iv_img_restaurant"
-                    app:layout_constraintTop_toTopOf="@+id/iv_img_restaurant" />
-
-                <TextView
-                    android:id="@+id/tv_distance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10_px"
-                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
-                    android:text="@{data.distance}"
-                    android:textColor="@color/gray_text"
-                    android:textSize="@dimen/_12_px"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_restaurant_name"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_img_call"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_restaurant_name" />
-
-                <ImageView
-                    android:id="@+id/iv_img_call"
-                    android:layout_width="@dimen/_25_px"
-                    android:layout_height="@dimen/_25_px"
-                    android:layout_marginLeft="@dimen/_10_px"
-                    android:background="@drawable/ic_phone"
-                    android:layout_marginRight="@dimen/_5_px"
-                    android:onClick="@{(v)->click.onCall(v)}"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_img_restaurant"
-                   app:layout_constraintRight_toLeftOf="@+id/tv_call"
                     app:layout_constraintTop_toTopOf="@+id/iv_img_restaurant" />
 
                 <TextView
@@ -148,30 +187,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_name" />
 
 
-                <RelativeLayout
-                    android:id="@+id/rl_swipe_layout"
+                <TextView
+                    android:id="@+id/tv_distance"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_50_px"
-                    android:layout_marginTop="@dimen/_10_px"
-                    android:layout_marginRight="@dimen/_10_px"
-                    app:layout_constraintLeft_toLeftOf="@id/iv_img_restaurant"
-                    app:layout_constraintRight_toLeftOf="@+id/tv_est_time"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id">
-
-                    <com.app.mylibertadriver.utils.SwipeView
-                        android:id="@+id/swipe_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <View
-                        android:id="@+id/disableView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha=".5"
-                        android:background="@color/white"
-                        android:visibility="gone" />
-
-                </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text="@{data.distance}"
+                    android:textColor="@color/gray_text"
+                    android:textSize="@dimen/_12_px"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_restaurant_name"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_restaurant_name"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_img_call" />
 
 
                 <TextView
@@ -188,18 +215,31 @@
                     app:layout_constraintTop_toTopOf="@id/rl_swipe_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageView
-                android:id="@+id/iv_navigation"
-                android:layout_width="@dimen/_50_px"
-                android:layout_height="@dimen/_50_px"
-                android:layout_marginRight="@dimen/_10_px"
-                android:background="@drawable/ic_navigation"
-                android:onClick="@{(v)->click.onNavifationStart(v)}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <fragment
+            android:id="@+id/map_track"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".activities.OrderAcceptedAndDeliverActivity" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.app.mylibertadriver.model.orders.OrderDetailsModel" />
+
+        <variable
+            name="click"
+            type="com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity.MyClick" />
+    </data>
 </layout>

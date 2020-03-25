@@ -43,7 +43,44 @@
             android:src="@drawable/ic_back_on_map"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_back"
+            app:layout_constraintLeft_toRightOf="@+id/toolbar_back"
+            app:layout_constraintRight_toLeftOf="@+id/help"
+            app:layout_constraintTop_toTopOf="@+id/toolbar_back">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_10_px"
+                android:paddingTop="@dimen/_5_px"
+                android:paddingRight="@dimen/_10_px"
+                android:paddingBottom="@dimen/_5_px">
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                    android:text="59:00"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15_px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text="Sec. Left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13_px" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/help"

@@ -2,24 +2,6 @@
 <layout>
 
 
-    <data>
-
-        <variable
-            name="click"
-            type="com.app.mylibertadriver.activities.ReachedRestaurantActivty.ClickHandler" />
-
-        <variable
-            name="data"
-            type="com.app.mylibertadriver.model.orders.OrderDetailsModel" />
-
-        <variable
-            name="mAdapter"
-            type="com.app.mylibertadriver.adapter.OrderItemAdapter" />
-
-
-    </data>
-
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -30,27 +12,6 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <View
-                android:id="@+id/toolbar_shadow"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_48_px"
-                android:background="@drawable/toolbar_drop_shadow"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/black_bg"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/_5_px"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
-
 
             <ImageView
                 android:id="@+id/toolbar_humburgur"
@@ -64,7 +25,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
 
-
             <ImageView
                 android:id="@+id/toolbar_refresh"
                 android:layout_width="@dimen/_30_px"
@@ -74,8 +34,36 @@
                 android:src="@drawable/ic_help_support_white"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow"/>
+                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_humburgur"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar_humburgur"
+                app:layout_constraintRight_toLeftOf="@+id/toolbar_refresh"
+                app:layout_constraintLeft_toRightOf="@+id/toolbar_humburgur"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontStyleName="@{`Roboto_Bold.ttf`}"
+                    android:text="59:00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15_px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5_px"
+                    android:fontStyleName="@{`Roboto_Regular.ttf`}"
+                    android:text="Sec. Left"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13_px" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_text_order"
@@ -101,16 +89,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_text_order" />
 
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1_px"
-                android:layout_marginTop="@dimen/_20_px"
-                android:background="@color/gray"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_order_id" />
-
             <TextView
                 android:id="@+id/tv_text_item_collected"
                 android:layout_width="wrap_content"
@@ -121,28 +99,6 @@
                 android:textSize="@dimen/_14_px"
                 app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
                 app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_item"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5_px"
-                android:adapter="@{mAdapter}"
-                app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
-                app:layout_constraintTop_toBottomOf="@+id/tv_text_item_collected" />
-
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1_px"
-                android:layout_marginTop="@dimen/_20_px"
-                android:background="@color/gray"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_item" />
-
 
             <TextView
                 android:id="@+id/tv_collect_amount_text"
@@ -155,6 +111,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
+
 
             <TextView
                 android:id="@+id/tv_collect_amount"
@@ -169,6 +126,48 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_collect_amount_text" />
 
+            <View
+                android:id="@+id/toolbar_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48_px"
+                android:background="@drawable/toolbar_drop_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <View
+                android:id="@+id/black_bg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_5_px"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar_shadow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
+
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1_px"
+                android:layout_marginTop="@dimen/_20_px"
+                android:background="@color/gray"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_order_id" />
+
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1_px"
+                android:layout_marginTop="@dimen/_20_px"
+                android:background="@color/gray"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_item" />
 
             <View
                 android:id="@+id/view3"
@@ -181,6 +180,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_collect_amount" />
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5_px"
+                android:adapter="@{mAdapter}"
+                app:layout_constraintLeft_toLeftOf="@id/tv_text_order"
+                app:layout_constraintTop_toBottomOf="@+id/tv_text_item_collected" />
 
 
             <com.app.mylibertadriver.utils.SwipeView
@@ -196,4 +203,22 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+
+    <data>
+
+        <variable
+            name="click"
+            type="com.app.mylibertadriver.activities.ReachedRestaurantActivty.ClickHandler" />
+
+        <variable
+            name="data"
+            type="com.app.mylibertadriver.model.orders.OrderDetailsModel" />
+
+        <variable
+            name="mAdapter"
+            type="com.app.mylibertadriver.adapter.OrderItemAdapter" />
+
+
+    </data>
 </layout>

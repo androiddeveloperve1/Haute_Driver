@@ -16,7 +16,8 @@ public class MySharedPreference {
     private static final String User_Detail = "user_data";
     private static final String USER_SESSION_TOKEN = "user_session_token";
     private static final String FCM_TOKEN = "fcm_token";
-    static final String GEOFENCES_ADDED_KEY = "GEOFENCES_ADDED_KEY";
+    static final String RESTAURANT_DELIVERY_TIME = "time";
+    static final String ACCEPT_TIME = "accept_time";
 
 
     private static MySharedPreference instence;
@@ -37,18 +38,7 @@ public class MySharedPreference {
         return instence;
     }
 
-    public static void setString(String key, String value) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(key, value);
-        editor.commit();
 
-
-    }
-
-    public static String getString(String key) {
-        return sharedpreferences.getString(key, null);
-
-    }
 
     public void clearMyPreference() {
         sharedpreferences.edit().clear().commit();
@@ -86,15 +76,24 @@ public class MySharedPreference {
     }
 
 
-    public boolean getIsGeoFencingAdded() {
-        return sharedpreferences.getBoolean(GEOFENCES_ADDED_KEY, false);
+    public String getAcceptTime() {
+        return sharedpreferences.getString(ACCEPT_TIME, null);
     }
 
-    public void setGeoFencingAdded(boolean data) {
+    public void setAcceptTime(String time) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putBoolean(GEOFENCES_ADDED_KEY, data);
+        editor.putString(ACCEPT_TIME, time);
         editor.commit();
     }
 
+    public String getRestroDeliveryTime() {
+        return sharedpreferences.getString(RESTAURANT_DELIVERY_TIME, null);
+    }
+
+    public void setRestroDeliveryTime(String time) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(RESTAURANT_DELIVERY_TIME, time);
+        editor.commit();
+    }
 
 }

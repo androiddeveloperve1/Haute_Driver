@@ -27,6 +27,7 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.TaskResponse;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.google.android.gms.location.LocationResult;
@@ -114,6 +115,7 @@ public class FragmentTasks extends Fragment {
                                     binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llNewTask.setIsVisible(View.GONE);
                                     binder.llCurrentTask.otp.setText("OTP : " + response.getData().getOtp());
+                                    saveToPreference();
                                 }
                                 if (mainActivity.mLocationResult != null) {
                                     onUpdatedLocation(mainActivity.mLocationResult);
@@ -134,8 +136,16 @@ public class FragmentTasks extends Fragment {
                 });
     }
 
+
+    void saveToPreference() {
+        MySharedPreference pref = MySharedPreference.getInstance(getActivity());
+        pref.setRestroDeliveryTime(bindableModel.getOrderInfo().getRestaurantInfo().getMaxdeliverytime());
+        pref.setAcceptTime(bindableModel.getUpdatedAt());
+    }
+
     public void onUpdatedLocation(LocationResult locationResult) {
-        if (isTaskAvailable) { new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
+        if (isTaskAvailable) {
+            new FetchURL(getActivity()).execute(AppUtils.getUrlForDrawRoute(new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude())
                     , new LatLng(bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), bindableModel.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1)), "driving"));
         }
     }
