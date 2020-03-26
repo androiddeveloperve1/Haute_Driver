@@ -149,7 +149,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         MarkerOptions myCurrentLatLongMarker = new MarkerOptions().position(myCurrentLatLong).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(AppUtils.getLocatinIcon(OrderAcceptedAndDeliverActivity.this)));
         final MarkerOptions delivarableLatLongMarker = new MarkerOptions().position(delivarableLatLongUser);
         mMap.addMarker(myCurrentLatLongMarker);
-
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         boundsBuilder.include(delivarableLatLongUser).include(myCurrentLatLong);
         LatLngBounds bounds = boundsBuilder.build();
@@ -167,7 +166,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
                     @Override
                     public void run() {
                         delivarableLatLongMarker.title("User: " + orderDetails.getUser_id().getName()).snippet("Address: " + (String) address);
-                        mMap.addMarker(delivarableLatLongMarker);
+                        mMap.addMarker(delivarableLatLongMarker).showInfoWindow();
                     }
                 });
 

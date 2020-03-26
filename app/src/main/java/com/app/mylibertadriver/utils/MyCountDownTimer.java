@@ -32,12 +32,9 @@ public class MyCountDownTimer extends CountDownTimer {
     }
 
     public static class MyTimer {
-
-
         public CountDownTimer startNow(Context mContext, TimerListener listener) {
             MySharedPreference pref = MySharedPreference.getInstance(mContext);
-            int maxDeliveryTimeInSecond = 10000 * 60;
-            //int maxDeliveryTime = Integer.parseInt(pref.getRestroDeliveryTime()) *60;
+            int maxDeliveryTimeInSecond = Integer.parseInt(pref.getRestroDeliveryTime()) *60;
             long acceptTimeMilliSecond = AppUtils.getMilliFromDate(pref.getAcceptTime());
             long myCurrentMillisecond = new Date(System.currentTimeMillis() - Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)).getTime();
             long differentSecond = (myCurrentMillisecond - acceptTimeMilliSecond) / 1000;

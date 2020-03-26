@@ -124,7 +124,7 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mMap.addMarker(delivarableLatLongMarker);
+                        mMap.addMarker(delivarableLatLongMarker).showInfoWindow();
                     }
                 });
             }
