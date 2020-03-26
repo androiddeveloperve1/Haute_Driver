@@ -104,6 +104,7 @@ public class FragmentTasks extends Fragment {
                                 binder.tvNoTask.setVisibility(View.GONE);
 
                                 if (bindableModel.getStatus().equals("0")) {
+                                    MySharedPreference.getInstance(getActivity()).setLatePush(false);
                                     //0 (new task)
                                     binder.llCurrentTask.setIsVisible(View.GONE);
                                     binder.llNewTask.setData(bindableModel.getOrderInfo());

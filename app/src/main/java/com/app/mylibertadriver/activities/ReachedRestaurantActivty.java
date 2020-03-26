@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,12 +20,16 @@ import com.app.mylibertadriver.databinding.ActivityReachedRestaurantActivtyBindi
 import com.app.mylibertadriver.dialogs.ResponseDialog;
 import com.app.mylibertadriver.interfaces.RecycleItemClickListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
+import com.app.mylibertadriver.interfaces.TimerListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.model.orders.OrderItemModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.utils.MyCountDownTimer;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.google.gson.Gson;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -40,7 +45,7 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
     ActivityReachedRestaurantActivtyBinding binder;
     @Inject
     APIInterface apiInterface;
-
+    private CountDownTimer myTimer;
     private String orderId;
     private OrderDetailsModel orderDetails;
 
@@ -161,6 +166,44 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
         public void onHelp(View v) {
             startActivity(new Intent(ReachedRestaurantActivty.this, HelpActivity.class));
 
+        }
+    }
+
+    void showTiming() {
+        myTimer = new MyCountDownTimer.MyTimer().startNow(this, new TimerListener() {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                String s = String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                binder.tvTime.setText(s);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onExpire() {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTiming();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            myTimer.cancel();
+        } catch (Exception e) {
         }
     }
 }

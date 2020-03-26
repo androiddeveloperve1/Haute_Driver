@@ -18,6 +18,7 @@ public class MySharedPreference {
     private static final String FCM_TOKEN = "fcm_token";
     static final String RESTAURANT_DELIVERY_TIME = "time";
     static final String ACCEPT_TIME = "accept_time";
+    static final String LATE_PUSH = "late_push";
 
 
     private static MySharedPreference instence;
@@ -96,4 +97,14 @@ public class MySharedPreference {
         editor.commit();
     }
 
+
+    public Boolean getLatePush() {
+        return sharedpreferences.getBoolean(LATE_PUSH, false);
+    }
+
+    public void setLatePush(Boolean push) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(LATE_PUSH, push);
+        editor.commit();
+    }
 }

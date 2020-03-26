@@ -71,8 +71,6 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
         disableButton();
         restaurantDetails = new Gson().fromJson(getIntent().getStringExtra("data"), TaskModel.class);
         restaurantLatlong = new LatLng(restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), restaurantDetails.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(1));
-
-
         binder.setData(restaurantDetails);
         binder.setClick(new MyClick());
         binder.swipeView.setEventListener(new SwipeListener() {

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -25,12 +26,14 @@ import com.app.mylibertadriver.dialogs.SwipeViewDialog;
 import com.app.mylibertadriver.interfaces.OnAddressListener;
 import com.app.mylibertadriver.interfaces.SwipeListener;
 import com.app.mylibertadriver.interfaces.TaskLoadedCallback;
+import com.app.mylibertadriver.interfaces.TimerListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
+import com.app.mylibertadriver.utils.MyCountDownTimer;
 import com.app.mylibertadriver.utils.SwipeView;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
@@ -46,6 +49,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import rx.Subscriber;
@@ -59,8 +64,7 @@ import rx.schedulers.Schedulers;
 public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationActivity implements OnMapReadyCallback, TaskLoadedCallback {
     @Inject
     APIInterface apiInterface;
-
-
+    private CountDownTimer myTimer;
     ActivityOrderAcceptedAndDeliverBinding binder;
     private GoogleMap mMap;
     private LatLng delivarableLatLongUser;
@@ -285,5 +289,43 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
         }
 
+    }
+
+    void showTiming() {
+        myTimer = new MyCountDownTimer.MyTimer().startNow(this, new TimerListener() {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                String s = String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                binder.tvTime.setText(s);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onExpire() {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTiming();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            myTimer.cancel();
+        } catch (Exception e) {
+        }
     }
 }

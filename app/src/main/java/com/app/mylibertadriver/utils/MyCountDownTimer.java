@@ -23,38 +23,39 @@ public class MyCountDownTimer extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-
-
-
         listener.onTick(millisUntilFinished);
     }
 
     @Override
     public void onFinish() {
-        Log.e("@@@@@@@@@", "FINISH");
         listener.onFinish();
     }
 
     public static class MyTimer {
+
+
         public CountDownTimer startNow(Context mContext, TimerListener listener) {
             MySharedPreference pref = MySharedPreference.getInstance(mContext);
-            int maxDeliveryTime = 300; /*pref.getRestroDeliveryTime()*/
+            int maxDeliveryTimeInSecond = 10000 * 60;
+            //int maxDeliveryTime = Integer.parseInt(pref.getRestroDeliveryTime()) *60;
             long acceptTimeMilliSecond = AppUtils.getMilliFromDate(pref.getAcceptTime());
             long myCurrentMillisecond = new Date(System.currentTimeMillis() - Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)).getTime();
             long differentSecond = (myCurrentMillisecond - acceptTimeMilliSecond) / 1000;
-            Log.e("@@@@@@@@", "" + acceptTimeMilliSecond);
-            Log.e("@@@@@@@@", "" + myCurrentMillisecond);
-            Log.e("@@@@@@@@", "" + differentSecond);
-            if ((differentSecond / 60) > maxDeliveryTime) {
-                sendPush();
+            long timeelapsed = maxDeliveryTimeInSecond - differentSecond;
+            if (timeelapsed < 0) {
+                listener.onExpire();
+                sendPush(mContext);
                 return null;
             } else {
-                return new MyCountDownTimer(listener, differentSecond * 1000, TIMER_DIFFERENT).start();
+                return new MyCountDownTimer(listener, timeelapsed * 1000, TIMER_DIFFERENT).start();
             }
         }
     }
 
-    static void sendPush() {
-        Log.e("@@@@@@@@", "Push");
+    static void sendPush(Context mContext) {
+        if (!MySharedPreference.getInstance(mContext).getLatePush()) {
+            MySharedPreference.getInstance(mContext).setLatePush(true);
+            Log.e("@@@@@@@@", "Push");
+        }
     }
 }
