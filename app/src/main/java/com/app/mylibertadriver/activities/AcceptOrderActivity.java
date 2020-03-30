@@ -192,7 +192,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
                     @Override
                     public void run() {
                         delivarableLatLongMarker.title("Restaurant: " + restaurantInfoModel.getName()).snippet("Address: " + (String) address);
-                        mMap.addMarker(delivarableLatLongMarker);
+                        mMap.addMarker(delivarableLatLongMarker).showInfoWindow();
                     }
                 });
             }

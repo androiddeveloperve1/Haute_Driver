@@ -236,12 +236,12 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
             @Override
             public void onFinish() {
-
+                binder.tvTime.setText("Time Expired!");
             }
 
             @Override
             public void onExpire() {
-
+                binder.tvTime.setText("Time Expired!");
             }
         });
     }

@@ -34,8 +34,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -76,6 +78,11 @@ public class FragmentTasks extends Fragment {
     }
 
     public void getTask() {
+        DateFormat df = DateFormat.getTimeInstance();
+        df.setTimeZone(TimeZone.getTimeZone("gmt"));
+        Log.e("@@@@@@@@", "" + df.format(new Date()));
+
+
         final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
         ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
         apiInterface.getTaskDetails()
@@ -112,6 +119,7 @@ public class FragmentTasks extends Fragment {
                                     updateTimeToExpire();
                                 } else {
                                     // current task is running
+                                    Log.e("@@@@@@@@@@@@", "" + bindableModel.getUpdatedAt());
                                     binder.llCurrentTask.setData(bindableModel.getOrderInfo());
                                     binder.llCurrentTask.setIsVisible(View.VISIBLE);
                                     binder.llNewTask.setIsVisible(View.GONE);

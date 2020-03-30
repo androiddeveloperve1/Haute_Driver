@@ -234,6 +234,8 @@ public class AppUtils {
     public static long getMilliFromDate(String dateFormat) {
         Date date = new Date();
         try {
+             DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
             date = utcFormat.parse(dateFormat);
         } catch (ParseException e) {
             e.printStackTrace();

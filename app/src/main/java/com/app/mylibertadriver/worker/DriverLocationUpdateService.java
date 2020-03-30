@@ -64,7 +64,10 @@ public class DriverLocationUpdateService extends Worker {
         LocationServices.getFusedLocationProviderClient(mContext).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                sendDriverCurrentLocationToServer(new LatLng(location.getLatitude(), location.getLongitude()));
+                try{
+                    sendDriverCurrentLocationToServer(new LatLng(location.getLatitude(), location.getLongitude()));
+                }catch (Exception e){}
+
 
 
             }

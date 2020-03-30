@@ -47,6 +47,10 @@
             android:name=".activities.AcceptRestaurantActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -55,10 +59,6 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <activity
-            android:name=".activities.ResetPasswordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.Maps2Activity"
             android:screenOrientation="portrait"
@@ -117,11 +117,12 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service
-            android:name=".mservicees.TimerServices"
-            android:enabled="true"
-            android:exported="true"></service>
 
+
+        <service
+            android:name=".services.TimerService"
+            android:enabled="true"
+            android:exported="false" />
         <service
             android:name=".fcmutils.MyFirebaseMessagingService"
             android:exported="false">
@@ -130,12 +131,12 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

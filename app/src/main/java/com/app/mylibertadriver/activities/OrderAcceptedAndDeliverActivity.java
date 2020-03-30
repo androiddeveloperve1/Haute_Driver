@@ -303,12 +303,12 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
 
             @Override
             public void onFinish() {
-
+                binder.tvTime.setText("Time Expired!");
             }
 
             @Override
             public void onExpire() {
-
+                binder.tvTime.setText("Time Expired!");
             }
         });
     }
