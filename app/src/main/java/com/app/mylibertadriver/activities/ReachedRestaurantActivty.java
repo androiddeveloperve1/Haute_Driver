@@ -183,11 +183,13 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
             @Override
             public void onFinish() {
                 binder.tvTime.setText("Time Expired!");
+                binder.secText.setVisibility(View.GONE);
             }
 
             @Override
             public void onExpire() {
                 binder.tvTime.setText("Time Expired!");
+                binder.secText.setVisibility(View.GONE);
             }
         });
     }

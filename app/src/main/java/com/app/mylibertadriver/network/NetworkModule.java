@@ -10,6 +10,7 @@ import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.activities.LoginActivity;
 import com.app.mylibertadriver.activities.MainActivity;
 import com.app.mylibertadriver.prefes.MySharedPreference;
+import com.app.mylibertadriver.services.TimerService;
 import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.gson.Gson;
 
@@ -30,6 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
 /**
  * Create By Rahul Mangal
  * Project Haute Delivery
@@ -41,7 +43,7 @@ public class NetworkModule {
     Context applicationContext;
 
     public NetworkModule(Context applicationContext, File cacheFile) {
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
         this.cacheFile = cacheFile;
     }
 
@@ -71,6 +73,9 @@ public class NetworkModule {
                         if (response.code() == 401) {
                             MySharedPreference.getInstance(applicationContext).clearMyPreference();
                             WorkUtils.stopBackgroundService();
+                            applicationContext.stopService(new Intent(applicationContext, TimerService.class));
+
+
                             Intent mIntent = new Intent(applicationContext, LoginActivity.class);
                             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             applicationContext.startActivity(mIntent);

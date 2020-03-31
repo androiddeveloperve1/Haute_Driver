@@ -34,8 +34,10 @@ public class TimerService extends Service {
     int elapsedTime = 0;
     MyCountDownTimer timer;
     long totalTime;
+
     public TimerService() {
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -49,7 +51,7 @@ public class TimerService extends Service {
         long myCurrentMillisecond = System.currentTimeMillis();
         long differentSecond = (myCurrentMillisecond - acceptTimeMilliSecond) / 1000;
         //totalTime = 20 * 1000;
-        totalTime = (maxDeliveryTimeInSecond - differentSecond)*1000;
+        totalTime = (maxDeliveryTimeInSecond - differentSecond) * 1000;
         if (elapsedTime <= totalTime) {
             timer = new MyCountDownTimer(totalTime, 1000);
             timer.start();
@@ -63,22 +65,30 @@ public class TimerService extends Service {
     void stopNow() {
         stopSelf();
         stopForeground(false);
-        Notification notification = getMyActivityNotification("Your time has been Expired ", "",true);
+        Notification notification = getMyActivityNotification("Your time has been Expired ", "", true);
+
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.app_name);
+            NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
     }
 
-    private Notification getMyActivityNotification(String Title, String body,boolean isFinished) {
+    private Notification getMyActivityNotification(String Title, String body, boolean isFinished) {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
         Notification.Builder builder = new Notification.Builder(this)
                 .setContentTitle(Title)
                 .setContentText(body)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(contentIntent);
-        if(isFinished)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId("liberta"); // Channel ID
+        }
+        if (isFinished) {
             builder.setProgress((int) totalTime, 0, false);
-        }else {
+        } else {
             builder.setProgress((int) totalTime, (int) (totalTime - elapsedTime), false);
         }
 
@@ -91,14 +101,16 @@ public class TimerService extends Service {
         public MyCountDownTimer(long inFuture, long interval) {
             super(inFuture, interval);
         }
+
         @Override
         public void onTick(long millisUntilFinished) {
-            Notification notification = getMyActivityNotification("Your time expires within ", Msg(),false);
+            Notification notification = getMyActivityNotification("Your time expires within", Msg(), false);
             startForeground(noti_id, notification);
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(1, notification);
             elapsedTime = elapsedTime + interval;
         }
+
         @Override
         public void onFinish() {
             timer.cancel();
@@ -112,6 +124,6 @@ public class TimerService extends Service {
         return String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
-                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))) + "Second(s)";
+                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))) + " Second(s)";
     }
 }

@@ -58,6 +58,9 @@ public class WorkUtils {
 
     public static void stopBackgroundService() {
         Log.e("@@@@@@", "Stoped");
-        WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
+        try{
+            WorkManager.getInstance().cancelAllWorkByTag(Constants.BACKGROUND_WORKER_REQUEST);
+        }catch (Exception e){}
+
     }
 }

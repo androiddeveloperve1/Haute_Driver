@@ -1,5 +1,6 @@
 package com.app.mylibertadriver.utils;
 
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -62,6 +63,9 @@ public class MyCountDownTimer extends CountDownTimer {
                 sendPush(mContext);
                 return null;
             } else {
+
+
+
                 startServiceNow(mContext);
                 return new MyCountDownTimer(listener, timeelapsed * 1000, TIMER_DIFFERENT).start();
             }
@@ -70,14 +74,26 @@ public class MyCountDownTimer extends CountDownTimer {
     static void sendPush(Context mContext) {
         if (!MySharedPreference.getInstance(mContext).getLatePush()) {
             MySharedPreference.getInstance(mContext).setLatePush(true);
-            Log.e("@@@@@@@@", "Push");
         }
         //sendNotification(mContext);
     }
-
+    private static boolean isMyServiceRunning(Context mContext) {
+        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (TimerService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     static void startServiceNow(Context mContext) {
-        Intent serviceIntent = new Intent(mContext, TimerService.class);
-        ContextCompat.startForegroundService(mContext, serviceIntent);
+        if(isMyServiceRunning(mContext))
+        {
+            Log.e("@@@@@@@@@@@","Already running");
+        }else {
+            Intent serviceIntent = new Intent(mContext, TimerService.class);
+            ContextCompat.startForegroundService(mContext, serviceIntent);
+        }
     }
 
     private static void sendNotification(Context mContext) {
