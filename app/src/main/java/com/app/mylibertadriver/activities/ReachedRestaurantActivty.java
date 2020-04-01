@@ -170,6 +170,11 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
     }
 
     void showTiming() {
+        try {
+            myTimer.cancel();
+            Log.e("@@@@@@@@@@@@","Timer canceled");
+        } catch (Exception e) {
+        }
         myTimer = new MyCountDownTimer.MyTimer().startNow(this, new TimerListener() {
             @Override
             public void onTick(long millisUntilFinished) {

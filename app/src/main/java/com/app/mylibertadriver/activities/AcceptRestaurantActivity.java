@@ -207,6 +207,10 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
             }
 
         }
+        public void refresh(View v) {
+            AcceptRestaurantActivity.this.onResume();
+
+        }
 
         public void onBack(View v) {
             finish();
@@ -224,6 +228,11 @@ public class AcceptRestaurantActivity extends GoogleServicesActivationActivity i
 
 
     void showTiming() {
+        try {
+            myTimer.cancel();
+            Log.e("@@@@@@@@@@@@","Timer canceled");
+        } catch (Exception e) {
+        }
         myTimer = new MyCountDownTimer.MyTimer().startNow(this, new TimerListener() {
             @Override
             public void onTick(long millisUntilFinished) {

@@ -93,6 +93,8 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
             if (flag == SwipeView.SWIPED_RIGHT) {
                 orderDeliveredDialog.dismiss();
                 orderDelivered();
+
+                onResume();
             }
 
 
@@ -280,6 +282,11 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
             finish();
         }
 
+
+        public void refresh(View v) {
+            OrderAcceptedAndDeliverActivity.this.onResume();
+        }
+
         public void onCall(View v) {
             AppUtils.requestCall(OrderAcceptedAndDeliverActivity.this, orderDetails.getUser_id().getMobile_no());
         }
@@ -297,6 +304,13 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
     }
 
     void showTiming() {
+        try {
+            myTimer.cancel();
+            Log.e("@@@@@@@@@@@@", "Timer canceled");
+        } catch (Exception e) {
+        }
+
+
         myTimer = new MyCountDownTimer.MyTimer().startNow(this, new TimerListener() {
             @Override
             public void onTick(long millisUntilFinished) {

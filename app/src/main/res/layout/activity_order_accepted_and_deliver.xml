@@ -52,6 +52,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
         <ImageView
             android:id="@+id/help"
             android:layout_width="@dimen/_40_px"
@@ -61,6 +63,22 @@
             android:onClick="@{(v)->click.onHelp(v)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar_back" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/_10_px"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v)->click.refresh(v)}"
+            android:src="@drawable/ic_refresh_black"
+            app:cardCornerRadius="@dimen/_5_px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/help">
+
+            <ImageView
+                android:id="@+id/ic_refresh"
+                android:layout_width="@dimen/_30_px"
+                android:layout_height="@dimen/_30_px"
+                android:src="@drawable/ic_refresh_black" />
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView
@@ -111,15 +129,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_navigation"
-                android:layout_width="@dimen/_50_px"
-                android:layout_height="@dimen/_50_px"
-                android:layout_marginRight="@dimen/_10_px"
-                android:background="@drawable/ic_navigation"
-                android:onClick="@{(v)->click.onNavifationStart(v)}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
@@ -248,6 +258,15 @@
                     app:layout_constraintTop_toTopOf="@id/rl_swipe_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/iv_navigation"
+                android:layout_width="@dimen/_50_px"
+                android:layout_height="@dimen/_50_px"
+                android:layout_marginRight="@dimen/_10_px"
+                android:background="@drawable/ic_navigation"
+                android:onClick="@{(v)->click.onNavifationStart(v)}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
