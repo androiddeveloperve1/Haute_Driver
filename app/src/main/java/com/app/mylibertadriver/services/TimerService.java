@@ -100,12 +100,13 @@ public class TimerService extends Service {
         Notification notification = getMyActivityNotification("Delivered", "", true);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, notification);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.app_name);
             NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(mChannel);
         }
+        mNotificationManager.notify(1, notification);
+
     }
 
     private Notification getMyActivityNotification(String Title, String body, boolean isFinished) {
@@ -137,8 +138,13 @@ public class TimerService extends Service {
         @Override
         public void onTick(long millisUntilFinished) {
             Notification notification = getMyActivityNotification("Your time expires within", Msg(), false);
-            startForeground(noti_id, notification);
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = getString(R.string.app_name);
+                NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+                mNotificationManager.createNotificationChannel(mChannel);
+            }
+            startForeground(noti_id, notification);
             mNotificationManager.notify(1, notification);
             elapsedTime = elapsedTime + interval;
         }

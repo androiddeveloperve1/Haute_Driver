@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -35,6 +36,7 @@ import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.network.APIInterface;
 import com.app.mylibertadriver.prefes.MySharedPreference;
+import com.app.mylibertadriver.services.TimerService;
 import com.app.mylibertadriver.utils.FragmentTransactionUtils;
 import com.app.mylibertadriver.utils.Statusbar;
 import com.app.mylibertadriver.worker.WorkUtils;
@@ -201,6 +203,12 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
                         progressDialog.dismiss();
                         if (response.getStatus().equals("200")) {
                             WorkUtils.stopBackgroundService();
+                            try {
+                                Intent stop = new Intent(MainActivity.this, TimerService.class);
+                                stop.putExtra("shouldStop", true);
+                                ContextCompat.startForegroundService(MainActivity.this, stop);
+                            } catch (Exception e) {
+                            }
                             MySharedPreference.getInstance(MainActivity.this).clearMyPreference();
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             finishAffinity();
