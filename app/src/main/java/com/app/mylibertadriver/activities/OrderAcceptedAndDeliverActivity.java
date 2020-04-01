@@ -1,6 +1,7 @@
 package com.app.mylibertadriver.activities;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import com.app.mylibertadriver.interfaces.TimerListener;
 import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.orders.OrderDetailsModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.services.TimerService;
 import com.app.mylibertadriver.utils.AppUtils;
 import com.app.mylibertadriver.utils.FetchURL;
 import com.app.mylibertadriver.utils.GoogleApiUtils;
@@ -108,8 +110,6 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
         orderDetails = new Gson().fromJson(getIntent().getStringExtra("data"), OrderDetailsModel.class);
         delivarableLatLongUser = new LatLng(orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(0), orderDetails.getUser_id().getDelivery_address().get(0).getLoc().getCoordinates().get(1
         ));
-
-
 
 
         binder.setData(orderDetails);
@@ -209,7 +209,7 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
                 disableButton();
 
             }
-        }else {
+        } else {
             disableButton();
         }
 
@@ -261,6 +261,12 @@ public class OrderAcceptedAndDeliverActivity extends GoogleServicesActivationAct
                         progressDialog.dismiss();
                         Toast.makeText(OrderAcceptedAndDeliverActivity.this, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
                         if (response.getStatus().equals("200")) {
+                            try {
+                                Intent stop = new Intent(OrderAcceptedAndDeliverActivity.this, TimerService.class);
+                                stop.putExtra("shouldStop", true);
+                                ContextCompat.startForegroundService(OrderAcceptedAndDeliverActivity.this, stop);
+                            } catch (Exception e) {
+                            }
                             finish();
                         } else {
                             ResponseDialog.showErrorDialog(OrderAcceptedAndDeliverActivity.this, response.getMessage());

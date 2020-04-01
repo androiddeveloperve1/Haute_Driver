@@ -45,27 +45,59 @@ public class TimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MySharedPreference pref = MySharedPreference.getInstance(TimerService.this);
-        int maxDeliveryTimeInSecond = Integer.parseInt(pref.getRestroDeliveryTime()) * 60;
-        long acceptTimeMilliSecond = AppUtils.getMilliFromDate(pref.getAcceptTime()) + 19800000;
-        long myCurrentMillisecond = System.currentTimeMillis();
-        long differentSecond = (myCurrentMillisecond - acceptTimeMilliSecond) / 1000;
-        //totalTime = 20 * 1000;
-        totalTime = (maxDeliveryTimeInSecond - differentSecond) * 1000;
-        if (elapsedTime <= totalTime) {
-            timer = new MyCountDownTimer(totalTime, 1000);
-            timer.start();
+
+        if (intent.getBooleanExtra("shouldStop", false)) {
+            Log.e("@@@@@@@@@", "stop");
+            deliveryDone();
+
         } else {
-            stopNow();
+            MySharedPreference pref = MySharedPreference.getInstance(TimerService.this);
+            int maxDeliveryTimeInSecond = Integer.parseInt(pref.getRestroDeliveryTime()) * 60;
+            long acceptTimeMilliSecond = AppUtils.getMilliFromDate(pref.getAcceptTime()) + 19800000;
+            long myCurrentMillisecond = System.currentTimeMillis();
+            long differentSecond = (myCurrentMillisecond - acceptTimeMilliSecond) / 1000;
+            //totalTime = 20 * 1000;
+            totalTime = (maxDeliveryTimeInSecond - differentSecond) * 1000;
+            if (elapsedTime <= totalTime) {
+                timer = new MyCountDownTimer(totalTime, 1000);
+                timer.start();
+            } else {
+                stopTimerExpiredNow();
+            }
+            Log.e("@@@@@@@@@", "startd");
         }
+
+
         return START_NOT_STICKY;
     }
 
 
-    void stopNow() {
+    void stopTimerExpiredNow() {
+        try{
+            timer.cancel();
+        }catch (Exception e){}
+
         stopSelf();
         stopForeground(false);
-        Notification notification = getMyActivityNotification("Your time has been Expired ", "", true);
+      /*  Notification notification = getMyActivityNotification("Your time has been Expired ", "", true);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.app_name);
+            NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(mChannel);
+        }*/
+    }
+
+    void deliveryDone() {
+        try{
+            timer.cancel();
+        }catch (Exception e){}
+
+        stopSelf();
+        stopForeground(false);
+        Notification notification = getMyActivityNotification("Delivered", "", true);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, notification);
@@ -113,8 +145,8 @@ public class TimerService extends Service {
 
         @Override
         public void onFinish() {
-            timer.cancel();
-            stopNow();
+
+            stopTimerExpiredNow();
 
         }
     }

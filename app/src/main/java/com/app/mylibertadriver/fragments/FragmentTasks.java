@@ -1,6 +1,8 @@
 package com.app.mylibertadriver.fragments;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,12 +57,19 @@ public class FragmentTasks extends Fragment {
     Presenter p = new Presenter();
     @Inject
     APIInterface apiInterface;
+    Context mContext;
 
     private FragmentTasksBinding binder;
     private TaskResponse bindableModel;
     private boolean isTaskAvailable = false;
     private MainActivity mainActivity;
     private CountDownTimer expiryTimer;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext=context;
+    }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binder = DataBindingUtil.inflate(inflater, R.layout.fragment_tasks, container, false);
@@ -83,7 +92,7 @@ public class FragmentTasks extends Fragment {
         Log.e("@@@@@@@@", "" + df.format(new Date()));
 
 
-        final Dialog progressDialog = ResponseDialog.showProgressDialog(getActivity());
+        final Dialog progressDialog = ResponseDialog.showProgressDialog(mContext);
         ((MyApplication) getActivity().getApplication()).getConfiguration().inject(this);
         apiInterface.getTaskDetails()
                 .subscribeOn(Schedulers.io())
@@ -276,5 +285,7 @@ public class FragmentTasks extends Fragment {
             startActivity(mIntent);
         }
     }
+
+
 
 }

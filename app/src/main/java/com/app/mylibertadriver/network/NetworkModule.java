@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.activities.LoginActivity;
 import com.app.mylibertadriver.activities.MainActivity;
+import com.app.mylibertadriver.activities.OrderAcceptedAndDeliverActivity;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.services.TimerService;
 import com.app.mylibertadriver.worker.WorkUtils;
@@ -73,11 +76,16 @@ public class NetworkModule {
                         if (response.code() == 401) {
                             MySharedPreference.getInstance(applicationContext).clearMyPreference();
                             WorkUtils.stopBackgroundService();
-                            applicationContext.stopService(new Intent(applicationContext, TimerService.class));
+                            try {
+                                Intent stop = new Intent(applicationContext, TimerService.class);
+                                stop.putExtra("shouldStop", true);
+                                ContextCompat.startForegroundService(applicationContext, stop);
+                            } catch (Exception e) {
+                            }
 
 
                             Intent mIntent = new Intent(applicationContext, LoginActivity.class);
-                            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             applicationContext.startActivity(mIntent);
                             ((Activity) applicationContext).finishAffinity();
                         } else {
