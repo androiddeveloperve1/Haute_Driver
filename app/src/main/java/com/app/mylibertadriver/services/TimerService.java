@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TimerService extends Service {
     int noti_id = 1;
+    private String CHANNEl_ID="driver";
     int interval = 1000; //1 sec
     int elapsedTime = 0;
     MyCountDownTimer timer;
@@ -79,15 +80,15 @@ public class TimerService extends Service {
 
         stopSelf();
         stopForeground(false);
-      /*  Notification notification = getMyActivityNotification("Your time has been Expired ", "", true);
-
+        Notification notification = getMyActivityNotification("Your time has been Expired ", "", true);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, notification);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.app_name);
-            NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel mChannel = new NotificationChannel(CHANNEl_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(mChannel);
-        }*/
+        }
+        mNotificationManager.notify(1, notification);
+
     }
 
     void deliveryDone() {
@@ -97,15 +98,15 @@ public class TimerService extends Service {
 
         stopSelf();
         stopForeground(false);
-        Notification notification = getMyActivityNotification("Delivered", "", true);
+      /*  Notification notification = getMyActivityNotification("Delivered", "", true);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.app_name);
-            NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel mChannel = new NotificationChannel(CHANNEl_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(mChannel);
         }
-        mNotificationManager.notify(1, notification);
+        mNotificationManager.notify(1, notification);*/
 
     }
 
@@ -117,7 +118,7 @@ public class TimerService extends Service {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(contentIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId("liberta"); // Channel ID
+            builder.setChannelId(CHANNEl_ID); // Channel ID
         }
         if (isFinished) {
             builder.setProgress((int) totalTime, 0, false);
@@ -141,7 +142,7 @@ public class TimerService extends Service {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 CharSequence name = getString(R.string.app_name);
-                NotificationChannel mChannel = new NotificationChannel("liberta_driver", name, NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel mChannel = new NotificationChannel(CHANNEl_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
                 mNotificationManager.createNotificationChannel(mChannel);
             }
             startForeground(noti_id, notification);
@@ -151,7 +152,6 @@ public class TimerService extends Service {
 
         @Override
         public void onFinish() {
-
             stopTimerExpiredNow();
 
         }
