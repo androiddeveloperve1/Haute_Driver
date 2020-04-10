@@ -77,8 +77,12 @@ public class DriverLocationUpdateService extends Worker {
 
     void sendDriverCurrentLocationToServer(LatLng latlng) {
         HashMap param = new HashMap();
-        param.put("latitude", "" + latlng.latitude);
+       param.put("latitude", "" + latlng.latitude);
         param.put("longitude", "" + latlng.longitude);
+
+
+
+
         Log.e("@@@@@@@@@",""+new Gson().toJson(param));
         ((MyApplication) mContext).getConfiguration().inject(this);
         apiInterface.updateDriverLocation(param)
