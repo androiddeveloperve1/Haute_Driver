@@ -85,6 +85,7 @@ public class TimerService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.app_name);
             NotificationChannel mChannel = new NotificationChannel(CHANNEl_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            mChannel.setSound(null, null);
             mNotificationManager.createNotificationChannel(mChannel);
         }
         mNotificationManager.notify(1, notification);
@@ -143,6 +144,7 @@ public class TimerService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 CharSequence name = getString(R.string.app_name);
                 NotificationChannel mChannel = new NotificationChannel(CHANNEl_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+                mChannel.setSound(null, null);
                 mNotificationManager.createNotificationChannel(mChannel);
             }
             startForeground(noti_id, notification);

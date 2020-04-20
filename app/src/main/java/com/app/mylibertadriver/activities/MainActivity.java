@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.app.mylibertadriver.BuildConfig;
 import com.app.mylibertadriver.R;
 import com.app.mylibertadriver.constants.Constants;
+import com.app.mylibertadriver.constants.PermissionConstants;
 import com.app.mylibertadriver.databinding.ActivityMainBinding;
 import com.app.mylibertadriver.databinding.NavHeaderMainBinding;
 import com.app.mylibertadriver.dialogs.ResponseDialog;
@@ -35,6 +36,8 @@ import com.app.mylibertadriver.model.ApiResponseModel;
 import com.app.mylibertadriver.model.DocsStatusModel;
 import com.app.mylibertadriver.model.DriverModel;
 import com.app.mylibertadriver.network.APIInterface;
+import com.app.mylibertadriver.permission.PermissionHandlerListener;
+import com.app.mylibertadriver.permission.PermissionUtils;
 import com.app.mylibertadriver.prefes.MySharedPreference;
 import com.app.mylibertadriver.services.TimerService;
 import com.app.mylibertadriver.utils.FragmentTransactionUtils;
@@ -43,6 +46,8 @@ import com.app.mylibertadriver.worker.WorkUtils;
 import com.google.android.gms.location.LocationResult;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -264,16 +269,18 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         mLocationResult = locationResult;
         stopLocationUpdate();
         fragmentTasks.onUpdatedLocation(mLocationResult);
+
+
     }
 
     @Override
     public void onTaskDone(Object... values) {
-        String distance="";
+        String distance = "";
         if (values[1] != null)
-            distance=values[1].toString();
+            distance = values[1].toString();
 
 
-            fragmentTasks.onTaskDone(distance);
+        fragmentTasks.onTaskDone(distance);
     }
 
 
