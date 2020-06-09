@@ -129,8 +129,14 @@ public class MainActivity extends GoogleServiceActivationActivityForHandleFragme
         FragmentTransactionUtils.replaceFragmnet(MainActivity.this, R.id.container, fragmentTasks);
         changeTheToolbarTitle("Tasks");
         WorkUtils.startBackgroundService();
+        if (getIntent().getExtras() != null) {
+            Log.e("@@@@@@@@%%%%%%%%%@@@",new Gson().toJson( getIntent().getExtras()));
+
+        }
 
     }
+
+
 
 
     @Override

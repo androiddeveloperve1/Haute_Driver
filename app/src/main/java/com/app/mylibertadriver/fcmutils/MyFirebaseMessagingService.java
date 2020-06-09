@@ -1,5 +1,6 @@
 package com.app.mylibertadriver.fcmutils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -35,10 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e("##########", "Message data payload: " + remoteMessage.getData());
             sendNotification(new Gson().toJson(remoteMessage.getData()));
         }
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.e("##########", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
+
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String notificationDetails) {
         // Get an instance of the Notification manager
-        NotificationDataModel data=new Gson().fromJson(notificationDetails,NotificationDataModel.class);
+        NotificationDataModel data = new Gson().fromJson(notificationDetails, NotificationDataModel.class);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -90,9 +90,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.mipmap.ic_launcher))
                 .setColor(Color.RED)
+
                 .setContentTitle(data.title)
                 .setContentText(data.body)
                 .setContentIntent(notificationPendingIntent);
+
+        if (data.getType().equals("neworder")) {
+            builder.setSound(Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.new_order));
+        }else{
+
+            Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            builder.setSound(uri);
+        }
 
         // Set the Channel ID for Android O.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -102,7 +112,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
 
-        // Issue the notification
         mNotificationManager.notify(0, builder.build());
     }
 }

@@ -70,12 +70,7 @@ public class AcceptOrderActivity extends GoogleServicesActivationActivity implem
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_accept_order);
         orderData = new Gson().fromJson(getIntent().getStringExtra("data"), TaskResponse.class);
-
         restaurantInfoModel = orderData.getOrderInfo().getRestaurantInfo();
-
-
-
-
         delivarableLatLong = new LatLng(orderData.getOrderInfo().getRestaurantInfo().getLocation().getCoordinates().get(0), restaurantInfoModel.getLocation().getCoordinates().get(1));
         Log.e("@@@@", new Gson().toJson(delivarableLatLong));
         binder.setData(orderData);
