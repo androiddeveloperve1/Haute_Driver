@@ -98,17 +98,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (data.getType().equals("neworder")) {
             builder.setSound(Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.new_order));
         }else{
-
             Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
             builder.setSound(uri);
         }
-
         // Set the Channel ID for Android O.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("liberta"); // Channel ID
         }
-
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
 

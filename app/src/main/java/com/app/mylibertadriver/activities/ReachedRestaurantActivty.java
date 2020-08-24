@@ -107,6 +107,8 @@ public class ReachedRestaurantActivty extends AppCompatActivity {
                                     startActivity(mIntent);
                                 }
                             }));
+                       binder.tvCollectAmount.setText( "$" + String.format("%.02f", Float.parseFloat(orderDetails.getTotalamount())));
+
 
                         } else {
                             ResponseDialog.showErrorDialog(ReachedRestaurantActivty.this, response.getMessage());
